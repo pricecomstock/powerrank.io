@@ -30,10 +30,10 @@
 		<div class="col-md-3">
 			<draggable class="list-group" element="ul" v-model="list" :options="dragOptions" :move="onMove" @start="isDragging=true"
 			 @end="isDragging=false">
-				<transition-group type="transition" :name="'flip-list'">
+				<transition-group type="animation" name="flip-list">
 					<li class="list-group-item" v-for="(element, index) in list" :key="element.order">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
-						<span class="label label-primary">{{index + 1}}</span>
+						<span class="label label-default">-</span> 
 						{{element.name}}
 					</li>
 				</transition-group>
@@ -45,7 +45,7 @@
 				<transition-group name="no" class="list-group" tag="ul">
 					<li class="list-group-item" v-for="(element, index) in list2" :key="element.order">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
-						<span class="label label-primary">{{index + 1}}</span>
+						<span :class="['label', 'label-default', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span> 
 						{{element.name}}
 					</li>
 				</transition-group>
@@ -137,6 +137,18 @@
 		transition: transform 0.8s;
 	}
 	
+	.flash-enter-active {
+		animation: flash-green 0.5s;
+	}
+	
+	.flash-leave {
+	
+	}
+	
+	.flash-leave-active {
+	
+	}
+	
 	.no-move {
 		transition: transform 0s;
 	}
@@ -168,5 +180,29 @@
 		text-align: center;
 		width: 100%;
 		height: 100%;
+	}
+
+	.gold {
+		background-color: goldenrod;
+	}
+
+	.silver {
+		background-color: silver;
+	}
+
+	.bronze {
+		background-color: saddlebrown;
+	}
+
+	@keyframes flash-green {
+		0% {
+			
+		}
+		50% {
+			background-color: lightgreen;
+		}
+		100% {
+
+		}
 	}
 </style>
