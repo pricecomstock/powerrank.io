@@ -23,7 +23,7 @@
 			<div class="col-xs-12 col-md-3">
 				<button class="btn btn-primary" @click="newItems">Update</button>
 			</div>
-			<div class="col-xs-12 btn-group">
+			<div class="btn-group" role="group" aria-label="presets">
 				<button class="btn btn-default" v-for="(preset, name) in presets" @click="usePreset(preset)">{{ name }}</button>
 			</div>
 		</div>
@@ -36,7 +36,7 @@
 				<transition-group type="animation" name="flip-list">
 					<li class="list-group-item staging" v-for="(element, index) in list" :key="element.order" @click="list2.push(list.splice(index,1)[0])">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
-						<span class="label label-default">-</span> {{element.name}}
+						<span class="badge">?</span> {{element.name}}
 					</li>
 				</transition-group>
 			</draggable>
@@ -47,7 +47,8 @@
 				<transition-group name="no" class="list-group" tag="ul">
 					<li class="list-group-item" v-for="(element, index) in list2" :key="element.order"  @click="list.push(list2.splice(index,1)[0])">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
-						<span :class="['label', 'label-default', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span>						{{element.name}}
+						<span :class="['badge', 'badge', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span>
+						{{element.name}}
 					</li>
 				</transition-group>
 			</draggable>
@@ -80,7 +81,7 @@
 					'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
 					'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon']
 				},
-				listInput: '',
+				listInput: "Chocolate\nVanilla\nStrawberry",
 				list: [],
 				list2: [],
 				editable: true,
