@@ -34,7 +34,7 @@
 			<draggable class="list-group" element="ul" v-model="list" :options="dragOptions" :move="onMove" @start="isDragging=true"
 			 @end="isDragging=false">
 				<transition-group type="animation" name="flip-list">
-					<li class="list-group-item" v-for="(element, index) in list" :key="element.order">
+					<li class="list-group-item staging" v-for="(element, index) in list" :key="element.order" @click="list2.push(list.splice(index,1)[0])">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
 						<span class="label label-default">-</span> {{element.name}}
 					</li>
@@ -45,7 +45,7 @@
 		<div class="col-md-3">
 			<draggable element="span" v-model="list2" :options="dragOptions" :move="onMove">
 				<transition-group name="no" class="list-group" tag="ul">
-					<li class="list-group-item" v-for="(element, index) in list2" :key="element.order">
+					<li class="list-group-item" v-for="(element, index) in list2" :key="element.order"  @click="list.push(list2.splice(index,1)[0])">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
 						<span :class="['label', 'label-default', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span>						{{element.name}}
 					</li>
@@ -208,5 +208,9 @@
 			background-color: lightgreen;
 		}
 		100% {}
+	}
+
+	.staging {
+		cursor: pointer;
 	}
 </style>
