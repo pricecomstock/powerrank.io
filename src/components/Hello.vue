@@ -12,7 +12,7 @@
 			</div>
 		</div>-->
 		<div class="row">
-			<div class="col-xs-12 col-md-1">
+			<div class="col-xs-12 col-md-3">
 				<label for="debugCheck">Debug</label>
 				<input type="checkbox" id="debugCheck" class="form-control" v-model="debug">
 			</div>
@@ -20,8 +20,11 @@
 				<label for="listInput">Items</label>
 				<textarea id="listInput" v-model="listInput"></textarea>
 			</div>
-			<div class="col-xs-1 col-md-3">
+			<div class="col-xs-12 col-md-3">
 				<button class="btn btn-primary" @click="newItems">Update</button>
+			</div>
+			<div class="col-xs-12 btn-group">
+				<button class="btn btn-default" v-for="(preset, name) in presets" @click="usePreset(preset)">{{ name }}</button>
 			</div>
 		</div>
 
@@ -33,8 +36,7 @@
 				<transition-group type="animation" name="flip-list">
 					<li class="list-group-item" v-for="(element, index) in list" :key="element.order">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
-						<span class="label label-default">-</span> 
-						{{element.name}}
+						<span class="label label-default">-</span> {{element.name}}
 					</li>
 				</transition-group>
 			</draggable>
@@ -45,8 +47,7 @@
 				<transition-group name="no" class="list-group" tag="ul">
 					<li class="list-group-item" v-for="(element, index) in list2" :key="element.order">
 						<!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
-						<span :class="['label', 'label-default', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span> 
-						{{element.name}}
+						<span :class="['label', 'label-default', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span>						{{element.name}}
 					</li>
 				</transition-group>
 			</draggable>
@@ -73,7 +74,13 @@
 		},
 		data() {
 			return {
-				listInput: 'tritz\nelliott\nprice\nmark',
+				presets: {
+					'Dorm Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav'],
+					'Dream Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav', 'Ty', 'Justin', 'Joe', 'Jason', 'Andrew', 'Zusko', 'Wilkie', 'Jordan'],
+					'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
+					'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon']
+				},
+				listInput: '',
 				list: [],
 				list2: [],
 				editable: true,
@@ -93,6 +100,11 @@
 			},
 			newItems() {
 				this.list = this.listArray.map((name, index) => { return { name, order: index + 1, fixed: false }; })
+				this.list2 = [];
+			},
+			usePreset(newList) {
+				this.listInput = newList.join('\n');
+				this.newItems();
 			}
 		},
 		computed: {
@@ -141,13 +153,9 @@
 		animation: flash-green 0.5s;
 	}
 	
-	.flash-leave {
+	.flash-leave {}
 	
-	}
-	
-	.flash-leave-active {
-	
-	}
+	.flash-leave-active {}
 	
 	.no-move {
 		transition: transform 0s;
@@ -169,40 +177,36 @@
 	.list-group-item i {
 		cursor: pointer;
 	}
-
+	
 	#listInput {
 		width: 100%;
 		height: 200px;
 	}
-
+	
 	.drag-here {
 		background-color: #DDD;
 		text-align: center;
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	.gold {
 		background-color: goldenrod;
 	}
-
+	
 	.silver {
 		background-color: silver;
 	}
-
+	
 	.bronze {
 		background-color: saddlebrown;
 	}
-
+	
 	@keyframes flash-green {
-		0% {
-			
-		}
+		0% {}
 		50% {
 			background-color: lightgreen;
 		}
-		100% {
-
-		}
+		100% {}
 	}
 </style>
