@@ -2,6 +2,7 @@
   "extends": ["vue", "standard"],
   "rules": {
       "no-new": 0,
-      "no-var": "error"
+      "no-var": "error",
+      "semi": [2, "always"]
   }
 }
