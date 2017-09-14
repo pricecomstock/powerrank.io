@@ -11,7 +11,7 @@
     "heroku-postbuild": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "babel-runtime": "^6.23.0",
+    "babel-runtime": "^6.26.0",
     "element-ui": "^1.2.9",
     "express": "^4.15.4",
     "file-loader": "^0.9.0",
