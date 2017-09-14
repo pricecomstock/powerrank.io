@@ -1,3 +1,7 @@
 {
-    "extends": ["vue", "standard"]
+  "extends": ["vue", "standard"],
+  "rules": {
+      "no-new": 0,
+      "no-var": "error"
+  }
 }
