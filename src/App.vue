@@ -8,19 +8,19 @@
 </template>
 
 <script>
-import Hello from './components/Hello.vue'
+import Hello from './components/Hello.vue';
 
 export default {
   name: 'app',
-  data() {
+  data () {
     return {
       version: '0.0.2'
-    }
+    };
   },
   components: {
     Hello
   }
-}
+};
 </script>
 
 <style>
