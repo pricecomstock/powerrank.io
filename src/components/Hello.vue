@@ -11,7 +11,14 @@
         <button type="button" class="btn btn-default" @click="orderList">Sort by original order</button>
       </div>
     </div>-->
+    
+    
+    <!-- DEBUG -->
     <div class="row">
+      <el-alert
+        title="success alert"
+        type="success">
+      </el-alert>
       <div class="col-xs-12 col-md-3">
         <label for="debugCheck">Debug</label>
         <input type="checkbox" id="debugCheck" class="form-control" v-model="debug">
@@ -28,31 +35,33 @@
       </div>
     </div>
 
-
     <hr>
-    <div class="col-md-3">
+    <unranked-list class="col-md-3" :input-list="['Ham', 'Yam', 'Jam']" ></unranked-list>
+    <ranked-list class="col-md-3" :input-list="['Ram', 'Fam', 'Mam']" ></ranked-list>
+    <!-- <div class="col-md-3">
       <draggable class="list-group" element="ul" v-model="list" :options="dragOptions" :move="onMove" @start="isDragging=true"
        @end="isDragging=false">
         <transition-group type="animation" name="flip-list">
           <li class="list-group-item staging" v-for="(element, index) in list" :key="element.order" @click="list2.push(list.splice(index,1)[0])">
-            <!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
+          
             <span class="badge">?</span> {{element.name}}
           </li>
         </transition-group>
       </draggable>
-    </div>
+    </div> -->
 
+<!-- 
     <div class="col-md-3">
       <draggable element="span" v-model="list2" :options="dragOptions" :move="onMove">
         <transition-group name="no" class="list-group" tag="ul">
           <li class="list-group-item" v-for="(element, index) in list2" :key="element.order"  @click="list.push(list2.splice(index,1)[0])">
-            <!--<i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>-->
+            
             <span :class="['badge', 'badge', {gold: index == 0, silver: index == 1, bronze: index == 2}]">{{index + 1}}</span>
             {{element.name}}
           </li>
         </transition-group>
       </draggable>
-    </div>
+    </div> -->
 
 
     <div class="col-md-3" v-if="debug">
@@ -66,12 +75,16 @@
 
 <script>
   import draggable from 'vuedraggable';
+  import unrankedList from './rank/UnrankedList.vue';
+  import rankedList from './rank/RankedList.vue';
   // const message = ['vue.draggable', 'draggable', 'component', 'for', 'vue.js 2.0', 'based', 'on', 'Sortablejs'];
 
   export default {
     name: 'hello',
     components: {
-      draggable
+      draggable,
+      unrankedList,
+      rankedList
     },
     data () {
       return {
