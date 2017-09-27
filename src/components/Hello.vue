@@ -15,21 +15,17 @@
     
     <!-- DEBUG -->
     <div class="row">
-      <el-alert
-        title="success alert"
-        type="success">
-      </el-alert>
       <div class="col-xs-12 col-md-3">
         <label for="debugCheck">Debug</label>
         <input type="checkbox" id="debugCheck" class="form-control" v-model="debug">
       </div>
-      <div class="col-xs-12 col-md-6">
+      <!-- <div class="col-xs-12 col-md-6">
         <label for="listInput">Items</label>
         <textarea id="listInput" v-model="listInput"></textarea>
-      </div>
-      <div class="col-xs-12 col-md-3">
+      </div> -->
+      <!-- <div class="col-xs-12 col-md-3">
         <button class="btn btn-primary" @click="newItems">Update</button>
-      </div>
+      </div> -->
       <div class="btn-group" role="group" aria-label="presets">
         <button class="btn btn-default" v-for="(preset, name) in presets" @click="usePreset(preset)">{{ name }}</button>
       </div>
@@ -83,8 +79,8 @@
     name: 'hello',
     components: {
       draggable,
-      unrankedList,
-      rankedList
+      'unranked-list': unrankedList,
+      'ranked-list': rankedList
     },
     data () {
       return {
@@ -115,6 +111,7 @@
       newItems () {
         this.list = this.listArray.map((name, index) => { return { name, order: index + 1, fixed: false }; });
         this.list2 = [];
+        this.$store.commit('setUnrankedList', this.list);
       },
       usePreset (newList) {
         this.listInput = newList.join('\n');
