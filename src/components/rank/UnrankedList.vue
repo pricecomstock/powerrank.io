@@ -1,23 +1,23 @@
 <template>
-  <div id="unrankedlist">
-    <draggable v-model="listContents"></draggable>
-    <!-- <draggable class="list-group" element="ul" v-model="inputList" :options="dragOptions" :move="onMove" @start="isDragging=true"
+  <div class="rankinglist">
+    <draggable
+      class="list-group"
+      element="ul"
+      v-model="listContents"
+      :options="dragOptions"
+      :move="onMove"
+      @start="isDragging=true"
       @end="isDragging=false">
-       <transition-group type="animation" name="flip-list"> -->
-         <!-- <list-item 
-          v-for="(element, index) in ['choco','vanilla','strawberry']"
-          :key="element.order"
-          @click="console.log(element) //list2.push(list.splice(index,1)[0])"
-          name="test"></list-item> -->
-
-          <!-- <list-item
-            v-for="(element, index) in inputList"
-            :itemname="element"
-            :key="index"
-            @click="console.log(element)">
+       <transition-group type="animation" name="flip-list">
+         <list-item
+           v-for="(element, index) in listContents"
+           :key="index"
+           :item="element"
+           :rank="ranked ? index + 1 : -1 "
+           :description=element.description>
           </list-item>
        </transition-group>
-     </draggable> -->
+     </draggable>
    </div>
 </template>
 
@@ -32,27 +32,64 @@
       draggable
     },
     props: {
-      inputList: {
-        type: Array,
-        required: false
+      ranked: {
+        type: Boolean,
+        required: true
+      }
+    },
+    methods: {
+      onMove ({ relatedContext, draggedContext }) {
+        const relatedElement = relatedContext.element;
+        const draggedElement = draggedContext.element;
+        return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
+      },
+      newItems () {
+        this.list = this.listArray.map((name, index) => { return { name, order: index + 1, fixed: false }; });
+        this.list2 = [];
+        this.$store.commit('setUnrankedList', this.list);
+      },
+      usePreset (newList) {
+        this.listInput = newList.join('\n');
+        this.newItems();
       }
     },
     computed: {
       listContents: {
         get () {
-          return this.$store.state.unrankedList;
+          if (this.ranked) {
+            return this.$store.state.rankedList;
+          } else {
+            return this.$store.state.unrankedList;
+          }
         },
         set (value) {
-          this.$store.commit('setUnrankedList', value);
+          if (this.ranked) {
+            this.$store.commit('setRankedList', value);
+          } else {
+            this.$store.commit('setUnrankedList', value);
+          }
         }
+      },
+      dragOptions () {
+        return {
+          animation: 0,
+          group: 'description',
+          disabled: !this.editable,
+          ghostClass: 'ghost'
+        };
       }
     },
     data () {
-      return {};
+      return {
+        editable: true
+      };
     }
   };
 </script>
 
 <style>
-
+  .rankinglist {
+    min-height: 100px;
+    background-color: gray;
+  }
 </style>

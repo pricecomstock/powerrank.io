@@ -23,6 +23,9 @@ export const store = new Vuex.Store({
   mutations: {
     setUnrankedList: (state, newList) => {
       state.unrankedList = newList;
+    },
+    setRankedList: (state, newList) => {
+      state.rankedList = newList;
     }
   }
 });

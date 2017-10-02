@@ -32,8 +32,8 @@
     </div>
 
     <hr>
-    <unranked-list class="col-md-3" :input-list="['Ham', 'Yam', 'Jam']" ></unranked-list>
-    <ranked-list class="col-md-3" :input-list="['Ram', 'Fam', 'Mam']" ></ranked-list>
+    <unranked-list class="col-md-3" :ranked="false" ></unranked-list>
+    <unranked-list class="col-md-3" :ranked="true" ></unranked-list>
     <!-- <div class="col-md-3">
       <draggable class="list-group" element="ul" v-model="list" :options="dragOptions" :move="onMove" @start="isDragging=true"
        @end="isDragging=false">
@@ -88,7 +88,8 @@
           'Dorm Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav'],
           'Dream Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav', 'Ty', 'Justin', 'Joe', 'Jason', 'Andrew', 'Zusko', 'Wilkie', 'Jordan'],
           'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
-          'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon']
+          'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon'],
+          'Ice Cream': ['Chocolate', 'Vanilla', 'Strawberry']
         },
         listInput: 'Chocolate\nVanilla\nStrawberry',
         list: [],
