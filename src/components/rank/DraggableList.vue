@@ -1,24 +1,25 @@
 <template>
   <div class="rankinglist">
+    <!-- <div v-if="listContents.length===0" class="drag-below">Drag Below</div> -->
     <draggable
       class="list-group"
+      :class="{'drag-here': listContents.length===0}"
       element="ul"
       v-model="listContents"
       :options="dragOptions"
-      :move="onMove"
       @start="isDragging=true"
       @end="isDragging=false">
-       <transition-group type="animation" name="flip-list">
-         <list-item
-           v-for="(element, index) in listContents"
-           :key="index"
-           :item="element"
-           :rank="ranked ? index + 1 : -1 "
-           :description=element.description>
-          </list-item>
-       </transition-group>
-     </draggable>
-   </div>
+        
+      <transition-group type="animation" name="flip-list" class="alwaysdisplay">
+        <list-item
+          v-for="(element, index) in listContents"
+          :key="index"
+          :item="element"
+          :rank="ranked ? index + 1 : -1 ">
+        </list-item>
+      </transition-group>
+    </draggable>
+  </div>
 </template>
 
 <script>
@@ -26,7 +27,7 @@
   import listItem from '../rank/ListItem.vue';
 
   export default {
-    name: 'unrankedList',
+    name: 'draggableList',
     components: {
       listItem,
       draggable
@@ -42,24 +43,26 @@
         const relatedElement = relatedContext.element;
         const draggedElement = draggedContext.element;
         return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
-      },
-      newItems () {
-        this.list = this.listArray.map((name, index) => { return { name, order: index + 1, fixed: false }; });
-        this.list2 = [];
-        this.$store.commit('setUnrankedList', this.list);
-      },
-      usePreset (newList) {
-        this.listInput = newList.join('\n');
-        this.newItems();
+      }
+    },
+    watch: {
+      isDragging (newValue) {
+        if (newValue) {
+          this.delayedDragging = true;
+          return;
+        }
+        this.$nextTick(() => {
+          this.delayedDragging = false;
+        });
       }
     },
     computed: {
       listContents: {
         get () {
           if (this.ranked) {
-            return this.$store.state.rankedList;
+            return this.$store.getters.rankedList;
           } else {
-            return this.$store.state.unrankedList;
+            return this.$store.getters.unrankedList;
           }
         },
         set (value) {
@@ -81,7 +84,9 @@
     },
     data () {
       return {
-        editable: true
+        editable: true,
+        isDragging: false,
+        delayedDragging: false
       };
     }
   };
@@ -90,6 +95,22 @@
 <style>
   .rankinglist {
     min-height: 100px;
-    background-color: gray;
+  }
+  
+  .alwaysdisplay {
+    min-height: 100px;
+    display: block;
+  }
+  
+  .drag-below {
+    color: #DDD;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .drag-here {
+    border: 4px dashed #DDD;
+    min-height: 100px;
+    border-radius: 10px;
   }
 </style>

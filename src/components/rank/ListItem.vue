@@ -5,7 +5,7 @@
 =======
   <li class="list-group-item staging">
       <span class="badge">{{ rank === -1 ? '?' : rank }}</span>
-      {{ item.name }}
+      {{ item }}
   </li>
 >>>>>>> parent of 82ebaf5... Cleaned up commented code. Restored functionality
 </template>
@@ -25,7 +25,7 @@ export default {
   },
   props: {
     item: {
-      type: Object,
+      type: String,
       required: true
     },
     description: {
