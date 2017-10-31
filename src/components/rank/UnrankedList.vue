@@ -1,12 +1,13 @@
 <template>
-  <div id="listitem">
+  <div id="unrankedlist">
   </div>
 </template>
 
 <script>
+import ListItem from './components/create/ListItem.vue'
 
 export default {
-  name: 'listItem',
+  name: 'unrankedList',
   data() {
   }
 }
