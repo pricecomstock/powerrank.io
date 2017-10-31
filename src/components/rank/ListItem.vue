@@ -1,22 +1,14 @@
 <template>
-<<<<<<< HEAD
-  <div id="listitem">
-  </div>
-=======
   <li class="list-group-item staging">
       <span class="badge">{{ rank === -1 ? '?' : rank }}</span>
       {{ item }}
   </li>
->>>>>>> parent of 82ebaf5... Cleaned up commented code. Restored functionality
 </template>
 
 <script>
 
 export default {
   name: 'listItem',
-<<<<<<< HEAD
-  data() {
-=======
   data () {
     return {};
   },
@@ -36,7 +28,6 @@ export default {
       type: Number,
       required: true
     }
->>>>>>> parent of 82ebaf5... Cleaned up commented code. Restored functionality
   }
 }
 </script>
