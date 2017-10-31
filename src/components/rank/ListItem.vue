@@ -1,15 +1,35 @@
 <template>
-  <div id="listitem">
-  </div>
+  <li class="list-group-item staging">
+      <span class="badge">{{ rank === -1 ? '?' : rank }}</span>
+      {{ item }}
+  </li>
 </template>
 
 <script>
 
 export default {
   name: 'listItem',
-  data() {
+  data () {
+    return {};
+  },
+  methods: {
+
+  },
+  props: {
+    item: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: false
+    },
+    rank: {
+      type: Number,
+      required: true
+    }
   }
-}
+};
 </script>
 
 <style>
