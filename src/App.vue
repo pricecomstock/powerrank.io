@@ -3,24 +3,24 @@
     <div class="jumbotron logo">
        <h1>powerrank.io v{{version}}</h1>
     </div>  
-    <power-rank></power-rank>
+    <hello></hello>
   </div>
 </template>
 
 <script>
-import PowerRank from './components/PowerRank.vue';
+import Hello from './components/Hello.vue'
 
 export default {
   name: 'app',
-  data () {
+  data() {
     return {
-      version: '0.0.3'
-    };
+      version: '0.0.2'
+    }
   },
   components: {
-    PowerRank
+    Hello
   }
-};
+}
 </script>
 
 <style>
