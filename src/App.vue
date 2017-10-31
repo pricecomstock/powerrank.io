@@ -9,7 +9,6 @@
 
 <script>
 import PowerRank from './components/PowerRank.vue';
-
 export default {
   name: 'app',
   data () {
