@@ -1,7 +1,7 @@
 <template>
   <li class="list-group-item staging">
       <span class="badge">{{ rank === -1 ? '?' : rank }}</span>
-      {{ item.name }}
+      {{ item }}
   </li>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   },
   props: {
     item: {
-      type: Object,
+      type: String,
       required: true
     },
     description: {

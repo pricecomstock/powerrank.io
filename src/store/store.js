@@ -5,19 +5,45 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    unrankedList: [
-      'strawberry',
-      'chocolate',
-      'vanilla'
-    ],
-    rankedList: []
+    unrankedList: [],
+    rankedList: [],
+    presets: {
+      'Dorm Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav'],
+      'Dream Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav', 'Ty', 'Justin', 'Joe', 'Jason', 'Andrew', 'Zusko', 'Wilkie', 'Jordan'],
+      'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
+      'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon'],
+      'Ice Cream': ['Chocolate', 'Vanilla', 'Strawberry']
+    }
   },
   getters: {
+    unrankedList: state => {
+      return state.unrankedList;
+    },
+    rankedList: state => {
+      return state.rankedList;
+    },
     unrankedListString: state => {
-      return state.unrankedList.join('\n');
+      if (state.unrankedList) {
+        return state.unrankedList.join('\n');
+      } else {
+        return '';
+      }
     },
     rankedListString: state => {
-      return state.rankedList.join('\n');
+      if (state.rankedList) {
+        return state.rankedList.join('\n');
+      } else {
+        return '';
+      }
+    },
+    unrankedListJSON: state => {
+      return JSON.stringify(state.unrankedList, null, '  ');
+    },
+    rankedListJSON: state => {
+      return JSON.stringify(state.rankedList, null, '  ');
+    },
+    presets: state => {
+      return state.presets;
     }
   },
   mutations: {
