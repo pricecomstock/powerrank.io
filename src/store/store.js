@@ -53,5 +53,13 @@ export const store = new Vuex.Store({
     setRankedList: (state, newList) => {
       state.rankedList = newList;
     }
+  },
+  actions: {
+    setUnrankedList: (context, newList) => {
+      context.commit('setUnrankedList', newList);
+    },
+    setRankedList: (context, newList) => {
+      context.commit('setRankedList', newList);
+    }
   }
 });

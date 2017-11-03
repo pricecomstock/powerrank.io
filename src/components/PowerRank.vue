@@ -51,6 +51,7 @@
     methods: {
       usePreset (newList) {
         this.$store.commit('setUnrankedList', newList);
+        this.$store.commit('setRankedList', []);
       }
     },
     created () {
@@ -60,44 +61,5 @@
 </script>
 
 <style>
-  .flip-list-move {
-    transition: transform 0.8s;
-  }
   
-  .flash-enter-active {
-    animation: flash-green 0.5s;
-  }
-  
-  .flash-leave {}
-  
-  .flash-leave-active {}
-  
-  .no-move {
-    transition: transform 0s;
-  }
-  
-  .ghost {
-    opacity: .5;
-    background: #C8EBFB;
-  }
-  
-  .list-group-item {
-    cursor: move;
-  }
-  
-  .list-group-item i {
-    cursor: pointer;
-  }
-  
-  @keyframes flash-green {
-    0% {}
-    50% {
-      background-color: lightgreen;
-    }
-    100% {}
-  }
-
-  .staging {
-    cursor: pointer;
-  }
 </style>
