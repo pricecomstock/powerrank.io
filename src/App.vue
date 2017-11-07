@@ -1,24 +1,25 @@
 <template>
   <div id="app">
-    <div class="jumbotron logo">
-       <h1>powerrank.io v{{version}}</h1>
-    </div>  
-    <power-rank></power-rank>
+    <nav-bar></nav-bar>
+    <router-view></router-view>
+    <!-- <power-rank></power-rank> -->
   </div>
 </template>
 
 <script>
 import PowerRank from './components/PowerRank.vue';
+import NavBar from './components/site/Nav.vue';
 
 export default {
   name: 'app',
   data () {
     return {
-      version: '0.0.3'
+      
     };
   },
   components: {
-    PowerRank
+    PowerRank,
+    NavBar
   }
 };
 </script>
@@ -30,7 +31,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 #app .logo{
