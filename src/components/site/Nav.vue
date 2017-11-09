@@ -10,8 +10,7 @@
 						{{ name }}
 					</router-link>
 				</li> -->
-				<router-link tag="li" v-for="(preset, name) in presetsByName" :to="'/rank/' + name" key="name">
-				<!-- <router-link tag="li" v-for="(preset, name) in presetsByName" @click="usePreset(preset)" :to="'/rank/' + name" key="name"> -->
+				<router-link tag="li" v-for="(id, name) in presetsById" :to="'/rank/' + id" key="id">
 					<a>{{ name }}</a>
 				</router-link>
       </ul>
@@ -28,18 +27,9 @@ export default {
 		};
 	},
 	computed: {
-		presetsByName () {
-			return this.$store.getters.presetsByName;
+		presetsById () {
+			return this.$store.getters.presets;
 		}
-	},
-	methods: {
-		usePreset (newList) {
-			this.$store.commit('setUnrankedList', newList);
-			this.$store.commit('setRankedList', []);
-		}
-	},
-	created () {
-		this.usePreset(this.presetsByName.Starburst);
 	}
 };
 </script>

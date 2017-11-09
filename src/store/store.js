@@ -1,25 +1,29 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import axios from '../axios-airtable'
+
 Vue.use(Vuex);
+
+
+// const presetsByName =  {
+//   'Dorm Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav'],
+//   'Dream Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav', 'Ty', 'Justin', 'Joe', 'Jason', 'Andrew', 'Zusko', 'Wilkie', 'Jordan'],
+//   'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
+//   'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon'],
+//   'Ice Cream': ['Chocolate', 'Vanilla', 'Strawberry']
+// }
+const presetsById =  {
+  'Starburst': 'recdIbtaMt7xWyUmN',
+  'Dream Team': 'rec5E2G4U4WObayFU',
+  'Dorm Team': 'recqldVKzNU17uFB4',
+  'Ice Cream': 'recbU0YP6PVRZpxrN'
+}
 
 export const store = new Vuex.Store({
   state: {
     unrankedList: [],
-    rankedList: [],
-    presetsByName: {
-      'Dorm Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav'],
-      'Dream Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav', 'Ty', 'Justin', 'Joe', 'Jason', 'Andrew', 'Zusko', 'Wilkie', 'Jordan'],
-      'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
-      'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon'],
-      'Ice Cream': ['Chocolate', 'Vanilla', 'Strawberry']
-    },
-    presetsById: {
-      'Starburst': 'a',
-      'Dream Team': 'c',
-      'Dorm Team': 'd',
-      'Ice Cream': 'b'
-    }
+    rankedList: []
   },
   getters: {
     unrankedList: state => {
@@ -48,8 +52,8 @@ export const store = new Vuex.Store({
     rankedListJSON: state => {
       return JSON.stringify(state.rankedList, null, '  ');
     },
-    presetsByName: state => {
-      return state.presetsByName;
+    presets: state => {
+      return presetsById;
     }
   },
   mutations: {
@@ -69,14 +73,25 @@ export const store = new Vuex.Store({
     },
     loadFromAirtable: (context, id) => {
       let newList = []
-      // .post('https://api.airtable.com/v0/appWE62HgQg8yZggo/RankLists?api_key=keyntfXx888yZ4url')
-      context.commit('setRankedList', newList);
-    },
-    loadFromPresets: (context, name) => {
-      // .post('https://api.airtable.com/v0/appWE62HgQg8yZggo/RankLists?api_key=keyntfXx888yZ4url')
-      console.log('name: ' + name)
-      context.commit('setUnrankedList', context.state.presetsByName[name]);
-      context.commit('setRankedList', []);
+
+      axios.get(`/RankLists/${id}`)
+        .then(res => {
+          console.log('Airtable Response', res)
+          // Split on newlines because it's stored that way
+          // Filter any blank items we are left with
+          newList = res.data.fields.RankItems.split('\n').filter(each => {return each.trim() !== ""})
+          console.log("new list", newList)
+
+          context.commit('setUnrankedList', newList);
+          context.commit('setRankedList', []);
+        })
+        .catch(error => console.log(error))
+        
     }
+    // loadFromPresets: (context, name) => {
+    //   console.log('name: ' + name)
+    //   context.commit('setUnrankedList', presetsByName[name]);
+    //   context.commit('setRankedList', []);
+    // }
   }
 });
