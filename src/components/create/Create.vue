@@ -4,12 +4,13 @@
 </template>
 
 <script>
-import InputItem from './components/create/InputItem.vue'
+import InputItem from './InputItem.vue'
 
 export default {
   name: 'input',
   data() {
-  }
+    return {}
+  },
 }
 </script>
 

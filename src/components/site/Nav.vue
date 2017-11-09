@@ -2,17 +2,11 @@
   <nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="">powerrank.io v.0.0.4</a>
+				<router-link class="navbar-brand" to="/">powerrank.io v.0.0.4</router-link>
 			</div>
 			<ul class="nav navbar-nav">
-				<!-- <li v-for="(preset, name) in presets" @click="usePreset(preset)">
-					<router-link to="/powerrank">
-						{{ name }}
-					</router-link>
-				</li> -->
-				<router-link tag="li" v-for="(id, name) in presetsById" :to="'/rank/' + id" key="id">
-					<a>{{ name }}</a>
-				</router-link>
+				<router-link tag="li" to="/browse"><a>Browse</a></router-link>
+				<router-link tag="li" to="/create"><a>Create</a></router-link>
       </ul>
 		</div>
 	</nav>
@@ -25,11 +19,6 @@ export default {
 		return {
 			presetDropdownOpen: false
 		};
-	},
-	computed: {
-		presetsById () {
-			return this.$store.getters.presets;
-		}
 	}
 };
 </script>
