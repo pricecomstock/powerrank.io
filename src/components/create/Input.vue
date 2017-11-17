@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import Input from './Input.vue'
+import InputItem from './InputItem.vue'
 
 export default {
   name: 'input',
