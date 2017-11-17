@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <nav-bar></nav-bar>
     <router-view></router-view>
     <!-- <power-rank></power-rank> -->
@@ -26,15 +26,4 @@ export default {
 
 <style>
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin-top: 20px;
-}
-
-#app .logo{
-  text-align: center;
-}
 </style>

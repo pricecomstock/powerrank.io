@@ -1,18 +1,18 @@
 <template>
   <div class="fluid container">
     <p>Loaded ID: {{ id }}</p>
-    <div class="row">
+    <div class="columns">
       <!-- PowerRanking -->
-      <div class="col-md-3"></div>
-      <draggable-list class="col-md-3" :ranked="false" ></draggable-list>
-      <draggable-list class="col-md-3" :ranked="true" ></draggable-list>
+      <div class="column is-one-fourth"></div>
+      <draggable-list class="column is-one-fourth" :ranked="false" ></draggable-list>
+      <draggable-list class="column is-one-fourth" :ranked="true" ></draggable-list>
     </div>
     
     
     <!-- Debug -->
     <hr>
     <div class="row">
-      <button @click="debug=!debug" class="btn" :class="{'btn-warning':debug, 'btn-default':!debug}">Debug Mode</button>
+      <button @click="debug=!debug" class="button is-warning" :class="{'btn-warning':debug, 'btn-default':!debug}">Debug Mode</button>
       <debug-panel v-if="debug"></debug-panel>  
     </div>
 

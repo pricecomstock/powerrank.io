@@ -6,12 +6,12 @@
 </div>
 
 <template>
-  <div id="debug" class="row">
-		<div class="col-md-6">
-			<pre>{{unrankedJSON}}</pre>
+  <div id="debug" class="columns">
+		<div class="column is-half">
+			<pre class="box">{{unrankedJSON}}</pre>
 		</div>
-		<div class="col-md-6">
-			<pre>{{rankedJSON}}</pre>
+		<div class="column is-half">
+			<pre class="box">{{rankedJSON}}</pre>
 		</div>
 	</div>
 </template>

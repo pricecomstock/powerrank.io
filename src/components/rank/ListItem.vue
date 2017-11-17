@@ -1,7 +1,13 @@
 <template>
-  <li class="list-group-item staging">
-      <span class="badge">{{ rank === -1 ? '?' : rank }}</span>
-      {{ item }}
+  <li class="box staging">
+    <div class="level">
+      <div class="level-left">
+        {{ item }}
+      </div>
+      <div class="level-right">
+        <span class="tag is-primary is-medium is-rounded">{{ rank === -1 ? '?' : rank }}</span>
+      </div>
+    </div>
   </li>
 </template>
 

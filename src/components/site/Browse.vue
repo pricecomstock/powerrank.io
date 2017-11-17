@@ -1,12 +1,12 @@
 <template>
-	<div id="browse" class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4">
-			<ul class="list-group">
-				<router-link class="list-group-item" tag="li" v-for="(id, name) in presetsById" :to="'/rank/' + id" key="id">
-					<a>{{ name }}</a>
-				</router-link>
-			</ul>
+	<div id="browse" class="columns">
+		<div class="column is-one-third"></div>
+		<div class="column is-one-third">
+			<!-- <ul class="list-group"> -->
+			<router-link class="box has-text-centered" v-for="(id, name) in presetsById" :to="'/rank/' + id" key="id">
+				<a>{{ name }}</a>
+			</router-link>
+			<!-- </ul> -->
 		</div>
 	</div>
 </template>

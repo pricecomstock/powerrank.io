@@ -1,13 +1,17 @@
 <template>
-  <nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<router-link class="navbar-brand" to="/">powerrank.io v.0.0.4</router-link>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+		<div class="navbar-brand">
+			<router-link class="navbar-item" to="/">powerrank.io v.0.0.4</router-link>
+		</div>
+		<div class="navbar-menu">
+			<div class="navbar-start">
+				<router-link class="navbar-item" to="/browse"><a>Browse</a></router-link>
+				<router-link class="navbar-item" to="/create"><a>Create</a></router-link>
 			</div>
-			<ul class="nav navbar-nav">
-				<router-link tag="li" to="/browse"><a>Browse</a></router-link>
-				<router-link tag="li" to="/create"><a>Create</a></router-link>
-      </ul>
+			<!-- <div class="navbar-end">
+				<router-link to="/browse"><a>Browse</a></router-link>
+				<router-link to="/create"><a>Create</a></router-link>
+			</div> -->
 		</div>
 	</nav>
 </template>
