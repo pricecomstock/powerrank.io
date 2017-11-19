@@ -1,15 +1,18 @@
 <template>
-  <div class="inputitem box" :class="{'newitem': newItem}">
+  <div class="inputitem box" :class="{'newitem': false}">
     <div class="level">
       <div class="level-left">
-        <input type="text" class="input" placeholder="Name" v-model="name">
+        <input type="text" class="input" placeholder="Name" v-model="title">
       </div>
       <div class="level-item">
         <input type="text" class="input" placeholder="Description" v-model="description">
       </div>
-      <div class="level-right">
+      <span class="icon is-medium level-right">
+        <i class="fa fa-lg fa-trash"></i>
+      </span>
+      <!-- <div class="level-right">
         <button class="delete is-medium"></button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -20,12 +23,11 @@ export default {
   name: 'inputItem',
   data () {
     return {
-      name: '',
+      title: '',
       description: ''
     }
   },
   props: {
-    name: String,
     newItem: {
       type: Boolean,
       default: false
