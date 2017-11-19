@@ -5,7 +5,11 @@
         {{ item }}
       </div>
       <div class="level-right">
-        <span class="tag is-primary is-medium is-rounded">{{ rank === -1 ? '?' : rank }}</span>
+        <span
+        class="tag is-medium is-rounded"
+        :class="{'is-primary':rank !== -1}">
+          {{ rank === -1 ? '?' : rank }}
+        </span>
       </div>
     </div>
   </li>

@@ -6,6 +6,7 @@
       <div class="column is-one-fourth"></div>
       <draggable-list class="column is-one-fourth" :ranked="false" ></draggable-list>
       <draggable-list class="column is-one-fourth" :ranked="true" ></draggable-list>
+      <div class="column is-one-fourth"></div>
     </div>
     
     
