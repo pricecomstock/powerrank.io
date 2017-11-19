@@ -23,13 +23,17 @@ const presetsById =  {
 export const store = new Vuex.Store({
   state: {
     unrankedList: [],
-    rankedList: []
+    rankedList: [],
+    creatingList: ['test']
   },
   getters: {
     unrankedList: state => {
       return state.unrankedList;
     },
     rankedList: state => {
+      return state.rankedList;
+    },
+    creatingList: state => {
       return state.rankedList;
     },
     unrankedListString: state => {
@@ -62,6 +66,9 @@ export const store = new Vuex.Store({
     },
     setRankedList: (state, newList) => {
       state.rankedList = newList;
+    },
+    setCreatingList: (state, newList) => {
+      state.creatingList = newList
     }
   },
   actions: {
@@ -87,6 +94,12 @@ export const store = new Vuex.Store({
         })
         .catch(error => console.log(error))
         
+    },
+    setCreatingList: (context, newList) => {
+      context.commit('setCreatingList', newList);
+    },
+    resetCreatingList: (context) => {
+      context.commit('setCreatingList', []);
     }
     // loadFromPresets: (context, name) => {
     //   console.log('name: ' + name)
