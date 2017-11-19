@@ -66,9 +66,9 @@
         },
         set (value) {
           if (this.ranked) {
-            this.$store.commit('setRankedList', value);
+            this.$store.dispatch('setRankedList', value);
           } else {
-            this.$store.commit('setUnrankedList', value);
+            this.$store.dispatch('setUnrankedList', value);
           }
         }
       },

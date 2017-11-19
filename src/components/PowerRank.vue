@@ -48,7 +48,7 @@
       loadPowerRank (id) {
         // this.$store.dispatch('loadFromAirtable', id);
         // this.$store.dispatch('loadFromPresets', id);
-        this.$store.dispatch('loadFromAirtable', id);
+        this.$store.dispatch('loadPowerRankFromAirtable', id);
       }
     },
     watch: {

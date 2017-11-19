@@ -24,7 +24,10 @@ export const store = new Vuex.Store({
   state: {
     unrankedList: [],
     rankedList: [],
-    creatingList: ['test']
+    creatingList: ['test'],
+    inputTitle: '',
+    inputParagraph: '',
+    createdId: ''
   },
   getters: {
     unrankedList: state => {
@@ -34,7 +37,13 @@ export const store = new Vuex.Store({
       return state.rankedList;
     },
     creatingList: state => {
-      return state.rankedList;
+      return state.creatingList;
+    },
+    inputParagraph: state => {
+      return state.inputParagraph;
+    },
+    inputTitle: state => {
+      return state.inputTitle;
     },
     unrankedListString: state => {
       if (state.unrankedList) {
@@ -69,7 +78,14 @@ export const store = new Vuex.Store({
     },
     setCreatingList: (state, newList) => {
       state.creatingList = newList
+    },
+    setInputTitle: (state, title) => {
+      state.inputTitle = title
+    },
+    setInputParagraph: (state, newParagraph) => {
+      state.inputParagraph = newParagraph
     }
+    
   },
   actions: {
     setUnrankedList: (context, newList) => {
@@ -78,7 +94,7 @@ export const store = new Vuex.Store({
     setRankedList: (context, newList) => {
       context.commit('setRankedList', newList);
     },
-    loadFromAirtable: (context, id) => {
+    loadPowerRankFromAirtable: (context, id) => {
       let newList = []
 
       axios.get(`/RankLists/${id}`)
@@ -100,11 +116,24 @@ export const store = new Vuex.Store({
     },
     resetCreatingList: (context) => {
       context.commit('setCreatingList', []);
+    },
+    setInputTitle: (context, title) => {
+      context.commit('setInputTitle', title)
+    },
+    setInputParagraph: (context, newParagraph) => {
+      context.commit('setInputParagraph', newParagraph)
+    },
+    sendInputParagraphToAirtable: (context) => {
+      const payload = {
+        fields: {
+          RankItems: context.getters.inputParagraph,
+          Name: context.getters.inputTitle
+        }
+      }
+      console.log('payload', payload)
+      axios.post('/RankLists', payload)
+        .then(res => console.log(res))
+        .catch(error => console.log(error))
     }
-    // loadFromPresets: (context, name) => {
-    //   console.log('name: ' + name)
-    //   context.commit('setUnrankedList', presetsByName[name]);
-    //   context.commit('setRankedList', []);
-    // }
   }
 });
