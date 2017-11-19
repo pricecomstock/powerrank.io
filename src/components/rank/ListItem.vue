@@ -1,5 +1,5 @@
 <template>
-  <li class="box staging">
+  <li class="box staging is-clipped rankitem">
     <div class="level">
       <div class="level-left">
         {{ item }}
@@ -42,6 +42,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.rankitem {
+  margin-top: 0px;
+  margin-bottom: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
 </style>
