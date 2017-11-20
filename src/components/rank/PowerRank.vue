@@ -9,16 +9,23 @@
     <div class="columns">
       <!-- PowerRanking -->
       <div class="column is-one-fourth"></div>
-      <draggable-list class="column is-one-fourth" :ranked="false" ></draggable-list>
-      <draggable-list class="column is-one-fourth" :ranked="true" ></draggable-list>
-      
+      <draggable-list class="column is-one-fourth" :ranked="false"></draggable-list>
+      <draggable-list class="column is-one-fourth" :ranked="true"></draggable-list>
+
       <div class="column is-one-fourth">
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control has-icons-left">
+            <input class="input" type="text" placeholder="who needs user accounts" v-model="username">
+            <span class="icon is-small is-left">
+              <i class="fa fa-user"></i>
+            </span>
+          </div>
+        </div>
+
         <div class="field is-grouped">
           <p class="control">
-            <a
-              class="button is-primary is-medium"
-              :class="submitButtonClasses"
-              @click="submit()">
+            <a class="button is-primary is-medium" :class="submitButtonClasses" @click="submit()">
               Submit
             </a>
           </p>
@@ -29,15 +36,15 @@
           </p>
         </div>
       </div>
-      
+
     </div>
   </div>
 </template>
 
 <script>
   import draggable from 'vuedraggable';
-  import draggableList from './rank/DraggableList.vue';
-  import debugPanel from './Debug.vue';
+  import draggableList from './DraggableList.vue';
+  import debugPanel from '../Debug.vue';
 
   export default {
     name: 'powerRank',
@@ -52,7 +59,7 @@
         default: 'a'
       }
     },
-    data () {
+    data() {
       return {
         debug: false,
         submitted: false,
@@ -60,6 +67,14 @@
       };
     },
     computed: {
+      username: {
+        get () {
+          return this.$store.getters.username;
+        },
+        set (value) {
+          this.$store.dispatch('setUsername', value);
+        }
+      },
       submitButtonClasses () {
         return {
           'is-disabled': true,
@@ -68,7 +83,7 @@
       }
     },
     methods: {
-      loadPowerRank (id) {
+      loadPowerRank(id) {
         // this.$store.dispatch('loadFromAirtable', id);
         // this.$store.dispatch('loadFromPresets', id);
         this.$store.dispatch('loadPowerRankFromAirtable', id);

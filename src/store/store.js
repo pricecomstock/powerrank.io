@@ -18,13 +18,14 @@ export const store = new Vuex.Store({
     itemOrder: [], // this is used to keep track of the indexes for submission to db
     unrankedList: [],
     rankedList: [],
-    creatingList: ['test'],
+    creatingList: [],
     currentPowerRankId: '',
     currentPowerRankIntegerId: -1,
     inputTitle: '',
     inputParagraph: '',
     createdId: '', //this one is for when you create a ranklist
-    createdRankId: '' //this one is for when you rank something
+    createdRankId: '', //this one is for when you rank something
+    username: ''
   },
   getters: {
     itemOrder: state => {
@@ -76,6 +77,9 @@ export const store = new Vuex.Store({
     },
     currentPowerRankIntegerId: (state) => {
       return state.currentPowerRankIntegerId;
+    },
+    username: (state) => {
+      return state.username;
     }
   },
   mutations: {
@@ -121,6 +125,9 @@ export const store = new Vuex.Store({
     },
     setId: (state, id) => {
       state.currentPowerRankId = id
+    },
+    setUsername: (state, username) => {
+      state.username = username
     }
   },
   actions: {
@@ -169,6 +176,9 @@ export const store = new Vuex.Store({
     resetRankLists: (context) => {
       context.commit('resetRankLists')
     },
+    setUsername: (context, username) => {
+      context.commit('setUsername', username)
+    },
     sendInputParagraphToAirtable: (context, router) => {
       const payload = {
         fields: {
@@ -191,7 +201,8 @@ export const store = new Vuex.Store({
       const payload = {
         fields: {
           RankList: [context.getters.currentPowerRankId], // in [] because airtable takes an array here
-          Order: determineOrder(context.getters.rankedList, context.getters.itemOrder).join(',')
+          Order: determineOrder(context.getters.rankedList, context.getters.itemOrder).join(','),
+          Submitter: context.getters.username
         }
       }
       console.log('payload', payload)
