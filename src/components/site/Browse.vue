@@ -24,14 +24,15 @@
 			}
 		},
 		created () {
-			axios.get('/RankLists?fields%5B%5D=Name')
+			axios.get('/RankLists?fields%5B%5D=Name&fields%5B%5D=RankListID')
 				.then(res => {
 					console.log(res)
 					const rankLists = res.data.records // it's an array of records
 					this.presetsById = rankLists.map( record => {
 						return {
 							id: record.id,
-							name: record.fields.Name
+							name: record.fields.Name,
+							integerId: record.fields.RankListID
 						}
 					})
 				})

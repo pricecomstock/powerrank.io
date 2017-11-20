@@ -1,22 +1,36 @@
 <template>
   <div class="fluid container">
-    <p>Loaded ID: {{ id }}</p>
+    <!-- Debug -->
+    <div class="row">
+      <button @click="debug=!debug" class="button is-warning" :class="{'btn-warning':debug, 'btn-default':!debug}">Debug Mode</button>
+      <debug-panel v-if="debug"></debug-panel>
+    </div>
+    <hr>
     <div class="columns">
       <!-- PowerRanking -->
       <div class="column is-one-fourth"></div>
       <draggable-list class="column is-one-fourth" :ranked="false" ></draggable-list>
       <draggable-list class="column is-one-fourth" :ranked="true" ></draggable-list>
-      <div class="column is-one-fourth"></div>
+      
+      <div class="column is-one-fourth">
+        <div class="field is-grouped">
+          <p class="control">
+            <a
+              class="button is-primary is-medium"
+              :class="submitButtonClasses"
+              @click="submit()">
+              Submit
+            </a>
+          </p>
+          <p class="control">
+            <a class="button is-medium is-outlined is-danger" @click="reset()">
+              Reset
+            </a>
+          </p>
+        </div>
+      </div>
+      
     </div>
-    
-    
-    <!-- Debug -->
-    <hr>
-    <div class="row">
-      <button @click="debug=!debug" class="button is-warning" :class="{'btn-warning':debug, 'btn-default':!debug}">Debug Mode</button>
-      <debug-panel v-if="debug"></debug-panel>  
-    </div>
-
   </div>
 </template>
 
@@ -41,14 +55,29 @@
     data () {
       return {
         debug: false,
+        submitted: false,
         presets: this.$store.getters.presets
       };
+    },
+    computed: {
+      submitButtonClasses () {
+        return {
+          'is-disabled': true,
+          'is-loading': this.submitted
+        }
+      }
     },
     methods: {
       loadPowerRank (id) {
         // this.$store.dispatch('loadFromAirtable', id);
         // this.$store.dispatch('loadFromPresets', id);
         this.$store.dispatch('loadPowerRankFromAirtable', id);
+      },
+      reset() {
+        this.$store.dispatch('resetRankLists');
+      },
+      submit() {
+        this.$store.dispatch('submitPowerRankToAirtable', this.$router)
       }
     },
     watch: {

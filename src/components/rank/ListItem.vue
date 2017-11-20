@@ -7,7 +7,7 @@
       <div class="level-right">
         <span
         class="tag is-medium is-rounded"
-        :class="{'is-primary':rank !== -1}">
+        :class="rankColorClasses(rank)">
           {{ rank === -1 ? '?' : rank }}
         </span>
       </div>
@@ -23,7 +23,11 @@ export default {
     return {};
   },
   methods: {
-
+    rankColorClasses(rank) {
+      return {
+        'is-primary': rank != -1
+      }
+    }
   },
   props: {
     item: {

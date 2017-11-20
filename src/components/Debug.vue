@@ -1,19 +1,16 @@
-<div class="col-md-3">
-	<pre>{{unrankedJSON}}</pre>
-</div>
-<div class="col-md-3">
-	<pre>{{rankedJSON}}</pre>
-</div>
-
 <template>
-  <div id="debug" class="columns">
-		<div class="column is-half">
-			<pre class="box">{{unrankedJSON}}</pre>
-		</div>
-		<div class="column is-half">
-			<pre class="box">{{rankedJSON}}</pre>
-		</div>
-	</div>
+  <div class="container">
+    <div id="debug" class="columns">
+      <div class="column is-half">
+        <pre class="box">{{unrankedJSON}}</pre>
+      </div>
+      <div class="column is-half">
+        <pre class="box">{{rankedJSON}}</pre>
+      </div>
+    </div>
+    <p>Loaded Table ID: {{ id }}</p>
+    <p>Loaded Integer ID: {{ integerId }}</p>
+  </div>
 </template>
   
   <script>
@@ -28,6 +25,16 @@
         unrankedJSON: {
           get () {
             return this.$store.getters.unrankedListJSON;
+          }
+        },
+        id: {
+          get () {
+            return this.$store.getters.currentPowerRankId;
+          }
+        },
+        integerId: {
+          get () {
+            return this.$store.getters.currentPowerRankIntegerId;
           }
         }
       },

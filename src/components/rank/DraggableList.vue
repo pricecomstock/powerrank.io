@@ -12,6 +12,7 @@
       <list-item
         v-for="(element, index) in listContents"
         class="list-group-item"
+        @click.native="sendToOtherList(index)"
         :key="index"
         :item="element"
         :rank="ranked ? index + 1 : -1 ">
@@ -42,6 +43,13 @@
         const relatedElement = relatedContext.element;
         const draggedElement = draggedContext.element;
         return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
+      },
+      sendToOtherList (index) {
+        if (!this.ranked) {
+          this.$store.dispatch('moveFromUnrankedToRanked', index);
+        } else {
+          this.$store.dispatch('moveFromRankedToUnranked', index);
+        }
       }
     },
     watch: {
