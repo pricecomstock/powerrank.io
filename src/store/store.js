@@ -5,21 +5,6 @@ import axios from '../axios-airtable'
 
 Vue.use(Vuex);
 
-
-// const presetsByName =  {
-//   'Dorm Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav'],
-//   'Dream Team': ['Tritz', 'Price', 'Elliott', 'Mark', 'PDav', 'Ty', 'Justin', 'Joe', 'Jason', 'Andrew', 'Zusko', 'Wilkie', 'Jordan'],
-//   'Employers': ['NTT Security', 'IBM', 'Principal', 'Union Pacific', 'Hayneedle', 'Kiewit', 'First Data'],
-//   'Starburst': ['Orange', 'Cherry', 'Strawberry', 'Lemon'],
-//   'Ice Cream': ['Chocolate', 'Vanilla', 'Strawberry']
-// }
-const presetsById =  {
-  'Starburst': 'recdIbtaMt7xWyUmN',
-  'Dream Team': 'rec5E2G4U4WObayFU',
-  'Dorm Team': 'recqldVKzNU17uFB4',
-  'Ice Cream': 'recbU0YP6PVRZpxrN'
-}
-
 export const store = new Vuex.Store({
   state: {
     unrankedList: [],
@@ -65,8 +50,8 @@ export const store = new Vuex.Store({
     rankedListJSON: state => {
       return JSON.stringify(state.rankedList, null, '  ');
     },
-    presets: state => {
-      return presetsById;
+    createdId: (state) => {
+      return state.createdId;
     }
   },
   mutations: {
@@ -84,8 +69,10 @@ export const store = new Vuex.Store({
     },
     setInputParagraph: (state, newParagraph) => {
       state.inputParagraph = newParagraph
+    },
+    setCreatedId: (state, id) => {
+      state.createdId = id
     }
-    
   },
   actions: {
     setUnrankedList: (context, newList) => {
@@ -96,7 +83,7 @@ export const store = new Vuex.Store({
     },
     loadPowerRankFromAirtable: (context, id) => {
       let newList = []
-
+      
       axios.get(`/RankLists/${id}`)
         .then(res => {
           console.log('Airtable Response', res)
@@ -123,7 +110,7 @@ export const store = new Vuex.Store({
     setInputParagraph: (context, newParagraph) => {
       context.commit('setInputParagraph', newParagraph)
     },
-    sendInputParagraphToAirtable: (context) => {
+    sendInputParagraphToAirtable: (context, router) => {
       const payload = {
         fields: {
           RankItems: context.getters.inputParagraph,
@@ -132,7 +119,11 @@ export const store = new Vuex.Store({
       }
       console.log('payload', payload)
       axios.post('/RankLists', payload)
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          context.commit('setCreatedId', res.data.id)
+          router.push('/create/success')
+        })
         .catch(error => console.log(error))
     }
   }

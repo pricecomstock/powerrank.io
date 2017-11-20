@@ -25,7 +25,10 @@
 		</div>
 		<div class="field is-grouped is-grouped-right">
 			<p class="control">
-				<a class="button is-primary" @click="submit()">
+				<a
+					class="button is-primary"
+					:class="{'is-loading': submitted}"
+					@click="submit()">
 					Submit
 				</a>
 			</p>
@@ -46,7 +49,8 @@
 		data() {
 			return {
 				titleOk: true,
-				paragraphOk: true
+				paragraphOk: true,
+				submitted: false
 			}
 		},
 		components: {
@@ -58,7 +62,12 @@
 			},
 			submit() {
 				if (this.checkInput()) {
-					this.$store.dispatch('sendInputParagraphToAirtable');
+					// send router instance so that it can change the page after airtable responds
+					// this is bad
+					// i am bad
+					// #asyncprogramming
+					this.$store.dispatch('sendInputParagraphToAirtable', this.$router)
+					this.submitted = true;
 				}
 			},
 			checkInput() {
