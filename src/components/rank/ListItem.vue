@@ -1,7 +1,17 @@
 <template>
-  <li class="list-group-item staging">
-      <span class="badge">{{ rank === -1 ? '?' : rank }}</span>
-      {{ item }}
+  <li class="box staging is-clipped rankitem">
+    <div class="level">
+      <div class="level-left">
+        {{ item }}
+      </div>
+      <div class="level-right">
+        <span
+        class="tag is-medium is-rounded"
+        :class="rankColorClasses(rank)">
+          {{ rank === -1 ? '?' : rank }}
+        </span>
+      </div>
+    </div>
   </li>
 </template>
 
@@ -13,7 +23,11 @@ export default {
     return {};
   },
   methods: {
-
+    rankColorClasses(rank) {
+      return {
+        'is-primary': rank != -1
+      }
+    }
   },
   props: {
     item: {
@@ -32,6 +46,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.rankitem {
+  margin-top: 0px;
+  margin-bottom: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
 </style>
