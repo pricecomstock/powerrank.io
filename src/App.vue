@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import PowerRank from './components/PowerRank.vue';
 import NavBar from './components/site/Nav.vue';
 
 export default {
@@ -18,7 +17,6 @@ export default {
     };
   },
   components: {
-    PowerRank,
     NavBar
   }
 };
