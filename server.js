@@ -16,7 +16,6 @@ router.get('/', function(req, res) {
 // Use all those above routes for the API
 app.use('/api', router);
 
-
 // Everything else should fall through to vue-router
 app.get('/*', function (req, res) {
     res.sendFile(__dirname + '/index.html');
