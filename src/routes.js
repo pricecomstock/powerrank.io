@@ -5,6 +5,7 @@ import Create from './components/create/Create.vue'
 import CreationSuccess from './components/create/CreationSuccess.vue'
 import RankSuccess from './components/rank/RankSuccess.vue'
 import ViewRanking from './components/site/ViewRanking.vue'
+import RankResults from './components/site/RankResults.vue'
 
 export const routes = [
 	{ path: '', component: Browse },
@@ -13,5 +14,6 @@ export const routes = [
 	{ path: '/browse', component: Browse },
 	{ path: '/rank/:id', component: PowerRank, props: true },
 	{ path: '/rank/:id/success', component: RankSuccess, props: true },
-	{ path: '/ranking/:rankingId', component: ViewRanking, props: true }
+	{ path: '/ranking/:rankingId', component: ViewRanking, props: true },
+	{ path: '/rankresults/:id', component: RankResults, props: true }
 ];
