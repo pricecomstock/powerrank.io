@@ -5,6 +5,13 @@ var serveStatic = require('serve-static');
 app = express();
 app.use(serveStatic(__dirname));
 
+// This is for development mostly
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });  
+
 // Use all those above routes for the API
 app.use('/api', api);
 

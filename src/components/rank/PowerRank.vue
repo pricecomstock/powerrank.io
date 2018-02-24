@@ -86,13 +86,14 @@
       loadPowerRank(id) {
         // this.$store.dispatch('loadFromAirtable', id);
         // this.$store.dispatch('loadFromPresets', id);
-        this.$store.dispatch('loadPowerRankFromAirtable', id);
+        this.$store.dispatch('loadPowerRankFromDatabase', id);
       },
       reset() {
         this.$store.dispatch('resetRankLists');
       },
       submit() {
-        this.$store.dispatch('submitPowerRankToAirtable', this.$router)
+        this.$store.dispatch('submitPowerRankToDatabase', this.$router)
+        // this.$store.dispatch('submitPowerRankToAirtable', this.$router)
       }
     },
     watch: {

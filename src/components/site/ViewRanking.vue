@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import axios from '../../axios-airtable'
+	import axios from '../../axios-powerrank'
 	import nonDraggableList from './NonDraggableList.vue'
 
 	export default {
@@ -41,23 +41,22 @@
 		},
 		methods: {
 			loadRanking(id) {
-				axios.get(`/Rankings/${this.rankingId}`)
+				axios.get(`/ranking/${this.rankingId}`)
 					.then(res => {
 						console.log('Ranking Response', res)
 
 						// set the data we can get from here
-						this.rankListId = res.data.fields.RankList[0]
-						const user = res.data.fields.Submitter
-						const rankingOrder = res.data.fields.Order.split(',')
+						this.rankListId = res.data.rankListId;
+						const user = res.data.user;
+						const rankingOrder = res.data.rankOrder;
+						
 						// load the RankList this ranking was made from
-						axios.get(`/RankLists/${this.rankListId}`)
+						axios.get(`/ranklist/${this.rankListId}`)
 							.then(res => {
 								console.log('RankList Response', res)
 
-								this.rankListName = res.data.fields.Name
-								// Split on newlines because it's stored that way
-								// Filter any blank items we are left with
-								const originalOrder = res.data.fields.RankItems.split('\n').filter(each => { return each.trim() !== "" })
+								this.rankListName = res.data.title
+								const originalOrder = res.data.rankItems
 
 								// for each number in rankingOrder, replace with the correct item from original order
 								this.rankingList = rankingOrder.map(index => {

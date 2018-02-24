@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import axios from '../axios-airtable'
+import axios from '../axios-powerrank'
+// import axios from '../axios-airtable'
 
 Vue.use(Vuex);
 
@@ -155,6 +156,22 @@ export const store = new Vuex.Store({
         .catch(error => console.log(error))
         
     },
+    loadPowerRankFromDatabase: (context, id) => {      
+      axios.get(`/ranklist/${id}`)
+        .then(res => {
+          console.log('Backend response', res)
+          // Split on newlines because it's stored that way
+          // Filter any blank items we are left with
+          const newList = res.data.rankItems;
+          console.log("new list", newList)
+
+          context.commit('setId', res.data._id);
+          context.commit('setItemOrder', newList); //keep a second copy for reference
+          context.commit('setUnrankedList', newList.slice());
+          context.commit('setRankedList', []);
+        })
+        .catch(error => console.log(error))
+    },
     setCreatingList: (context, newList) => {
       context.commit('setCreatingList', newList);
     },
@@ -210,6 +227,37 @@ export const store = new Vuex.Store({
         .then(res => {
           console.log(res)
           context.commit('setCreatedRankId', res.data.id)
+          router.push(`/rank/${context.getters.currentPowerRankId}/success`)
+        })
+        .catch(error => console.log(error))
+    },
+    sendInputParagraphToDatabase: (context, router) => {
+      const payload = {
+        rankItems: context.getters.inputParagraph.split('\n').filter(item => item.trim() !== ''),
+        title: context.getters.inputTitle
+      }
+      console.log('payload', payload)
+      axios.post('/createranklist', payload)
+        .then(res => {
+          console.log(res)
+          context.commit('setCreatedId', res.data.RankList._id)
+          router.push('/create/success')
+        })
+        .catch(error => console.log(error))
+    },
+    submitPowerRankToDatabase: (context, router) => {
+      // console.log(context.getters.rankedList)
+      // console.log(context.getters.itemOrder)
+      const payload = {
+        rankListId: context.getters.currentPowerRankId,
+        rankOrder: determineOrder(context.getters.rankedList, context.getters.itemOrder),
+        user: context.getters.username
+      }
+      console.log('payload', payload)
+      axios.post('/createranking', payload)
+        .then(res => {
+          console.log(res)
+          context.commit('setCreatedRankId', res.data.ranking._id)
           router.push(`/rank/${context.getters.currentPowerRankId}/success`)
         })
         .catch(error => console.log(error))

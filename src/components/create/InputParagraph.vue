@@ -66,7 +66,8 @@
 					// this is bad
 					// i am bad
 					// #asyncprogramming
-					this.$store.dispatch('sendInputParagraphToAirtable', this.$router)
+					this.$store.dispatch('sendInputParagraphToDatabase', this.$router)
+					// this.$store.dispatch('sendInputParagraphToAirtable', this.$router)
 					this.submitted = true;
 				}
 			},

@@ -6,21 +6,6 @@ mongoose.connect('mongodb://localhost/powerrank');
 var db = mongoose.connection;
 
 // Create Schemas
-const rankingSchema = {
-    _id: {
-        type: String,
-        default: idgen.generate
-    },
-    rankListId: {
-        type: String,
-        required: true
-    },
-    rankOrder: { // Array of integers, index 0, which corresponds to the index of each item in the ranklist
-        type: Array,
-        required: true
-    },
-    user: String
-}
 
 const rankListSchema = {
     _id: {
@@ -37,6 +22,22 @@ const rankListSchema = {
     },
     user: String,
     options: Object
+}
+
+const rankingSchema = {
+    _id: {
+        type: String,
+        default: idgen.generate
+    },
+    rankListId: {
+        type: String,
+        required: true
+    },
+    rankOrder: { // Array of integers, index 0, which corresponds to the index of each item in the ranklist
+        type: Array,
+        required: true
+    },
+    user: String
 }
 
 // Create models
@@ -104,6 +105,17 @@ module.exports = {
             })
         })
     },
+
+    // analyzeRankings(rankListToAnalyzeId, callback) {
+    //     db.ranklists.mapReduce(
+    //         () => {}// MAP
+    //         (key, values) => // REDUCE
+    //         {
+    //             query: {rankListId: rankListToAnalyzeId},
+    //             out:
+    //         }
+    //     )
+    // }
 }
 
 // db.once('open', () => { // once it's "open", calls the callback function

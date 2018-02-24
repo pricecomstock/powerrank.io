@@ -4,8 +4,8 @@
 			<div class="column is-one-third"></div>
 			<div class="column is-one-third">
 				<!-- <ul class="list-group"> -->
-				<router-link class="box has-text-centered" v-for="preset in presetsById" :to="'/rank/' + preset.id" key="preset.id">
-					{{ preset.name }}
+				<router-link class="box has-text-centered" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">
+					{{ rankList.title }}
 				</router-link>
 				<!-- </ul> -->
 			</div>
@@ -14,25 +14,24 @@
 </template>
 
 <script>
-	import axios from '../../axios-airtable'
+	import axios from '../../axios-powerrank'
 
 	export default {
-		name: 'input',
+		name: 'browse',
 		data () {
 			return {
-				presetsById: []
+				rankListsList: []
 			}
 		},
 		created () {
-			axios.get('/RankLists?fields%5B%5D=Name&fields%5B%5D=RankListID')
+			axios.get('/ranklists')
 				.then(res => {
 					console.log(res)
-					const rankLists = res.data.records // it's an array of records
-					this.presetsById = rankLists.map( record => {
+					const rankLists = res.data // it's an array of records
+					this.rankListsList = rankLists.map( record => {
 						return {
-							id: record.id,
-							name: record.fields.Name,
-							integerId: record.fields.RankListID
+							id: record._id,
+							title: record.title
 						}
 					})
 				})
