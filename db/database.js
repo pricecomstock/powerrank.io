@@ -1,4 +1,5 @@
-var idgen = require('./idgenerate.js');
+const idgen = require('./idgenerate.js');
+const schemas = require('./schemas.js');
 
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://heroku_ld451znl:GAtcoydeupAwUs2@ds143778.mlab.com:43778/heroku_ld451znl')
@@ -6,39 +7,8 @@ mongoose.connect('mongodb://localhost/powerrank');
 var db = mongoose.connection;
 
 // Create Schemas
-
-const rankListSchema = {
-    _id: {
-        type: String,
-        default: idgen.generate
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    rankItems: {
-        type: Array,
-        required: true
-    },
-    user: String,
-    options: Object
-}
-
-const rankingSchema = {
-    _id: {
-        type: String,
-        default: idgen.generate
-    },
-    rankListId: {
-        type: String,
-        required: true
-    },
-    rankOrder: { // Array of integers, index 0, which corresponds to the index of each item in the ranklist
-        type: Array,
-        required: true
-    },
-    user: String
-}
+const rankListSchema = schemas.rankListSchema;
+const rankingSchema = schemas.rankingSchema;
 
 // Create models
 var RankList = mongoose.model('RankList', rankListSchema)

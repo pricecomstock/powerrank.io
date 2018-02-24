@@ -1,5 +1,5 @@
 var express = require('express');
-var rankDb = require('./database.js')
+var rankDb = require('./db/database.js')
 
 var router = express.Router();
 router.use(express.json());
