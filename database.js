@@ -71,9 +71,10 @@ module.exports = {
     },
 
     createRankList(rankListToCreate, callback) {
+        console.log(rankListToCreate)
         let newRankList = new RankList({
             title: rankListToCreate.title,
-            items: rankListToCreate.items
+            rankItems: rankListToCreate.rankItems
         })
         newRankList.save((err, savedRankList) => {
             if (err) {
@@ -129,8 +130,4 @@ module.exports = {
 //     //     console.log(rankLists);
 //     // })
 
-//     // RankList.remove((err, rankLists) => {
-//     //     if (err) return console.error(err);
-//     //     console.log('removed', rankLists);
-//     // })
 // });

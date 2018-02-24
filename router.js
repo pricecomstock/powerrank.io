@@ -42,19 +42,22 @@ router.get('/ranking/:id', function(req, res) {
 // POST //
 //------//
 
+// TODO: These will cause the entire application to fail if the input is not correct.
+// They either need to be manually checked, or more likely, some correct error handling
+//   needs to be put around the rankDb call
+// Probably both.
+
 // Create a RankList
 router.post('/createranklist', function(req, res) {
     rankDb.createRankList(req.body, (result) => {
-        res.json(result)
+        res.json(result);
     });
 });
 
 // Create a Ranking
 router.post('/createranking', function(req, res) {
-    let id = req.params.id // maybe validate input here?
-    console.log("id", id)
-    rankDb.createRanking(id, (results) => {
-        res.json(results);
+    rankDb.createRanking(req.body, (result) => {
+        res.json(result);
     });
 });
 
