@@ -1,3 +1,5 @@
+const idgen = require('./idgenerate.js');
+
 module.exports = {
     
     rankListSchema: {
@@ -26,11 +28,26 @@ module.exports = {
             type: String,
             required: true
         },
-        rankOrder: { // Array of integers, index 0, which corresponds to the index of each item in the ranklist
+        // Array of integers, index 0, which corresponds to the index of each item in the ranklist
+        // if I am powerranking [chocolate, strawberry, vanilla] and i put them in the order [strawberry, vanilla, chocolate]
+        // my rank order is [1,2,0]
+        // NOT 2,0,1
+        rankOrder: { 
             type: Array,
             required: true
         },
         user: String
-    }
+    },
     
+    rankReductionSchema: {
+        rankListId: {
+            type: String,
+            required: true
+        },
+        sortedPointTotals: { // Array of [Name, #pts] pairs
+            type: Array,
+            required: true
+        }
+    }
+
 }
