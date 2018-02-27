@@ -19,6 +19,10 @@ module.exports = {
             type: Array,
             required: true
         },
+        date: {
+            type: Date,
+            default: Date.now
+        },
         user: String,
         options: Object
     },
@@ -31,6 +35,10 @@ module.exports = {
         rankListId: {
             type: String,
             required: true
+        },
+        date: {
+            type: Date,
+            default: Date.now
         },
         // Array of integers, index 0, which corresponds to the index of each item in the ranklist
         // if I am powerranking [chocolate, strawberry, vanilla] and i put them in the order [strawberry, vanilla, chocolate]

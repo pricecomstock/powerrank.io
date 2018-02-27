@@ -1,10 +1,10 @@
 <template>
   <li class="box staging is-clipped rankitem">
     <div class="level">
-      <div class="level-left">
+      <div v-if="detail" class="level-left">
         <span class="tag is-light is-small">{{ detail }}</span>
       </div>
-      <div class="level-center">
+      <div :class="itemClass">
         {{ item }}
       </div>
       <div class="level-right">
@@ -29,6 +29,21 @@ export default {
     rankColorClasses(rank) {
       return {
         'is-primary': rank != -1
+      }
+    }    
+  },
+  computed: {
+    itemClass() {
+      if (this.detail) {
+        return {
+          "level-left": false,
+          "level-center": true
+        }
+      } else {
+        return {
+          "level-left": true,
+          "level-center": false
+        }
       }
     }
   },

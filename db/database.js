@@ -1,8 +1,8 @@
 const schemas = require('./schemas.js');
 
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://heroku_ld451znl:GAtcoydeupAwUs2@ds143778.mlab.com:43778/heroku_ld451znl')
-mongoose.connect('mongodb://localhost/powerrank');
+const mongooseUri = process.env.MONGODB_URI || 'mongodb://localhost/powerrank'
+mongoose.connect(mongooseUri);
 var db = mongoose.connection;
 
 // Create Schemas
@@ -49,6 +49,15 @@ module.exports = {
             callback(ranking);
         })
     },
+    
+    // Uh, WIP
+    getRecentRankings(id, callback) {
+        Ranking.findOne({_id: id}, (err, ranking) => {
+            if (err) return console.error(err);
+            console.log("ranking", ranking)
+            callback(ranking);
+        })
+    },
 
     getRankReduction(id, callback) {
         RankReduction.findOne({rankListId: id}, (err, rankReduction) => {
@@ -62,7 +71,19 @@ module.exports = {
         console.log(rankListToCreate)
         let newRankList = new RankList({
             title: rankListToCreate.title,
-            rankItems: rankListToCreate.rankItems
+            rankItems: rankListToCreate.rankItems,
+            aggregations: [
+                {
+                    type: 'dowdall',
+                    sortedPointTotals: rankListToCreate.rankItems.map( (item) => {
+                        return [item, 0.0]
+                    } )
+                }
+            ],
+            user: rankListToCreate.user,
+            options: {
+                public: true
+            }
         })
         newRankList.save((err, savedRankList) => {
             if (err) {
