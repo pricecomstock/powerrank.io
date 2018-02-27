@@ -17,11 +17,11 @@
 			<div class="control">
 				<textarea
 				class="textarea tallertextarea"
-				:class="{'is-danger': !paragraphOk}"
+				:class="{'is-danger': !paragraphOk || !paragraphEnoughLines}"
 				placeholder="Input one item per line"
 				v-model="inputParagraph"></textarea>
 			</div>
-			<p v-if="!paragraphOk" class="help is-danger">This field is required.</p>
+			<p v-if="!paragraphOk || !paragraphEnoughLines" class="help is-danger">This field is required and must have at least 2 lines.</p>
 		</div>
 		<div class="field is-grouped is-grouped-right">
 			<p class="control">
@@ -50,7 +50,8 @@
 			return {
 				titleOk: true,
 				paragraphOk: true,
-				submitted: false
+				submitted: false,
+				paragraphEnoughLines: true
 			}
 		},
 		components: {
@@ -82,7 +83,13 @@
 				} else {
 					this.paragraphOk = true;
 				}
-				return this.titleOk && this.paragraphOk
+				if (this.inputParagraph.split('\n').filter(item => item.trim() !== '').length < 2) {
+					this.paragraphEnoughLines = false;
+				} else {
+					this.paragraphEnoughLines = true;
+				}
+
+				return this.titleOk && this.paragraphOk && this.paragraphEnoughLines
 			}
 		},
 		computed: {

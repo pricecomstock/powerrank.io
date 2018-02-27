@@ -138,24 +138,6 @@ export const store = new Vuex.Store({
     setRankedList: (context, newList) => {
       context.commit('setRankedList', newList);
     },
-    loadPowerRankFromAirtable: (context, id) => {      
-      axios.get(`/RankLists/${id}`)
-        .then(res => {
-          console.log('Airtable Response', res)
-          // Split on newlines because it's stored that way
-          // Filter any blank items we are left with
-          const newList = res.data.fields.RankItems.split('\n').filter(each => {return each.trim() !== ""})
-          console.log("new list", newList)
-
-          context.commit('setId', res.data.id);
-          context.commit('setIntId', res.data.fields.RankListID);
-          context.commit('setItemOrder', newList); //keep a second copy for reference
-          context.commit('setUnrankedList', newList.slice());
-          context.commit('setRankedList', []);
-        })
-        .catch(error => console.log(error))
-        
-    },
     loadPowerRankFromDatabase: (context, id) => {      
       axios.get(`/ranklist/${id}`)
         .then(res => {
@@ -195,41 +177,6 @@ export const store = new Vuex.Store({
     },
     setUsername: (context, username) => {
       context.commit('setUsername', username)
-    },
-    sendInputParagraphToAirtable: (context, router) => {
-      const payload = {
-        fields: {
-          RankItems: context.getters.inputParagraph,
-          Name: context.getters.inputTitle
-        }
-      }
-      console.log('payload', payload)
-      axios.post('/RankLists', payload)
-        .then(res => {
-          console.log(res)
-          context.commit('setCreatedId', res.data.id)
-          router.push('/create/success')
-        })
-        .catch(error => console.log(error))
-    },
-    submitPowerRankToAirtable: (context, router) => {
-      // console.log(context.getters.rankedList)
-      // console.log(context.getters.itemOrder)
-      const payload = {
-        fields: {
-          RankList: [context.getters.currentPowerRankId], // in [] because airtable takes an array here
-          Order: determineOrder(context.getters.rankedList, context.getters.itemOrder).join(','),
-          Submitter: context.getters.username
-        }
-      }
-      console.log('payload', payload)
-      axios.post('/Rankings', payload)
-        .then(res => {
-          console.log(res)
-          context.commit('setCreatedRankId', res.data.id)
-          router.push(`/rank/${context.getters.currentPowerRankId}/success`)
-        })
-        .catch(error => console.log(error))
     },
     sendInputParagraphToDatabase: (context, router) => {
       const payload = {
