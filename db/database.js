@@ -49,6 +49,14 @@ module.exports = {
         })
     },
 
+    getRankReduction(id, callback) {
+        RankReduction.findOne({rankListId: id}, (err, rankReduction) => {
+            if (err) return console.error(err);
+            console.log("rankReduction", rankReduction)
+            callback(rankReduction);
+        })
+    },
+
     createRankList(rankListToCreate, callback) {
         console.log(rankListToCreate)
         let newRankList = new RankList({
@@ -77,6 +85,10 @@ module.exports = {
                 console.error(err);
                 callback({success: false})
             }
+            this.updateAggregationsDowdall(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
+                console.log("Successfully saved ranking and updated rankList", updatedRankList)
+            })
+
             callback({
                 success: true,
                 ranking: savedRanking
@@ -84,99 +96,79 @@ module.exports = {
         })
     },
 
-    analyzeRankings(rankListToAnalyzeId, callback) {
+    updateAggregationsDowdall(rankListToAnalyzeId, addedRankOrder, callback) {
         
         pointValue = (i) => {
             // first place = n pts, 2nd = n/2, 3rd = n/3
             const n =  10.0
             return n / (i + 1)
         }
-
+        
         RankList.findOne({_id: rankListToAnalyzeId}, (err, rankList) => {
             if (err) return console.error(err);
+            console.log("Updating aggregations for", rankList)
             
             const rankListLength = rankList.rankItems.length;
+            
+            // The dowdall ranking we'll be updating
+            let dowdall = rankList.aggregations.find((agg => {
+                return agg.type === 'dowdall';
+            }));        
+            
+            let pointmap = Array(rankListLength).fill(0) // Array of zeroes for each item in RankList
+            // This transforms
+            //     index = rank order, value = original index
+            // --> index = original index, value = points
+            addedRankOrder.forEach((correspondingIndex, ranking) => {
+                pointmap[correspondingIndex] = pointValue(ranking);
+            });
+            
+            // sortedPointTotals -> Array of form [[item1, pts1], [item2, pts2]]
+            const updatedSortedPointTotals = dowdall.sortedPointTotals.map((item, index) => {
+                let itemName = item[0];
+                let prevPoints = item[1];
+                let ogIndex = rankList.rankItems.indexOf(itemName)
 
-            Ranking.find({rankListId: rankListToAnalyzeId}, (err, rankings) => {
+                return [itemName, prevPoints + pointmap[ogIndex]]
+            })
+            .sort((a, b) => {
+                return b[1] - a[1]; // Descending Order
+                // return a[1] - b[1]; // Ascending Order
+            })
+            console.log(updatedSortedPointTotals)
+
+            // Array of all the other aggregations that we don't want to touch
+            let aggregationList = rankList.aggregations.filter((agg => {
+                return agg.type !== 'dowdall';
+            }));
+            aggregationList.push({
+                type: "dowdall",
+                sortedPointTotals: updatedSortedPointTotals
+            })
+
+            // recreate aggregations list
+            rankList.set({aggregations: aggregationList})
+            rankList.save( (err, updatedRankList) => {
                 if (err) return console.error(err);
-                
-                var pointmaps = rankings.map((ranking) => {
-                    let pointmap = Array(rankListLength).fill(0) // Array of zeroes for each item in RankList
-                    ranking.rankOrder.forEach((correspondingIndex, ranking) => { // These make sense for the ranked array of indices
-                        pointmap[correspondingIndex] = pointValue(ranking);    
-                    });
-                    
-                    return pointmap
-                })
-                
-                // Add all the points for each slot together
-                var pointTotals = pointmaps.reduce((cumulativePointmap, currentPointmap) => {
-                    // console.log(`${cumulativePointmap} + ${currentPointmap}`)
-                    return cumulativePointmap.map((pointValue, index) =>{
-                        return pointValue + currentPointmap[index]
-                    })
-                }, Array(rankListLength).fill(0))
-                
-                // // Create an object that correlates each object on the RankList with its point value
-                // var pointTotalsObject = pointTotals.reduce((ptObject, currentPointValue, index) => {
-                //     console.log(`${index}: ${rankList.rankItems[index]} has ${currentPointValue} points`)
-                //     ptObject[rankList.rankItems[index]] = currentPointValue;
-                //     return ptObject;
-                // }, {})
-                // // Object.keys(pointTotalsObject).forEach
-
-                var sortedPointTotals = pointTotals.map((points, index) => {
-                    return [rankList.rankItems[index], points]
-                })
-                .sort((a, b) => {
-                    return b[1] - a[1]; // Descending Order
-                    // return a[1] - b[1]; // Ascending Order
-                })
-                console.log(sortedPointTotals)
-
-                let newRankReduction = new RankReduction({
-                    rankListId: rankListToAnalyzeId,
-                    sortedPointTotals: sortedPointTotals,
-                })
-                newRankReduction.save((err, savedRankReduction) => {
-                    if (err) {
-                        console.error(err);
-                        callback({success: false})
-                    }
-                    callback({
-                        success: true,
-                        RankList: savedRankReduction
-                    })
-                })
+                callback(updatedRankList)
             })
         })
-    }
+    },
 }
 
-module.exports.getAllRankReductions((results) => console.log(results[0].sortedPointTotals))
-// module.exports.analyzeRankings('xDL7OYBr', (results) => console.log(results))
-// db.once('open', () => { // once it's "open", calls the callback function
-    
-//     var RankList = mongoose.model('RankList', rankListSchema)
+function deleteWholeRankingDatabase() {
+    Ranking.remove((err, rankings) => {
+        if (err) return console.error(err);
+        console.log('removed', rankings);
+    })
+}
 
-//     // var testRankList = new RankList({
-//     //     title: "Test",
-//     //     items: ["hello", "ok", "goodbye"]
-//     // })
+function deleteWholeRankReductionDatabase() {
+    RankReduction.remove((err, rr) => {
+        if (err) return console.error(err);
+        console.log('removed', rr);
+    })
+}
 
-//     // testRankList.save((err, testRankList) => {
-//     //     if (err) return console.error(err);
-//     //     // console.log('saved', testRankList)
-//     // }) // Save it to the DB
-
-//     RankList.find((err, rankLists) => {
-//         if (err) return console.error(err);
-//         console.log(rankLists);
-//     })
-    
-//     // RankList.find({_id: 'B1r5LHcwG'}, (err, rankLists) => {
-//     //     if (err) return c2onsole.error(err);
-//     //     console.log(rankLists);
-//     // })
-
-// });
+// deleteWholeRankingDatabase();
+// deleteWholeRankReductionDatabase();

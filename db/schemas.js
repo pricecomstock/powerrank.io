@@ -15,6 +15,10 @@ module.exports = {
             type: Array,
             required: true
         },
+        aggregations: { // Array of [Name, #pts] pairs
+            type: Array,
+            required: true
+        },
         user: String,
         options: Object
     },
@@ -49,5 +53,4 @@ module.exports = {
             required: true
         }
     }
-
 }
