@@ -38,10 +38,10 @@ router.get('/ranking/:id', function(req, res) {
 });
 
 // get rankAnalysis
-router.get('/rankreduction/:id', function(req, res) {
+router.get('/rankresults/:id', function(req, res) {
     let id = req.params.id // maybe validate input here?
-    console.log("rankanalysis on id", id)
-    rankDb.getRankReduction(id, (results) => {
+    console.log("rankresults on id", id)
+    rankDb.getRankListWithResults(id, (results) => {
         res.json(results);
     });
 });

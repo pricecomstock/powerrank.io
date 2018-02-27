@@ -26,14 +26,15 @@ module.exports = {
         }).select('title id')
     },
 
-    getAllRankReductions(callback) {
-        RankReduction.find((err, rankReductions) => {
-            if (err) return console.error(err);
-            callback(rankReductions);
-        })
-    },
-
     getRankList(id, callback) {
+        RankList.findOne({_id: id}, (err, rankList) => {
+            if (err) return console.error(err);
+            console.log("rankList", rankList)
+            callback(rankList);
+        }).select('id title rankItems user options')
+    },
+    
+    getRankListWithResults(id, callback) {
         RankList.findOne({_id: id}, (err, rankList) => {
             if (err) return console.error(err);
             console.log("rankList", rankList)
@@ -100,7 +101,7 @@ module.exports = {
         
         pointValue = (i) => {
             // first place = n pts, 2nd = n/2, 3rd = n/3
-            const n =  10.0
+            const n =  1.0
             return n / (i + 1)
         }
         

@@ -2,6 +2,9 @@
   <li class="box staging is-clipped rankitem">
     <div class="level">
       <div class="level-left">
+        <span class="tag is-light is-small">{{ detail }}</span>
+      </div>
+      <div class="level-center">
         {{ item }}
       </div>
       <div class="level-right">
@@ -35,6 +38,10 @@ export default {
       required: true
     },
     description: {
+      type: String,
+      required: false
+    },
+    detail: {
       type: String,
       required: false
     },
