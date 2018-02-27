@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import axios from '../axios-airtable'
+import axios from '../axios-powerrank'
+// import axios from '../axios-airtable'
 
 Vue.use(Vuex);
 
@@ -137,23 +138,21 @@ export const store = new Vuex.Store({
     setRankedList: (context, newList) => {
       context.commit('setRankedList', newList);
     },
-    loadPowerRankFromAirtable: (context, id) => {      
-      axios.get(`/RankLists/${id}`)
+    loadPowerRankFromDatabase: (context, id) => {      
+      axios.get(`/ranklist/${id}`)
         .then(res => {
-          console.log('Airtable Response', res)
+          console.log('Backend response', res)
           // Split on newlines because it's stored that way
           // Filter any blank items we are left with
-          const newList = res.data.fields.RankItems.split('\n').filter(each => {return each.trim() !== ""})
+          const newList = res.data.rankItems;
           console.log("new list", newList)
 
-          context.commit('setId', res.data.id);
-          context.commit('setIntId', res.data.fields.RankListID);
+          context.commit('setId', res.data._id);
           context.commit('setItemOrder', newList); //keep a second copy for reference
           context.commit('setUnrankedList', newList.slice());
           context.commit('setRankedList', []);
         })
         .catch(error => console.log(error))
-        
     },
     setCreatingList: (context, newList) => {
       context.commit('setCreatingList', newList);
@@ -179,37 +178,33 @@ export const store = new Vuex.Store({
     setUsername: (context, username) => {
       context.commit('setUsername', username)
     },
-    sendInputParagraphToAirtable: (context, router) => {
+    sendInputParagraphToDatabase: (context, router) => {
       const payload = {
-        fields: {
-          RankItems: context.getters.inputParagraph,
-          Name: context.getters.inputTitle
-        }
+        rankItems: context.getters.inputParagraph.split('\n').filter(item => item.trim() !== ''),
+        title: context.getters.inputTitle
       }
       console.log('payload', payload)
-      axios.post('/RankLists', payload)
+      axios.post('/createranklist', payload)
         .then(res => {
           console.log(res)
-          context.commit('setCreatedId', res.data.id)
+          context.commit('setCreatedId', res.data.RankList._id)
           router.push('/create/success')
         })
         .catch(error => console.log(error))
     },
-    submitPowerRankToAirtable: (context, router) => {
+    submitPowerRankToDatabase: (context, router) => {
       // console.log(context.getters.rankedList)
       // console.log(context.getters.itemOrder)
       const payload = {
-        fields: {
-          RankList: [context.getters.currentPowerRankId], // in [] because airtable takes an array here
-          Order: determineOrder(context.getters.rankedList, context.getters.itemOrder).join(','),
-          Submitter: context.getters.username
-        }
+        rankListId: context.getters.currentPowerRankId,
+        rankOrder: determineOrder(context.getters.rankedList, context.getters.itemOrder),
+        user: context.getters.username
       }
       console.log('payload', payload)
-      axios.post('/Rankings', payload)
+      axios.post('/createranking', payload)
         .then(res => {
           console.log(res)
-          context.commit('setCreatedRankId', res.data.id)
+          context.commit('setCreatedRankId', res.data.ranking._id)
           router.push(`/rank/${context.getters.currentPowerRankId}/success`)
         })
         .catch(error => console.log(error))

@@ -34,6 +34,9 @@
               Reset
             </a>
           </p>
+          <p class="control">
+            <router-link :to="`/rankresults/${id}`" class="button is-medium">Results</router-link>
+          </p>
         </div>
       </div>
 
@@ -77,7 +80,7 @@
       },
       submitButtonClasses () {
         return {
-          'is-disabled': true,
+          'is-disabled': this.$store.getters.rankedList.length > 0,
           'is-loading': this.submitted
         }
       }
@@ -86,13 +89,15 @@
       loadPowerRank(id) {
         // this.$store.dispatch('loadFromAirtable', id);
         // this.$store.dispatch('loadFromPresets', id);
-        this.$store.dispatch('loadPowerRankFromAirtable', id);
+        this.$store.dispatch('loadPowerRankFromDatabase', id);
       },
       reset() {
         this.$store.dispatch('resetRankLists');
       },
       submit() {
-        this.$store.dispatch('submitPowerRankToAirtable', this.$router)
+        if (this.$store.getters.rankedList.length > 0)
+        this.$store.dispatch('submitPowerRankToDatabase', this.$router)
+        // this.$store.dispatch('submitPowerRankToAirtable', this.$router)
       }
     },
     watch: {

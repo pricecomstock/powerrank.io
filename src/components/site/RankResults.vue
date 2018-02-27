@@ -6,26 +6,26 @@
 					<span class="icon">
 						<i class="fa fa-user"></i>
 					</span>
-					{{ user }}
+					Created by {{ user }}
 				</p>
 				<p>
 					<span class="icon">
 						<i class="fa fa-th-list"></i>
 					</span>
-					<router-link :to="'/rank/' + rankListId">
-						{{ rankListName }}
+					<router-link :to="'/rank/' + id">
+						{{ title }}
 					</router-link>
 				</p>
 			</div>
 			<div class="column is-one-third">
-				<non-draggable-list :list-contents="rankingList"></non-draggable-list>
+				<non-draggable-list :list-contents="rankItems" :list-details="pointValues"></non-draggable-list>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import axios from '../../axios-airtable'
+	import axios from '../../axios-powerrank'
 	import nonDraggableList from './NonDraggableList.vue'
 
 	export default {
@@ -34,7 +34,7 @@
 			nonDraggableList
 		},
 		props: {
-			rankListId: {
+			id: {
 				type: String,
 				required: true
 			}
@@ -44,13 +44,38 @@
 		data() {
 			return {
 				user: '',
-				rankListName: '',
-				rankListId: '',
-				rankingList: []
+				title: '',
+				sortedPointTotals: []
 			};
 		},
+		computed: {
+			rankItems() {
+				return this.sortedPointTotals.map( (item) => {
+					return item[0];
+				})
+			},
+			pointValues() {
+				return this.sortedPointTotals.map( (item) => {
+					return `${item[1].toFixed(1)} pt`;
+				})
+			}
+		},
 		created() {
-			this.loadRanking(this.rankingId)
+			axios.get(`/rankresults/${this.id}`)
+				.then(res => {
+					console.log(res);
+					const rankList = res.data;
+					
+					this.user = rankList.user || 'anonymous';
+					this.title = rankList.title;
+
+					// This will need to be expanded if more algorithms are added
+					let dowdall = rankList.aggregations.find((agg => {
+						return agg.type === 'dowdall';
+					}));        
+					this.sortedPointTotals = dowdall.sortedPointTotals;
+				})
+				.catch(error => console.log(error))
 		}
 	};
 </script>

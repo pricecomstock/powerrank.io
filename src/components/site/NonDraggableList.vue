@@ -6,7 +6,8 @@
         class="static-list-group-item is-unselectable"
         :key="index"
         :item="element"
-        :rank="ranked ? index + 1 : -1 ">
+        :rank="ranked ? index + 1 : -1 "
+        :detail="listDetails[index]">
       </list-item>
 		</ul>
   </div>
@@ -28,7 +29,11 @@
 			ranked: {
 				type: Boolean,
 				default: true
-			}
+      },
+      listDetails: {
+        type: Array,
+        required: false
+      }
     },
     data () {
       return {};

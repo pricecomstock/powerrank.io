@@ -1,21 +1,21 @@
 var express = require('express');
+var api = require('./router.js').router;
 var serveStatic = require('serve-static');
 
 app = express();
 app.use(serveStatic(__dirname));
 
-
-/* API ROUTES */
-var router = express.Router();
-
-// Base route (easy connectivity test)
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
-});
+// This is for development mostly
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });  
 
 // Use all those above routes for the API
-app.use('/api', router);
+app.use('/api', api);
 
+// TODO: make it so incorrect API calls don't fall through to vue-router
 
 // Everything else should fall through to vue-router
 app.get('/*', function (req, res) {
