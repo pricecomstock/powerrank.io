@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const baseURL = process.env.BASE_URL || 'http://localhost:5000/api'
+
 const instance = axios.create({
-	baseURL: 'http://localhost:5000/api'
+	baseURL: baseURL
 })
 
 // instance.defaults.headers.common['Authorization'] ='Bearer keyntfXx888yZ4url'
