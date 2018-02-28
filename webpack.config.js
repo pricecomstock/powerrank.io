@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
-        API_BASE_URL: '"http://beta.powerrank.io/api/"'
+        __API_BASE_URL__: '"http://beta.powerrank.io/api/"'
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
