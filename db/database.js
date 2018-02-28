@@ -50,13 +50,15 @@ module.exports = {
         })
     },
     
-    // Uh, WIP
+
     getRecentRankings(id, callback) {
-        Ranking.findOne({_id: id}, (err, ranking) => {
+        Ranking.find({rankListId: id}, (err, recentRankings) => {
             if (err) return console.error(err);
-            console.log("ranking", ranking)
-            callback(ranking);
+            console.log("recentRankings", recentRankings)
+            callback(recentRankings);
         })
+        .sort({date: -1})
+        .limit(5)
     },
 
     getRankReduction(id, callback) {
