@@ -1,7 +1,9 @@
 <template>
-  <li>
-    
-  </li>
+  <tr>
+    <th>{{ranking.user || "anon"}}</th>
+    <td>{{niceDate}}</td>
+    <td v-for="(item, index) in ranking.rankOrderItems" :key="index">{{item || "-"}}</td>
+  </tr>
 </template>
 
 <script>
@@ -11,21 +13,18 @@ export default {
   data () {
     return {};
   },
+  computed: {
+    niceDate () {
+      // const now = Date.now()
+      const submittedTime = new Date(this.ranking.date);
+      return `${submittedTime.toDateString()} ${submittedTime.getHours()}:${submittedTime.getMinutes()}`
+      // const timeDifference = now - submittedTime
+      // return timeDifference.getMinutes()
+    }
+  },
   props: {
-    item: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: false
-    },
-    detail: {
-      type: String,
-      required: false
-    },
-    rank: {
-      type: Number,
+    ranking: {
+      type: Object,
       required: true
     }
   }
@@ -33,10 +32,4 @@ export default {
 </script>
 
 <style scoped>
-.rankitem {
-  margin-top: 0px;
-  margin-bottom: 0.75rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
 </style>

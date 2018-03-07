@@ -102,7 +102,8 @@ module.exports = {
     createRanking(rankingToCreate, callback) {
         let newRanking = new Ranking({
             rankListId: rankingToCreate.rankListId,
-            rankOrder: rankingToCreate.rankOrder
+            rankOrder: rankingToCreate.rankOrder,
+            user: rankingToCreate.user
         })
         newRanking.save((err, savedRanking) => {
             if (err) {

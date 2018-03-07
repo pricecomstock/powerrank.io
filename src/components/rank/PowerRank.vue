@@ -8,11 +8,10 @@
     <hr>
     <div class="columns">
       <!-- PowerRanking -->
-      <div class="column is-one-fourth"></div>
-      <draggable-list class="column is-one-fourth" :ranked="false"></draggable-list>
-      <draggable-list class="column is-one-fourth" :ranked="true"></draggable-list>
+      <draggable-list class="column is-one-third" :ranked="false"></draggable-list>
+      <draggable-list class="column is-one-third" :ranked="true"></draggable-list>
 
-      <div class="column is-one-fourth">
+      <div class="column is-one-third">
         <div class="field">
           <label class="label">Name</label>
           <div class="control has-icons-left">

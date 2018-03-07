@@ -4,22 +4,25 @@
 			<div class="column is-one-third is-size-4">
 				<p>
 					<span class="icon">
-						<i class="fa fa-user"></i>
-					</span>
-					Created by {{ user }}
-				</p>
-				<p>
-					<span class="icon">
 						<i class="fa fa-th-list"></i>
 					</span>
 					<router-link :to="'/rank/' + id">
 						{{ title }}
 					</router-link>
 				</p>
+				<p>
+					<span class="icon">
+						<i class="fa fa-user"></i>
+					</span>
+					Created by {{ user }}
+				</p>
 			</div>
 			<div class="column is-one-third">
 				<non-draggable-list :list-contents="rankItems" :list-details="pointValues"></non-draggable-list>
 			</div>
+		</div>
+		<div class="container">
+			<recent-rankings :rank-list-id="id" :sorted-rank-list="sortedPointTotals"></recent-rankings>
 		</div>
 	</div>
 </template>
@@ -27,11 +30,13 @@
 <script>
 	import axios from '../../axios-powerrank'
 	import nonDraggableList from './NonDraggableList.vue'
+	import recentRankings from './RecentRankings.vue'
 
 	export default {
 		name: 'rankResults',
 		components: {
-			nonDraggableList
+			nonDraggableList,
+			recentRankings
 		},
 		props: {
 			id: {

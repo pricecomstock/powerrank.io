@@ -1,27 +1,20 @@
 <template>
-	<div class="container">
-		<div class="columns">
-			<div class="column is-one-third is-size-4">
-				<p>
-					<span class="icon">
-						<i class="fa fa-user"></i>
-					</span>
-					Created by {{ user }}
-				</p>
-				<p>
-					<span class="icon">
-						<i class="fa fa-th-list"></i>
-					</span>
-					<router-link :to="'/rank/' + id">
-						{{ title }}
-					</router-link>
-				</p>
-			</div>
-			<div class="column is-one-third">
-				<non-draggable-list :list-contents="rankItems" :list-details="pointValues"></non-draggable-list>
-			</div>
-		</div>
-	</div>
+	<table class="table">
+		<thead>
+			<th>User</th>
+			<th>Time</th>
+			<th v-for="n in minLength" :key="n">{{n}}</th>
+		</thead>
+		<tfoot></tfoot>
+		<tbody>
+			<recent-ranking-item 
+				v-for="(ranking, index) in recentRankingRows"
+				:ranking="ranking"
+				:row="index"
+				:key="index">
+			</recent-ranking-item>
+		</tbody>
+	</table>
 </template>
 
 <script>
@@ -31,35 +24,62 @@
 	export default {
 		name: 'recentRankings',
 		components: {
-			nonDraggableList
+			recentRankingItem
 		},
 		props: {
-			id: {
+			rankListId: {
 				type: String,
+				required: true
+			},
+			sortedRankList: {
+				type: Array,
 				required: true
 			}
 		},
 		data() {
 			return {
-				user: '',
-				title: '',
-				sortedPointTotals: []
+				// default to stop error from happening before other one has loaded
+				recentRankings: [{date: '', user: '', rankOrder: [0,1,2,3], _id: '0'}],
+				originalOrder: [],
+				itemsToDisplayPerRow: 5
 			};
 		},
+		methods: {
+			reorderArray (items, order) {
+				let newOrder = Array(this.minLength).fill('-') // fill extra with -
+				order.forEach( (newIndex, oldIndex) => {
+					newOrder[newIndex] = items[oldIndex]
+				} )
+				return newOrder.slice(0, this.itemsToDisplayPerRow)
+			}
+		},
+		computed: {
+			minLength() {
+				return Math.min(this.itemsToDisplayPerRow, this.originalOrder.length)
+			},
+			recentRankingRows () {
+				return this.recentRankings.map( (recentRanking) => {
+					return {
+						id: recentRanking._id,
+						rankOrderItems: this.reorderArray(this.originalOrder, recentRanking.rankOrder), // get array in ranked order
+						date: recentRanking.date,
+						user: recentRanking.user
+					}
+				})
+			}
+		},
 		created() {
-			axios.get(`/rankresults/${this.id}`)
+			
+			axios.get(`/recentrankings/${this.rankListId}`)
 				.then(res => {
-					console.log(res);
-					const rankList = res.data;
-					
-					this.user = rankList.user || 'anonymous';
-					this.title = rankList.title;
-
-					// This will need to be expanded if more algorithms are added
-					let dowdall = rankList.aggregations.find((agg => {
-						return agg.type === 'dowdall';
-					}));        
-					this.sortedPointTotals = dowdall.sortedPointTotals;
+					// console.log("recent rankings", res);
+					this.recentRankings = res.data;
+				})
+				.catch(error => console.log(error))
+			axios.get(`/ranklist/${this.rankListId}`)
+				.then(res => {
+					// console.log("ranklist", res);
+					this.originalOrder = res.data.rankItems;
 				})
 				.catch(error => console.log(error))
 		}
