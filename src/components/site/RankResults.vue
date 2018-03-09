@@ -1,6 +1,6 @@
 <template>
 	<div class="section">
-		<div class="container columns">
+		<div class="container columns is-fluid">
 			<div class="column is-one-third is-size-4">
 				<p>
 					<span class="icon">
