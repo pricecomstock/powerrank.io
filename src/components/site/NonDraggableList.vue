@@ -6,7 +6,8 @@
         class="static-list-group-item is-unselectable"
         :key="index"
         :item="element"
-        :rank="ranked ? index + 1 : -1 ">
+        :rank="ranked ? index + 1 : -1 "
+        :detail="getDetailsOfIndex(index)">
       </list-item>
 		</ul>
   </div>
@@ -36,7 +37,16 @@
     },
     data () {
       return {};
-		}
+    },
+    methods: {
+      getDetailsOfIndex(index) {
+        if (this.listDetails) {
+          return this.listDetails[index]
+        } else {
+          return undefined
+        }
+      }
+    }
   };
 </script>
 

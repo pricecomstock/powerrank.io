@@ -48,7 +48,7 @@
 		methods: {
 			reorderArray (items, order) {
 				let newOrder = Array(this.minLength).fill('-') // fill extra with -
-				order.forEach( (newIndex, oldIndex) => {
+				order.forEach( (oldIndex, newIndex) => {
 					newOrder[newIndex] = items[oldIndex]
 				} )
 				return newOrder.slice(0, this.itemsToDisplayPerRow)
