@@ -6,8 +6,7 @@
         class="static-list-group-item is-unselectable"
         :key="index"
         :item="element"
-        :rank="ranked ? index + 1 : -1 "
-        :detail="listDetails[index]">
+        :rank="ranked ? index + 1 : -1 ">
       </list-item>
 		</ul>
   </div>

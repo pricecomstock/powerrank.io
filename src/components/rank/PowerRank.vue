@@ -1,12 +1,12 @@
 <template>
-  <div class="fluid container">
+  <div class="section">
     <!-- Debug -->
-    <div class="row">
+    <!-- <div class="row">
       <button @click="debug=!debug" class="button is-warning" :class="{'btn-warning':debug, 'btn-default':!debug}">Debug Mode</button>
       <debug-panel v-if="debug"></debug-panel>
     </div>
-    <hr>
-    <div class="columns">
+    <hr> -->
+    <div class="container columns is-fluid">
       <!-- PowerRanking -->
       <draggable-list class="column is-one-third" :ranked="false"></draggable-list>
       <draggable-list class="column is-one-third" :ranked="true"></draggable-list>

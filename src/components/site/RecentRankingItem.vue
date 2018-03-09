@@ -1,7 +1,11 @@
 <template>
   <tr>
     <th>{{ranking.user || "anon"}}</th>
-    <td>{{niceDate}}</td>
+    <td>
+      <router-link tag="a" :to="'/ranking/' + ranking.id">
+        {{ranking.date}}
+      </router-link>
+    </td>
     <td v-for="(item, index) in ranking.rankOrderItems" :key="index">{{item || "-"}}</td>
   </tr>
 </template>
@@ -12,15 +16,6 @@ export default {
   name: 'recentRankingItem',
   data () {
     return {};
-  },
-  computed: {
-    niceDate () {
-      // const now = Date.now()
-      const submittedTime = new Date(this.ranking.date);
-      return `${submittedTime.toDateString()} ${submittedTime.getHours()}:${submittedTime.getMinutes()}`
-      // const timeDifference = now - submittedTime
-      // return timeDifference.getMinutes()
-    }
   },
   props: {
     ranking: {

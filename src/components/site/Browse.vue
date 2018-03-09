@@ -1,7 +1,6 @@
 <template>
-	<div id="browse" class="container">
-		<div class="columns">
-			<div class="column is-one-third"></div>
+	<div id="browse" class="section">
+		<div class="container columns is-centered is-fluid">
 			<div class="column is-one-third">
 				<!-- <ul class="list-group"> -->
 				<router-link class="box has-text-centered" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">

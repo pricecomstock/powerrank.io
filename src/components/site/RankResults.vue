@@ -1,6 +1,6 @@
 <template>
-	<div class="container">
-		<div class="columns">
+	<div class="section">
+		<div class="container columns">
 			<div class="column is-one-third is-size-4">
 				<p>
 					<span class="icon">
@@ -21,8 +21,10 @@
 				<non-draggable-list :list-contents="rankItems" :list-details="pointValues"></non-draggable-list>
 			</div>
 		</div>
-		<div class="container">
-			<recent-rankings :rank-list-id="id" :sorted-rank-list="sortedPointTotals"></recent-rankings>
+		<div class="section">
+			<div class="container columns is-centered">
+				<recent-rankings :rank-list-id="id" :sorted-rank-list="sortedPointTotals"></recent-rankings>
+			</div>
 		</div>
 	</div>
 </template>
@@ -86,4 +88,8 @@
 </script>
 
 <style>
+.table {
+	margin-left: auto;
+	margin-right: auto;
+}
 </style>

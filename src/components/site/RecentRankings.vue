@@ -1,5 +1,5 @@
 <template>
-	<table class="table">
+	<table class="table is-hoverable">
 		<thead>
 			<th>User</th>
 			<th>Time</th>
@@ -20,6 +20,7 @@
 <script>
 	import axios from '../../axios-powerrank'
 	import recentRankingItem from './RecentRankingItem.vue'
+	import moment from 'moment'
 
 	export default {
 		name: 'recentRankings',
@@ -62,7 +63,7 @@
 					return {
 						id: recentRanking._id,
 						rankOrderItems: this.reorderArray(this.originalOrder, recentRanking.rankOrder), // get array in ranked order
-						date: recentRanking.date,
+						date: moment(recentRanking.date).fromNow(),
 						user: recentRanking.user
 					}
 				})
