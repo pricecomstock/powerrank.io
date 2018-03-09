@@ -1,13 +1,7 @@
 <template>
-	<div class="container">
-		<div class="columns">
+	<div class="section">
+		<div class="container columns">
 			<div class="column is-one-third is-size-4">
-				<p>
-					<span class="icon">
-						<i class="fa fa-user"></i>
-					</span>
-					Created by {{ user }}
-				</p>
 				<p>
 					<span class="icon">
 						<i class="fa fa-th-list"></i>
@@ -16,9 +10,20 @@
 						{{ title }}
 					</router-link>
 				</p>
+				<p>
+					<span class="icon">
+						<i class="fa fa-user"></i>
+					</span>
+					Created by {{ user }}
+				</p>
 			</div>
 			<div class="column is-one-third">
 				<non-draggable-list :list-contents="rankItems" :list-details="pointValues"></non-draggable-list>
+			</div>
+		</div>
+		<div class="section">
+			<div class="container columns is-centered">
+				<recent-rankings :rank-list-id="id" :sorted-rank-list="sortedPointTotals"></recent-rankings>
 			</div>
 		</div>
 	</div>
@@ -27,11 +32,13 @@
 <script>
 	import axios from '../../axios-powerrank'
 	import nonDraggableList from './NonDraggableList.vue'
+	import recentRankings from './RecentRankings.vue'
 
 	export default {
 		name: 'rankResults',
 		components: {
-			nonDraggableList
+			nonDraggableList,
+			recentRankings
 		},
 		props: {
 			id: {
@@ -81,4 +88,8 @@
 </script>
 
 <style>
+.table {
+	margin-left: auto;
+	margin-right: auto;
+}
 </style>

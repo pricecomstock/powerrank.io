@@ -1,7 +1,6 @@
 <template>
-  <div id="create" class="container">
-    <div class="columns">
-      <div class="column is-one-quarter"></div>
+  <div id="create" class="section">
+    <div class="columns container is-fluid is-centered">
       <div class="column is-half">
         <!-- <input-list></input-list> -->
         <input-paragraph></input-paragraph>

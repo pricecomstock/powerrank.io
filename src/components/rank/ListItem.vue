@@ -1,6 +1,6 @@
 <template>
   <li class="box staging is-clipped rankitem">
-    <div class="level">
+    <div class="level is-mobile">
       <div v-if="detail" class="level-left">
         <span class="tag is-light is-small">{{ detail }}</span>
       </div>

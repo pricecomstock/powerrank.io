@@ -46,6 +46,15 @@ router.get('/rankresults/:id', function(req, res) {
     });
 });
 
+// get recentRankings
+router.get('/recentrankings/:id', function(req, res) {
+    let id = req.params.id // maybe validate input here?
+    console.log("recent rankings for id", id)
+    rankDb.getRecentRankings(id, (results) => {
+        res.json(results);
+    });
+});
+
 
 //------//
 // POST //
