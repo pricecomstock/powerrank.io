@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import InputList from './InputList.vue'
+// import InputList from '../lists/InputList.vue'
 import InputParagraph from './InputParagraph.vue'
 
 export default {
