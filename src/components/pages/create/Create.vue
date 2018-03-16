@@ -19,7 +19,7 @@ export default {
     return {}
   },
   components: {
-    inputList: InputList,
+    // inputList: InputList,
     inputParagraph: InputParagraph
   }
 }

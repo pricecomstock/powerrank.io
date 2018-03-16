@@ -45,15 +45,15 @@
 
 <script>
   import draggable from 'vuedraggable';
-  import draggableList from './DraggableList.vue';
-  import debugPanel from '../Debug.vue';
+  import draggableList from '../../lists/DraggableList.vue';
+  // import debugPanel from '../Debug.vue';
 
   export default {
     name: 'powerRank',
     components: {
       draggable,
-      'draggable-list': draggableList,
-      debugPanel
+      'draggable-list': draggableList
+      // debugPanel
     },
     props: {
       id: {

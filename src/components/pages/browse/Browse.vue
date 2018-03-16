@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import axios from '../../axios-powerrank'
+	import axios from '../../../axios-powerrank'
 
 	export default {
 		name: 'browse',

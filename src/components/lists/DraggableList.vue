@@ -24,7 +24,7 @@
 
 <script>
   import draggable from 'vuedraggable';
-  import listItem from '../rank/ListItem.vue';
+  import listItem from './listItems/ListItem.vue';
 
   export default {
     name: 'draggableList',

@@ -27,9 +27,8 @@
 </template>
 
 <script>
-	import axios from '../../axios-powerrank'
-	import nonDraggableList from './NonDraggableList.vue'
-	import recentRankings from './RecentRankings.vue'
+	import axios from '../../../axios-powerrank'
+	import nonDraggableList from '../../lists/NonDraggableList.vue'
 
 	export default {
 		name: 'viewRanking',

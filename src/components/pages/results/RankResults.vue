@@ -30,8 +30,8 @@
 </template>
 
 <script>
-	import axios from '../../axios-powerrank'
-	import nonDraggableList from './NonDraggableList.vue'
+	import axios from '../../../axios-powerrank'
+	import nonDraggableList from '../../lists/NonDraggableList.vue'
 	import recentRankings from './RecentRankings.vue'
 
 	export default {

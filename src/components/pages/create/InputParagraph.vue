@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	import InputItem from './InputItem.vue'
+	import InputItem from '../../lists/listItems/InputItem.vue'
 
 	export default {
 		name: 'InputParagraph',
