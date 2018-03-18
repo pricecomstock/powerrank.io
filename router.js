@@ -22,7 +22,6 @@ router.get('/ranklists', function(req, res) {
 // get a RankList
 router.get('/ranklist/:id', function(req, res) {
     let id = req.params.id // maybe validate input here?
-    console.log("id", id)
     rankDb.getRankList(id, (results) => {
         res.json(results);
     });
@@ -31,7 +30,6 @@ router.get('/ranklist/:id', function(req, res) {
 // get a Ranking
 router.get('/ranking/:id', function(req, res) {
     let id = req.params.id // maybe validate input here?
-    console.log("id", id)
     rankDb.getRanking(id, (results) => {
         res.json(results);
     });
@@ -40,7 +38,6 @@ router.get('/ranking/:id', function(req, res) {
 // get rankAnalysis
 router.get('/rankresults/:id', function(req, res) {
     let id = req.params.id // maybe validate input here?
-    console.log("rankresults on id", id)
     rankDb.getRankListWithResults(id, (results) => {
         res.json(results);
     });
@@ -49,7 +46,6 @@ router.get('/rankresults/:id', function(req, res) {
 // get recentRankings
 router.get('/recentrankings/:id', function(req, res) {
     let id = req.params.id // maybe validate input here?
-    console.log("recent rankings for id", id)
     rankDb.getRecentRankings(id, (results) => {
         res.json(results);
     });
