@@ -9,7 +9,6 @@
       </div>
     </div>
     <p>Loaded Table ID: {{ id }}</p>
-    <p>Loaded Integer ID: {{ integerId }}</p>
   </div>
 </template>
   
@@ -30,11 +29,6 @@
         id: {
           get () {
             return this.$store.getters.currentPowerRankId;
-          }
-        },
-        integerId: {
-          get () {
-            return this.$store.getters.currentPowerRankIntegerId;
           }
         }
       },
