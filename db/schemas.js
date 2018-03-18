@@ -13,7 +13,35 @@ module.exports = {
         },
         rankItems: {
             type: Array,
-            required: true
+            required: true,
+            validate: [
+                {
+                    validator: function (valueList) {
+                        let itemsValid = valueList.every( (value) => {
+                            return value.length >= 1
+                        } );
+                        return itemsValid
+                    },
+                    message: "Every item must be at least one character!"
+                },
+                
+                {
+                    validator: function(valueList) {
+                        return enoughItems = valueList.length >= 2;
+                    },
+                    message: "At least two items are required"
+                },
+                
+                {
+                    validator: function(valueList) {
+                        let uniqueItems = valueList.filter( (value, index, self) => {
+                            return self.indexOf(value) === index;
+                        })
+                        return uniqueItems.length === valueList.length
+                    },
+                    message: "Two submitted items are the same!"
+                }
+            ]
         },
         aggregations: { // Array of [Name, #pts] pairs
             type: Array,
@@ -46,7 +74,27 @@ module.exports = {
         // NOT 2,0,1
         rankOrder: { 
             type: Array,
-            required: true
+            required: true,
+            validate: [
+                
+                {
+                    validator: function(valueList) {
+                        return enoughItems = valueList.length >= 2;
+                    },
+                    message: "At least two items are required to be ranked"
+                },
+                
+                {
+                    validator: function(valueList) {
+                        let uniqueItems = valueList.filter( (value, index, self) => {
+                            return self.indexOf(value) === index;
+                        })
+
+                        return uniqueItems.length === valueList.length
+                    },
+                    message: "Cannot rank the same item twice!"
+                }
+            ]
         },
         user: String
     },

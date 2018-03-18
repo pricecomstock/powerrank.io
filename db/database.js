@@ -92,7 +92,7 @@ module.exports = {
         function saveRanklist(rl) {
             rl.save((err, savedRankList) => {
                 if (err) {
-                    if (error.code === 11000) {
+                    if (err.code === 11000) {
                         // Duplicate key error
                         console.log(`Duplicate key '${rl._id}'`)
                         rl._id = idgen.generate();
@@ -124,7 +124,7 @@ module.exports = {
         function saveRanking(nr, aggregationUpdateFunction) {
             nr.save((err, savedRanking) => {
                 if (err) {
-                    if (error.code === 11000) {
+                    if (err.code === 11000) {
                         // Duplicate key error
                         console.log(`Duplicate key '${nr._id}'`)
                         nr._id = idgen.generate();
