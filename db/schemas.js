@@ -62,6 +62,10 @@ module.exports = {
             type: Number,
             default: 0
         },
+        public: {
+            type: Boolean,
+            default: true
+        },
         options: Object
     },
     
@@ -107,16 +111,5 @@ module.exports = {
             ]
         },
         user: String
-    },
-    
-    rankReductionSchema: {
-        rankListId: {
-            type: String,
-            required: true
-        },
-        sortedPointTotals: { // Array of [Name, #pts] pairs
-            type: Array,
-            required: true
-        }
     }
 }

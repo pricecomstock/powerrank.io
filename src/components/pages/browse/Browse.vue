@@ -30,19 +30,19 @@
 							<div class="level-item has-text-centered">
 								<div>
 									<p class="heading">Item Count</p>
-									<p class="title is-5 stat">{{rankList.itemCount}}</p>
+									<p class="is-size-5 stat">{{rankList.itemCount}}</p>
 								</div>
 							</div>
 							<div class="level-item has-text-centered">
 								<div>
 									<p class="heading">Rankings</p>
-									<p class="title is-5 stat">0</p>
+									<p class="is-size-5 stat">{{rankList.rankingCount}}</p>
 								</div>
 							</div>
 							<div class="level-item has-text-centered">
 								<div>
-									<p class="heading">On a Scale Of</p>
-									<p class="title is-5 stat">Excellence</p>
+									<p class="heading">In Order Of</p>
+									<p class="is-size-5 stat">Excellence</p>
 								</div>
 							</div>
 						</div>
@@ -75,7 +75,8 @@
 							title: record.title,
 							date: moment(record.date).fromNow(),
 							itemCount: record.itemCount,
-							user: record.user
+							user: record.user,
+							rankingCount: record.rankingCount
 						}
 					})
 				})
@@ -88,5 +89,7 @@
 <style>
 .stat {
 	max-width: 120px;
+	color: grey;
+	font-weight: bold;
 }
 </style>

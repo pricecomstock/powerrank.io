@@ -14,7 +14,6 @@ const rankReductionSchema = schemas.rankReductionSchema;
 // Create models
 var RankList = mongoose.model('RankList', rankListSchema)
 var Ranking = mongoose.model('Ranking', rankingSchema)
-var RankReduction = mongoose.model('RankReduction', rankReductionSchema)
 
 db.on('error', console.error.bind(console, 'connection error:')); // on an error, calls the callback function
 
@@ -25,6 +24,8 @@ module.exports = {
     // be run one time in an environment to update everything
     updateAllRankLists(callback) {
         // RankList.updateMany({rankingCount: {$exists: false}}, )
+        RankList.remove()
+
         RankList.find((err, rankLists) => {
             if (err) return console.error(err);
             
@@ -32,10 +33,20 @@ module.exports = {
                 Ranking.count({rankListId: rankList._id}, (err, count) => {
                     if (err) return console.error(err);
                     rankList.rankingCount = count
-                    rankList.scaleName = "Excellence"     
-                    rankList.date || Date.parse('01 Jan 1970 00:00:00 GMT')
-                    
-                    rankList.save()
+                    rankList.scaleName = rankList.scaleName || "Excellence"     
+                    rankList.date = rankList.date || Date.parse('20 Dec 2017 00:00:00 GMT')
+                    rankList.public = rankList.public || true
+
+                    rankList.save( (err, savedRankList) => {
+                        // Deletes items that aren't valid
+                        if (err) {
+                            console.log("Removed!")
+                            rankList.remove()
+                        } else {
+                            console.log("Saved!")
+                            console.log(savedRankList)
+                        }
+                    })
                 })
             })
             
@@ -54,12 +65,13 @@ module.exports = {
                     _id: rankList._id,
                     title: rankList.title,
                     itemCount: rankList.rankItems.length,
+                    rankingCount: rankList.rankingCount,
                     user: rankList.user,
                     date: rankList.date
                 }
             })
             callback(rankListsInfo);
-        }).select('title id rankItems user date')
+        }).select('title id rankItems user date rankingCount')
     },
 
     getRankList(id, callback) {
@@ -249,13 +261,6 @@ function deleteWholeRankingDatabase() {
     Ranking.remove((err, rankings) => {
         if (err) return console.error(err);
         console.log('removed', rankings);
-    })
-}
-
-function deleteWholeRankReductionDatabase() {
-    RankReduction.remove((err, rr) => {
-        if (err) return console.error(err);
-        console.log('removed', rr);
     })
 }
 
