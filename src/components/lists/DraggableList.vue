@@ -12,6 +12,7 @@
       <list-item
         v-for="(element, index) in listContents"
         class="list-group-item"
+        id="listItem"
         @click.native="sendToOtherList(index)"
         :key="index"
         :item="element"
@@ -87,6 +88,14 @@
           disabled: !this.editable,
           ghostClass: 'ghost'
         };
+      },
+      minListHeight () {
+        const cardHeight = 50;
+        const clearance = 50;
+        const minHeight = 200;
+
+        const algorithmicHeight = this.listContents.length * cardHeight + clearance
+        return algorithmicHeight > minHeight ? algorithmicHeight : minHeight;
       }
     },
     data () {
@@ -122,6 +131,10 @@
     background: #C8EBFB;
   }
   
+  .list-group {
+    padding-bottom: 25px;
+  }
+
   .list-group-item {
     cursor: move;
   }
@@ -147,7 +160,7 @@
   
   .drag-here {
     border: 4px dashed #DDD;
-    min-height: 100px;
+    min-height: 150px;
     border-radius: 10px;
   }
 </style>

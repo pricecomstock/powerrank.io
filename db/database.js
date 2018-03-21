@@ -21,10 +21,21 @@ db.on('error', console.error.bind(console, 'connection error:')); // on an error
 module.exports = {
     
     getAllRankLists(callback) {
+        // TODO front page won't always have every single powerranking
+        // So we should only select most recent public powerrankings
         RankList.find((err, rankLists) => {
             if (err) return console.error(err);
+            let rankListsInfo = rankLists.map( value => {
+                return {
+                    _id: value._id,
+                    title: value.title,
+                    itemCount: value.rankItems.length,
+                    user: value.rankItems.user,
+                    dateCreated: value.rankItems.date
+                }
+            })
             callback(rankLists);
-        }).select('title id')
+        }).select('title id rankItems user date')
     },
 
     getRankList(id, callback) {
