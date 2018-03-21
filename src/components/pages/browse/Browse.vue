@@ -2,11 +2,52 @@
 	<div id="browse" class="section">
 		<div class="container columns is-centered is-fluid">
 			<div class="column is-one-third">
-				<!-- <ul class="list-group"> -->
-				<router-link class="box has-text-centered" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">
+				<!-- <router-link class="box has-text-centered" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">
 					{{ rankList.title }}
+				</router-link> -->
+				<router-link class="box hero is-white is-small" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">
+					<div class="hero-head">
+						<div class="level has-text-grey has-text-weight-light">
+							<div class="level-left">
+								<div class="level-item">
+									<small>@{{rankList.user || "anonymous"}}</small>
+								</div>
+							</div>
+							<div class="level-right">
+								<div class="level-item">
+									<small>{{rankList.date}}</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="hero-body">
+						<h1 class="title is-3 has-text-centered">
+							{{ rankList.title }}
+						</h1>
+					</div>
+					<div class="hero-foot">
+						<div class="level is-mobile has-text-grey">
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">Item Count</p>
+									<p class="title is-5 stat">{{rankList.itemCount}}</p>
+								</div>
+							</div>
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">Rankings</p>
+									<p class="title is-5 stat">0</p>
+								</div>
+							</div>
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">On a Scale Of</p>
+									<p class="title is-5 stat">Excellence</p>
+								</div>
+							</div>
+						</div>
+					</div>
 				</router-link>
-				<!-- </ul> -->
 			</div>
 		</div>
 	</div>
@@ -14,6 +55,7 @@
 
 <script>
 	import axios from '../../../axios-powerrank'
+	import moment from 'moment'
 
 	export default {
 		name: 'browse',
@@ -30,7 +72,10 @@
 					this.rankListsList = rankLists.map( record => {
 						return {
 							id: record._id,
-							title: record.title
+							title: record.title,
+							date: moment(record.date).fromNow(),
+							itemCount: record.itemCount,
+							user: record.user
 						}
 					})
 				})
@@ -41,5 +86,7 @@
 </script>
 
 <style>
-
+.stat {
+	max-width: 120px;
+}
 </style>

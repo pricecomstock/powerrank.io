@@ -52,6 +52,16 @@ module.exports = {
             default: Date.now
         },
         user: String,
+        scaleName: {
+            type: String,
+            validator: function(scaleName) {
+                return scaleName.length < 15;
+            }
+        },
+        rankingCount: {
+            type: Number,
+            default: 0
+        },
         options: Object
     },
     

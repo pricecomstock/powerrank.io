@@ -19,6 +19,13 @@ router.get('/ranklists', function(req, res) {
     });
 });
 
+// get all RankLists
+router.get('/updatetolatestschema', function(req, res) {
+    rankDb.updateAllRankLists( (results) => {
+        res.json(results);
+    });
+});
+
 // get a RankList
 router.get('/ranklist/:id', function(req, res) {
     let id = req.params.id // maybe validate input here?

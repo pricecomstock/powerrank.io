@@ -19,22 +19,46 @@ var RankReduction = mongoose.model('RankReduction', rankReductionSchema)
 db.on('error', console.error.bind(console, 'connection error:')); // on an error, calls the callback function
 
 module.exports = {
+
+    // This is SORT OF a dev backdoor that will incorporate new changes from the 
+    // schema into existing documents. It is just a performance hit and needs to
+    // be run one time in an environment to update everything
+    updateAllRankLists(callback) {
+        // RankList.updateMany({rankingCount: {$exists: false}}, )
+        RankList.find((err, rankLists) => {
+            if (err) return console.error(err);
+            
+            rankLists.forEach(rankList => { // This only works with a low amount of rankLists
+                Ranking.count({rankListId: rankList._id}, (err, count) => {
+                    if (err) return console.error(err);
+                    rankList.rankingCount = count
+                    rankList.scaleName = "Excellence"     
+                    rankList.date || Date.parse('01 Jan 1970 00:00:00 GMT')
+                    
+                    rankList.save()
+                })
+            })
+            
+            callback("updating");
+
+        }).select('title id rankItems user date')
+    },
     
     getAllRankLists(callback) {
         // TODO front page won't always have every single powerranking
         // So we should only select most recent public powerrankings
         RankList.find((err, rankLists) => {
             if (err) return console.error(err);
-            let rankListsInfo = rankLists.map( value => {
+            let rankListsInfo = rankLists.map( rankList => {
                 return {
-                    _id: value._id,
-                    title: value.title,
-                    itemCount: value.rankItems.length,
-                    user: value.rankItems.user,
-                    dateCreated: value.rankItems.date
+                    _id: rankList._id,
+                    title: rankList.title,
+                    itemCount: rankList.rankItems.length,
+                    user: rankList.user,
+                    date: rankList.date
                 }
             })
-            callback(rankLists);
+            callback(rankListsInfo);
         }).select('title id rankItems user date')
     },
 
