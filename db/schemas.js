@@ -56,7 +56,8 @@ module.exports = {
             type: String,
             validator: function(scaleName) {
                 return scaleName.length < 15;
-            }
+            },
+            default: "Excellence"
         },
         rankingCount: {
             type: Number,

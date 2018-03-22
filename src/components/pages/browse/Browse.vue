@@ -42,7 +42,7 @@
 							<div class="level-item has-text-centered">
 								<div>
 									<p class="heading">In Order Of</p>
-									<p class="is-size-5 stat">Excellence</p>
+									<p class="is-size-5 stat">{{rankList.scaleName}}</p>
 								</div>
 							</div>
 						</div>
@@ -76,7 +76,8 @@
 							date: moment(record.date).fromNow(),
 							itemCount: record.itemCount,
 							user: record.user,
-							rankingCount: record.rankingCount
+							rankingCount: record.rankingCount,
+							scaleName: record.scaleName
 						}
 					})
 				})

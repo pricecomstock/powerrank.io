@@ -52,7 +52,7 @@ module.exports = {
             
             callback("updating");
 
-        }).select('title id rankItems user date')
+        })
     },
     
     getAllRankLists(callback) {
@@ -67,11 +67,12 @@ module.exports = {
                     itemCount: rankList.rankItems.length,
                     rankingCount: rankList.rankingCount,
                     user: rankList.user,
-                    date: rankList.date
+                    date: rankList.date,
+                    scaleName: rankList.scaleName
                 }
             })
             callback(rankListsInfo);
-        }).select('title id rankItems user date rankingCount')
+        }).select('title id rankItems user date rankingCount scaleName')
     },
 
     getRankList(id, callback) {
@@ -131,9 +132,9 @@ module.exports = {
                 }
             ],
             user: rankListToCreate.user,
-            options: {
-                public: true
-            }
+            options: {},
+            public: rankListToCreate.public,
+            scaleName: rankListToCreate.scaleName
         })
         
         function saveRanklist(rl) {
@@ -165,7 +166,7 @@ module.exports = {
         let newRanking = new Ranking({
             rankListId: rankingToCreate.rankListId,
             rankOrder: rankingToCreate.rankOrder,
-            user: rankingToCreate.user
+            user: rankingToCreate.user,
         })
 
         function saveRanking(nr, aggregationUpdateFunction) {
