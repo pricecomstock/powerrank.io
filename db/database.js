@@ -22,38 +22,38 @@ module.exports = {
     // This is SORT OF a dev backdoor that will incorporate new changes from the 
     // schema into existing documents. It is just a performance hit and needs to
     // be run one time in an environment to update everything
-    updateAllRankLists(callback) {
-        // RankList.updateMany({rankingCount: {$exists: false}}, )
-        RankList.remove()
+    // updateAllRankLists(callback) {
+    //     // RankList.updateMany({rankingCount: {$exists: false}}, )
+    //     RankList.remove()
 
-        RankList.find((err, rankLists) => {
-            if (err) return console.error(err);
+    //     RankList.find((err, rankLists) => {
+    //         if (err) return console.error(err);
             
-            rankLists.forEach(rankList => { // This only works with a low amount of rankLists
-                Ranking.count({rankListId: rankList._id}, (err, count) => {
-                    if (err) return console.error(err);
-                    rankList.rankingCount = count
-                    rankList.scaleName = rankList.scaleName || "Excellence"     
-                    rankList.date = rankList.date || Date.parse('20 Dec 2017 00:00:00 GMT')
-                    rankList.public = rankList.public || true
+    //         rankLists.forEach(rankList => { // This only works with a low amount of rankLists
+    //             Ranking.count({rankListId: rankList._id}, (err, count) => {
+    //                 if (err) return console.error(err);
+    //                 rankList.rankingCount = count
+    //                 rankList.scaleName = rankList.scaleName || "Excellence"     
+    //                 rankList.date = rankList.date || Date.parse('20 Dec 2017 00:00:00 GMT')
+    //                 rankList.public = rankList.public || true
 
-                    rankList.save( (err, savedRankList) => {
-                        // Deletes items that aren't valid
-                        if (err) {
-                            console.log("Removed!")
-                            rankList.remove()
-                        } else {
-                            console.log("Saved!")
-                            console.log(savedRankList)
-                        }
-                    })
-                })
-            })
+    //                 rankList.save( (err, savedRankList) => {
+    //                     // Deletes items that aren't valid
+    //                     if (err) {
+    //                         console.log("Removed!")
+    //                         rankList.remove()
+    //                     } else {
+    //                         console.log("Saved!")
+    //                         console.log(savedRankList)
+    //                     }
+    //                 })
+    //             })
+    //         })
             
-            callback("updating");
+    //         callback("updating");
 
-        })
-    },
+    //     })
+    // },
     
     getAllRankLists(callback) {
         // TODO front page won't always have every single powerranking
