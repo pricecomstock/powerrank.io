@@ -5,7 +5,7 @@
 				<rank-list-stats v-if="rankList" :rankList="rankList"></rank-list-stats>
 			</div>
 			<div class="column is-one-third">
-				<non-draggable-list v-if="rankList.rankItems" :list-contents="rankList.rankItems" :list-details="pointValues"></non-draggable-list>
+				<non-draggable-list v-if="pointOrderedRankItems" :list-contents="pointOrderedRankItems" :list-details="pointValues"></non-draggable-list>
 			</div>
 		</div>
 		<div class="section">
@@ -44,7 +44,7 @@
 			};
 		},
 		computed: {
-			rankItems() {
+			pointOrderedRankItems() {
 				return this.sortedPointTotals.map( (item) => {
 					return item[0];
 				})
