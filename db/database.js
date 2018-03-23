@@ -81,7 +81,7 @@ module.exports = {
     getRankList(id, callback) {
         RankList.findOne({_id: id}, (err, rankList) => {
             if (err) return console.error(err);
-            console.log("rankList", rankList)
+            // console.log("rankList", rankList)
             callback(rankList);
         })
     },
@@ -89,7 +89,7 @@ module.exports = {
     getRankListWithResults(id, callback) {
         RankList.findOne({_id: id}, (err, rankList) => {
             if (err) return console.error(err);
-            console.log("rankList", rankList)
+            // console.log("rankList", rankList)
             callback(rankList);
         })
     },
@@ -97,7 +97,7 @@ module.exports = {
     getRanking(id, callback) {
         Ranking.findOne({_id: id}, (err, ranking) => {
             if (err) return console.error(err);
-            console.log("ranking", ranking)
+            // console.log("ranking", ranking)
             callback(ranking);
         })
     },
@@ -106,7 +106,7 @@ module.exports = {
     getRecentRankings(id, callback) {
         Ranking.find({rankListId: id}, (err, recentRankings) => {
             if (err) return console.error(err);
-            console.log("recentRankings", recentRankings)
+            // console.log("recentRankings", recentRankings)
             callback(recentRankings);
         })
         .sort({date: "descending"})
@@ -116,13 +116,13 @@ module.exports = {
     getRankReduction(id, callback) {
         RankReduction.findOne({rankListId: id}, (err, rankReduction) => {
             if (err) return console.error(err);
-            console.log("rankReduction", rankReduction)
+            // console.log("rankReduction", rankReduction)
             callback(rankReduction);
         })
     },
 
     createRankList(rankListToCreate, callback) {
-        console.log(rankListToCreate)
+        // console.log(rankListToCreate)
         let newRankList = new RankList({
             title: rankListToCreate.title,
             rankItems: rankListToCreate.rankItems,
@@ -186,9 +186,11 @@ module.exports = {
                         callback({success: false})
                     }
                 } else {
-                    // HEY NEXT TIME you see this you should switch it to increment.
-                    recountRankings(savedRanking.rankListId)
-                    // rankingCountIncrement(savedRanking.rankListId)
+                    // recountRankings(savedRanking.rankListId)
+                    rankingCountIncrement(savedRanking.rankListId)
+                    
+                    // recalculateAggregations(savedRanking.rankListId)
+
                     aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
                         console.log("Successfully saved ranking and updated rankList", updatedRankList)
                     })
@@ -227,23 +229,30 @@ module.exports = {
             // This transforms
             //     index = rank order, value = original index
             // --> index = original index, value = points
+            // e.g. [2,0,1] --> [0.5, 0.33, 1]
+                // Corresponding index = 2, ranking = 0
+                // --> pointmap[2] = 1
+            // e.g. [1,0] --> [0.5, 1, 0]
             addedRankOrder.forEach((correspondingIndex, ranking) => {
                 pointmap[correspondingIndex] = pointValue(ranking);
             });
+            console.log(`Rank Order ${addedRankOrder} --> Point Map ${pointmap}`)
             
             // sortedPointTotals -> Array of form [[item1, pts1], [item2, pts2]]
             const updatedSortedPointTotals = dowdall.sortedPointTotals.map((item, index) => {
                 let itemName = item[0];
                 let prevPoints = item[1];
                 let ogIndex = rankList.rankItems.indexOf(itemName)
-
+                
+                console.log(`${itemName}: ${prevPoints} + ${pointmap[ogIndex]}`)
                 return [itemName, prevPoints + pointmap[ogIndex]]
             })
+            
             .sort((a, b) => {
                 return b[1] - a[1]; // Descending Order
                 // return a[1] - b[1]; // Ascending Order
             })
-            console.log(updatedSortedPointTotals)
+            console.log(`New SPT ${updatedSortedPointTotals}`)
 
             // Array of all the other aggregations that we don't want to touch
             let aggregationList = rankList.aggregations.filter((agg => {
@@ -262,6 +271,21 @@ module.exports = {
             })
         })
     },
+}
+
+function recalculateAggregations(rankListId) {
+    RankList.findOne({_id: rankListId}, (err, rankList) => {
+        if (err) return console.error(err);
+        // console.log("rankList", rankList)
+
+        Ranking.find({rankListId: rankListId}, (err, rankings) => {
+            if (err) return console.error(err);
+            // console.log("rankings", rankings)
+
+
+        })
+    })
+
 }
 
 function deleteWholeRankingDatabase() {
