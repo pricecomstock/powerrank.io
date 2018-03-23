@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="is-size-4">
 		<p>
             <span class="icon is-large">
                 <i class="fas fa-th-list"></i>
@@ -7,6 +7,12 @@
             <router-link :to="'/rank/' + rankList._id">
                 {{ rankList.title }}
             </router-link>
+        </p>
+        <p>
+            <span class="icon is-large">
+                <i class="fas fa-sort-amount-down"></i>
+            </span>
+            {{ rankList.scaleName }}
         </p>
         <p>
             <span class="icon is-large">
@@ -20,12 +26,6 @@
                 <i v-else class="fas fa-eye-slash"></i>
             </span>
             {{ rankList.public ? 'Public' : 'Unlisted' }}
-        </p>
-        <p>
-            <span class="icon is-large">
-                <i class="fas fa-sort-amount-down"></i>
-            </span>
-            {{ rankList.scaleName }}
         </p>
 	</div>
 </template>

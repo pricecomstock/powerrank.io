@@ -2,21 +2,15 @@
 	<div class="section">
 		<div class="container">
 			<div class="columns">
-				<div class="column is-one-third is-size-4">
-					<p>
-						<span class="icon">
-							<i class="fa fa-user"></i>
-						</span>
-						{{ user }}
-					</p>
-					<p>
-						<span class="icon">
-							<i class="fa fa-th-list"></i>
-						</span>
-						<router-link :to="'/rank/' + rankListId">
-							{{ rankListName }}
-						</router-link>
-					</p>
+				<div class="column is-one-third">
+					<p class="is-size-3">
+			            <span class="icon is-large">
+			                <i class="fas fa-user"></i>
+			            </span>
+			            {{ user || 'anonymous' }}
+			        </p>
+					<hr>
+					<rank-list-stats v-if="rankList" :rankList="rankList"></rank-list-stats>
 				</div>
 				<div class="column is-one-third">
 					<non-draggable-list :list-contents="rankingList"></non-draggable-list>
@@ -29,11 +23,13 @@
 <script>
 	import axios from '../../../axios-powerrank'
 	import nonDraggableList from '../../lists/NonDraggableList.vue'
+	import rankListStats from '../pieces/RankListStats.vue'
 
 	export default {
 		name: 'viewRanking',
 		components: {
-			nonDraggableList
+			nonDraggableList,
+			rankListStats
 		},
 		props: {
 			rankingId: {
@@ -57,8 +53,10 @@
 							.then(res => {
 								console.log('RankList Response', res)
 
-								this.rankListName = res.data.title
-								const originalOrder = res.data.rankItems
+								this.rankList = res.data
+
+								this.rankListName = this.rankList.title
+								const originalOrder = this.rankList.rankItems
 
 								// for each number in rankingOrder, replace with the correct item from original order
 								this.rankingList = rankingOrder.map(index => {
@@ -78,8 +76,8 @@
 		data() {
 			return {
 				user: '',
-				rankListName: '',
 				rankListId: '',
+				rankList: {},
 				rankingList: []
 			};
 		},
