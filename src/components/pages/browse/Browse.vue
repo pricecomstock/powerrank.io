@@ -1,11 +1,8 @@
 <template>
 	<div id="browse" class="section">
-		<div class="container columns is-centered is-fluid">
+		<div class="container columns is-centered is-fluid is-multiline is-narrow">
 			<div class="column is-one-third">
-				<!-- <router-link class="box has-text-centered" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">
-					{{ rankList.title }}
-				</router-link> -->
-				<router-link class="box hero is-white is-small" v-for="rankList in rankListsList" :to="'/rank/' + rankList.id" :key="rankList.id">
+				<router-link class="box hero is-white is-small ranklink" :to="'/rank/' + rankList.id" v-for="rankList in rankListsList" :key="rankList.id">
 					<div class="hero-head">
 						<div class="level has-text-grey has-text-weight-light">
 							<div class="level-left">
@@ -92,5 +89,9 @@
 	max-width: 120px;
 	color: grey;
 	font-weight: bold;
+}
+
+.ranklink {
+	/* height: 225px; */
 }
 </style>

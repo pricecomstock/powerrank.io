@@ -2,7 +2,7 @@
 	<div class="is-size-4">
 		<p>
             <span class="icon is-large">
-                <i class="fas fa-th-list"></i>
+                <i class="fas fa-list-ul"></i>
             </span>
             <router-link :to="'/rank/' + rankList._id">
                 {{ rankList.title }}
@@ -26,6 +26,12 @@
                 <i v-else class="fas fa-eye-slash"></i>
             </span>
             {{ rankList.public ? 'Public' : 'Unlisted' }}
+        </p>
+        <p>
+            <span class="icon is-large">
+                <i class="fas fa-chart-line"></i>
+            </span>
+            {{ rankList.rankingCount }} rankings
         </p>
 	</div>
 </template>
