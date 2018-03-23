@@ -165,10 +165,10 @@
 			},
 			username: {
 				get() {
-					return this.$store.getters.username;
+					return this.$store.getters.creatorUsername;
 				},
 				set(value) {
-					this.$store.dispatch('setUsername', value);
+					this.$store.dispatch('setCreatorUsername', value);
 				}
 			},
 			publiclyVisible: {

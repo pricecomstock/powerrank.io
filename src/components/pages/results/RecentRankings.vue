@@ -88,4 +88,9 @@
 </script>
 
 <style>
+table {
+	display: block;
+	overflow-x: auto;
+	white-space: nowrap;
+}
 </style>
