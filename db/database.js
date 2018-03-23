@@ -58,7 +58,7 @@ module.exports = {
     getAllRankLists(callback) {
         // TODO front page won't always have every single powerranking
         // So we should only select most recent public powerrankings
-        RankList.find((err, rankLists) => {
+        RankList.find({public: true}, (err, rankLists) => {
             if (err) return console.error(err);
             let rankListsInfo = rankLists.map( rankList => {
                 return {
@@ -72,7 +72,10 @@ module.exports = {
                 }
             })
             callback(rankListsInfo);
-        }).select('title id rankItems user date rankingCount scaleName')
+        })
+        .sort({date: 'descending'})
+        // .limit(10)
+        .select('title id rankItems user date rankingCount scaleName')
     },
 
     getRankList(id, callback) {
@@ -80,7 +83,7 @@ module.exports = {
             if (err) return console.error(err);
             console.log("rankList", rankList)
             callback(rankList);
-        }).select('id title rankItems user options')
+        })
     },
     
     getRankListWithResults(id, callback) {

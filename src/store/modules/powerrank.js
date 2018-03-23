@@ -11,8 +11,11 @@ const state = {
     unrankedList: [],
     rankedList: [],
     username: '',
+    title: '',
+    rankingScaleName: '',
     createdRankId: '', //this one is for when you rank something
-    currentPowerRankId: ''
+    currentPowerRankId: '',
+    rankList: {}
 }
 
 const getters = {
@@ -51,8 +54,17 @@ const getters = {
     currentPowerRankId: (state) => {
       return state.currentPowerRankId;
     },
+    title: (state) => {
+      return state.title;
+    },
+    rankingScaleName: (state) => {
+      return state.rankingScaleName;
+    },
     username: (state) => {
       return state.username;
+    },
+    rankList: (state) => {
+      return state.rankList;
     }
 }
 
@@ -85,8 +97,17 @@ const mutations = {
     setId: (state, id) => {
       state.currentPowerRankId = id
     },
+    setTitle: (state, title) => {
+      state.title = title
+    },
+    setRankingScaleName: (state, rankingScaleName) => {
+      state.rankingScaleName = rankingScaleName
+    },
     setUsername: (state, username) => {
       state.username = username
+    },
+    setRankList: (state, rankList) => {
+      state.rankList = rankList
     }
 }
 
@@ -105,10 +126,14 @@ const actions = {setUnrankedList: (context, newList) => {
             const newList = res.data.rankItems;
             // console.log("new list", newList)
 
+            context.commit('setRankList', res.data);
+
             context.commit('setId', res.data._id);
             context.commit('setItemOrder', newList); //keep a second copy for reference
             context.commit('setUnrankedList', newList.slice());
             context.commit('setRankedList', []);
+            context.commit('setTitle', res.data.title);
+            context.commit('setRankingScaleName', res.data.scaleName);
         })
         .catch(error => console.log(error))
     },
@@ -121,8 +146,17 @@ const actions = {setUnrankedList: (context, newList) => {
     resetRankLists: (context) => {
         context.commit('resetRankLists')
     },
+    setTitle: (context, title) => {
+        context.commit('setTitle', title)
+    },
+    setRankingScaleName: (context, rankingScaleName) => {
+        context.commit('setRankingScaleName', rankingScaleName)
+    },
     setUsername: (context, username) => {
         context.commit('setUsername', username)
+    },
+    setRankList: (context, rankList) => {
+        context.commit('setRankList', rankList)
     },
     submitPowerRankToDatabase: (context, router) => {
       const payload = {
