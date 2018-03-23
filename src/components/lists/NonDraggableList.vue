@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import listItem from '../rank/ListItem.vue';
+	import listItem from './listItems/ListItem.vue';
 
   export default {
     name: 'staticList',

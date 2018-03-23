@@ -18,7 +18,7 @@
 </template>
 
 <script>
-	import axios from '../../axios-powerrank'
+	import axios from '../../../axios-powerrank'
 	import recentRankingItem from './RecentRankingItem.vue'
 	import moment from 'moment'
 

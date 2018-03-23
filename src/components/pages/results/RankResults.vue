@@ -2,23 +2,10 @@
 	<div class="section">
 		<div class="container columns is-fluid">
 			<div class="column is-one-third is-size-4">
-				<p>
-					<span class="icon">
-						<i class="fa fa-th-list"></i>
-					</span>
-					<router-link :to="'/rank/' + id">
-						{{ title }}
-					</router-link>
-				</p>
-				<p>
-					<span class="icon">
-						<i class="fa fa-user"></i>
-					</span>
-					Created by {{ user }}
-				</p>
+				<rank-list-stats v-if="rankList" :rankList="rankList"></rank-list-stats>
 			</div>
 			<div class="column is-one-third">
-				<non-draggable-list :list-contents="rankItems" :list-details="pointValues"></non-draggable-list>
+				<non-draggable-list v-if="rankList.rankItems" :list-contents="rankList.rankItems" :list-details="pointValues"></non-draggable-list>
 			</div>
 		</div>
 		<div class="section">
@@ -30,15 +17,17 @@
 </template>
 
 <script>
-	import axios from '../../axios-powerrank'
-	import nonDraggableList from './NonDraggableList.vue'
+	import axios from '../../../axios-powerrank'
+	import rankListStats from '../pieces/RankListStats.vue'
+	import nonDraggableList from '../../lists/NonDraggableList.vue'
 	import recentRankings from './RecentRankings.vue'
 
 	export default {
 		name: 'rankResults',
 		components: {
 			nonDraggableList,
-			recentRankings
+			recentRankings,
+			rankListStats
 		},
 		props: {
 			id: {
@@ -50,8 +39,7 @@
 		},
 		data() {
 			return {
-				user: '',
-				title: '',
+				rankList: {},
 				sortedPointTotals: []
 			};
 		},
@@ -63,7 +51,7 @@
 			},
 			pointValues() {
 				return this.sortedPointTotals.map( (item) => {
-					return `${item[1].toFixed(1)} pt`;
+					return `${item[1].toFixed(2)} pt`;
 				})
 			}
 		},
@@ -71,13 +59,8 @@
 			axios.get(`/rankresults/${this.id}`)
 				.then(res => {
 					console.log(res);
-					const rankList = res.data;
-					
-					this.user = rankList.user || 'anonymous';
-					this.title = rankList.title;
-
-					// This will need to be expanded if more algorithms are added
-					let dowdall = rankList.aggregations.find((agg => {
+					this.rankList = res.data;
+					let dowdall = this.rankList.aggregations.find((agg => {
 						return agg.type === 'dowdall';
 					}));        
 					this.sortedPointTotals = dowdall.sortedPointTotals;

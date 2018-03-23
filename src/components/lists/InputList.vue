@@ -1,6 +1,6 @@
 <template>
   <div id="input-list">
-    <input-item v-for="(item, index) in creatingList" key="index" :name="item"></input-item>
+    <input-item v-for="(item, index) in creatingList" :key="index" :name="item"></input-item>
     <input-item :new-item="creatingList.length > 0"></input-item>
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import InputItem from './InputItem.vue'
+import InputItem from './listItems/InputItem.vue'
 
 export default {
   name: 'InputList',
