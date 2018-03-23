@@ -109,8 +109,8 @@ module.exports = {
             console.log("recentRankings", recentRankings)
             callback(recentRankings);
         })
-        .sort({date: -1})
-        .limit(5)
+        .sort({date: "descending"})
+        .limit(10)
     },
 
     getRankReduction(id, callback) {
