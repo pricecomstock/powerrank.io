@@ -90,8 +90,4 @@
 	color: grey;
 	font-weight: bold;
 }
-
-.ranklink {
-	/* height: 225px; */
-}
 </style>
