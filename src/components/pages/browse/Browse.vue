@@ -1,10 +1,10 @@
 <template>
 	<div id="browse" class="section">
 		<div class="container columns is-centered is-fluid is-multiline is-narrow">
-			<div class="column is-one-third">
+			<div class="column is-one-third-widescreen is-half-desktop is-half-tablet">
 				<router-link class="box hero is-white is-small ranklink" :to="'/rank/' + rankList.id" v-for="rankList in rankListsList" :key="rankList.id">
 					<div class="hero-head">
-						<div class="level has-text-grey has-text-weight-light">
+						<div class="level has-text-grey has-text-weight-light is-mobile">
 							<div class="level-left">
 								<div class="level-item">
 									<small>@{{rankList.user || "anonymous"}}</small>
