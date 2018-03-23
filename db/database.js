@@ -186,6 +186,9 @@ module.exports = {
                         callback({success: false})
                     }
                 } else {
+                    // HEY NEXT TIME you see this you should switch it to increment.
+                    recountRankings(savedRanking.rankListId)
+                    // rankingCountIncrement(savedRanking.rankListId)
                     aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
                         console.log("Successfully saved ranking and updated rankList", updatedRankList)
                     })
@@ -265,6 +268,23 @@ function deleteWholeRankingDatabase() {
     Ranking.remove((err, rankings) => {
         if (err) return console.error(err);
         console.log('removed', rankings);
+    })
+}
+
+function recountRankings(rankListId) {
+    Ranking.count({rankListId: rankListId}, (err, count) => {
+        if (err) return console.error(err);
+        RankList.findOne({_id: rankListId}, (err, rankList) => {
+            rankList.rankingCount = count;
+            rankList.save()
+        })
+    })
+}
+
+function rankingCountIncrement(rankListId) {
+    RankList.findOne({_id: rankListId}, (err, rankList) => {
+        rankList.rankingCount = rankList.rankingCount + 1;
+        rankList.save()
     })
 }
 
