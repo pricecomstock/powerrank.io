@@ -1,4 +1,5 @@
 const schemas = require('./schemas.js');
+const idgen = require('./idgenerate.js');
 
 var mongoose = require('mongoose');
 const mongooseUri = process.env.MONGODB_URI || 'mongodb://localhost/powerrank'
@@ -13,17 +14,68 @@ const rankReductionSchema = schemas.rankReductionSchema;
 // Create models
 var RankList = mongoose.model('RankList', rankListSchema)
 var Ranking = mongoose.model('Ranking', rankingSchema)
-var RankReduction = mongoose.model('RankReduction', rankReductionSchema)
 
 db.on('error', console.error.bind(console, 'connection error:')); // on an error, calls the callback function
 
 module.exports = {
-    
-    getAllRankLists(callback) {
+
+    // This is SORT OF a dev backdoor that will incorporate new changes from the 
+    // schema into existing documents. It is just a performance hit and needs to
+    // be run one time in an environment to update everything
+    updateAllRankLists(callback) {
+        // RankList.updateMany({rankingCount: {$exists: false}}, )
+        RankList.remove()
+
         RankList.find((err, rankLists) => {
             if (err) return console.error(err);
-            callback(rankLists);
-        }).select('title id')
+            
+            rankLists.forEach(rankList => { // This only works with a low amount of rankLists
+                Ranking.count({rankListId: rankList._id}, (err, count) => {
+                    if (err) return console.error(err);
+                    rankList.rankingCount = count
+                    rankList.scaleName = rankList.scaleName || "Excellence"     
+                    rankList.date = rankList.date || Date.parse('20 Dec 2017 00:00:00 GMT')
+                    rankList.public = rankList.public || true
+
+                    rankList.save( (err, savedRankList) => {
+                        // Deletes items that aren't valid
+                        if (err) {
+                            console.log("Removed!")
+                            rankList.remove()
+                        } else {
+                            console.log("Saved!")
+                            console.log(savedRankList)
+                        }
+                    })
+                })
+            })
+            
+            callback("updating");
+
+        })
+    },
+    
+    getAllRankLists(callback) {
+        // TODO front page won't always have every single powerranking
+        // So we should only select most recent public powerrankings
+        RankList.find({public: true}, (err, rankLists) => {
+            if (err) return console.error(err);
+            let rankListsInfo = rankLists.map( rankList => {
+                return {
+                    _id: rankList._id,
+                    title: rankList.title,
+                    itemCount: rankList.rankItems.length,
+                    rankingCount: rankList.rankingCount,
+                    user: rankList.user,
+                    date: rankList.date,
+                    scaleName: rankList.scaleName
+                }
+            })
+            callback(rankListsInfo);
+        })
+        .sort({date: 'descending'})
+        // .limit(10)
+        .select('title id rankItems user date rankingCount scaleName')
     },
 
     getRankList(id, callback) {
@@ -31,7 +83,7 @@ module.exports = {
             if (err) return console.error(err);
             console.log("rankList", rankList)
             callback(rankList);
-        }).select('id title rankItems user options')
+        })
     },
     
     getRankListWithResults(id, callback) {
@@ -83,42 +135,70 @@ module.exports = {
                 }
             ],
             user: rankListToCreate.user,
-            options: {
-                public: true
-            }
+            options: {},
+            public: rankListToCreate.public,
+            scaleName: rankListToCreate.scaleName
         })
-        newRankList.save((err, savedRankList) => {
-            if (err) {
-                console.error(err);
-                callback({success: false})
-            }
-            callback({
-                success: true,
-                RankList: savedRankList
+        
+        function saveRanklist(rl) {
+            rl.save((err, savedRankList) => {
+                if (err) {
+                    if (err.code === 11000) {
+                        // Duplicate key error
+                        console.log(`Duplicate key '${rl._id}'`)
+                        rl._id = idgen.generate();
+                        console.log(`Retrying with key '${rl._id}'`)
+                        saveRanklist(rl);
+                    } else {
+                        console.error(err);
+                        callback({success: false})
+                    }
+                } else {
+                    callback({
+                        success: true,
+                        RankList: savedRankList
+                    })
+                }
             })
-        })
+        }
+
+        saveRanklist(newRankList);
     },
     
     createRanking(rankingToCreate, callback) {
         let newRanking = new Ranking({
             rankListId: rankingToCreate.rankListId,
             rankOrder: rankingToCreate.rankOrder,
-            user: rankingToCreate.user
+            user: rankingToCreate.user,
         })
-        newRanking.save((err, savedRanking) => {
-            if (err) {
-                console.error(err);
-                callback({success: false})
-            }
-            this.updateAggregationsDowdall(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
-                console.log("Successfully saved ranking and updated rankList", updatedRankList)
-            })
 
-            callback({
-                success: true,
-                ranking: savedRanking
+        function saveRanking(nr, aggregationUpdateFunction) {
+            nr.save((err, savedRanking) => {
+                if (err) {
+                    if (err.code === 11000) {
+                        // Duplicate key error
+                        console.log(`Duplicate key '${nr._id}'`)
+                        nr._id = idgen.generate();
+                        console.log(`Retrying with key '${nr._id}'`)
+                        saveRanking(nr);
+                    } else {
+                        console.error(err);
+                        callback({success: false})
+                    }
+                } else {
+                    aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
+                        console.log("Successfully saved ranking and updated rankList", updatedRankList)
+                    })
+
+                    callback({
+                        success: true,
+                        ranking: savedRanking
+                    })
+                }
             })
-        })
+        }
+
+        saveRanking(newRanking, this.updateAggregationsDowdall);
     },
 
     updateAggregationsDowdall(rankListToAnalyzeId, addedRankOrder, callback) {
@@ -185,13 +265,6 @@ function deleteWholeRankingDatabase() {
     Ranking.remove((err, rankings) => {
         if (err) return console.error(err);
         console.log('removed', rankings);
-    })
-}
-
-function deleteWholeRankReductionDatabase() {
-    RankReduction.remove((err, rr) => {
-        if (err) return console.error(err);
-        console.log('removed', rr);
     })
 }
 
