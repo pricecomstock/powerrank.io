@@ -58,7 +58,11 @@ module.exports = {
     getAllRankLists(callback) {
         // TODO front page won't always have every single powerranking
         // So we should only select most recent public powerrankings
-        RankList.find({public: true}, (err, rankLists) => {
+        
+        // Sorting is whack
+        // https://stackoverflow.com/questions/5825520/in-mongoose-how-do-i-sort-by-date-node-js
+
+        RankList.find({public: true}, null, {sort: {date: 'descending'}}, (err, rankLists) => {
             if (err) return console.error(err);
             let rankListsInfo = rankLists.map( rankList => {
                 return {
@@ -73,9 +77,9 @@ module.exports = {
             })
             callback(rankListsInfo);
         })
-        .sort({date: 'descending'})
-        // .limit(10)
         .select('title id rankItems user date rankingCount scaleName')
+        // .sort({date: 'descending'})
+        // .limit(10)
     },
 
     getRankList(id, callback) {
