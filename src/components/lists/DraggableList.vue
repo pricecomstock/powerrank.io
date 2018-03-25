@@ -1,7 +1,7 @@
 <template>
   <div class="rankinglist">
     <draggable
-      class="list-group"
+      class="list-group "
       :class="{'drag-here': listContents.length===0}"
       element="ul"
       v-model="listContents"
@@ -11,7 +11,7 @@
       <!-- <transition-group type="animation" name="flip-list" class="alwaysdisplay"> -->
       <list-item
         v-for="(element, index) in listContents"
-        class="list-group-item"
+        class="list-group-item is-unselectable"
         id="listItem"
         @click.native="sendToOtherList(index)"
         :key="index"
