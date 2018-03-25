@@ -10,7 +10,7 @@
         </p>
         <p>
             <span class="icon is-large">
-                <i class="fas fa-sort-amount-down"></i>
+                <i class="fas fa-sort-amount-up"></i>
             </span>
             {{ rankList.scaleName }}
         </p>

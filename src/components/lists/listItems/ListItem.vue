@@ -1,13 +1,13 @@
 <template>
-  <li class="box staging is-clipped rankitem">
+  <li class="box staging rankitem">
     <div class="level is-mobile">
-      <div v-if="detail" class="level-left">
+      <div v-if="detail" class="level-left itemdetail">
         <span class="tag is-light is-small">{{ detail }}</span>
       </div>
-      <div :class="itemClass">
+      <div class="level-center itemname">
         {{ item }}
       </div>
-      <div class="level-right">
+      <div class="level-right itemrank">
         <span
         class="tag is-medium is-rounded"
         :class="rankColorClasses(rank)">
@@ -33,19 +33,6 @@ export default {
     }    
   },
   computed: {
-    itemClass() {
-      if (this.detail) {
-        return {
-          "level-left": false,
-          "level-center": true
-        }
-      } else {
-        return {
-          "level-left": true,
-          "level-center": false
-        }
-      }
-    }
   },
   props: {
     item: {
@@ -74,5 +61,14 @@ export default {
   margin-bottom: 0.75rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  overflow-wrap: break-word;
+}
+
+.rankitem .itemrank {
+  padding-left: 10px;
+}
+
+.rankitem .itemdetail {
+  padding-right: 10px;
 }
 </style>
