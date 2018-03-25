@@ -42,7 +42,7 @@
 				// default to stop error from happening before other one has loaded
 				recentRankings: [{date: '', user: '', rankOrder: [0,1,2,3], _id: '0'}],
 				originalOrder: [],
-				itemsToDisplayPerRow: 5
+				itemsToDisplayPerRow: 10
 			};
 		},
 		methods: {
@@ -91,6 +91,6 @@
 table {
 	display: block;
 	overflow-x: auto;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 }
 </style>
