@@ -49,9 +49,13 @@ module.exports = {
         },
         date: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            index: true
         },
-        user: String,
+        user: {
+            type: String,
+            index: true
+        },
         scaleName: {
             type: String,
             validator: function(scaleName) {
@@ -81,7 +85,8 @@ module.exports = {
         },
         date: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            index: true
         },
         // Array of integers, index 0, which corresponds to the index of each item in the ranklist
         // if I am powerranking [chocolate, strawberry, vanilla] and i put them in the order [strawberry, vanilla, chocolate]
@@ -111,6 +116,9 @@ module.exports = {
                 }
             ]
         },
-        user: String
+        user: {
+            type: String,
+            index: true
+        }
     }
 }
