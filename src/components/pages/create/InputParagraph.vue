@@ -7,21 +7,28 @@
 			<div class="control">
 				<input
 				  class="input"
-					:class="{'is-danger': !titleOk}"
+					:class="{'is-danger': $v.inputTitle.$error}"
+					@blur="$v.inputTitle.$touch()"
 					type="text"
 					placeholder="Name your powerrank list. Something Descriptive!"
 					v-model="inputTitle">
 			</div>
-			<p v-if="!titleOk" class="help is-danger">This field is required.</p>
+			<p v-if="$v.inputTitle.$error" class="help is-danger">This field is required.</p>
 		</div>
 
 		<!-- RANK METRIC -->
 		<div class="field">
 			<label class="label">Rank Metric</label>
 			<div class="control">
-				<input id="scaleName" type="text" class="input" placeholder="e.g. Excellence, Awfulness, Vertical Leap"
-				v-model="scaleName">
+				<input id="scaleName"
+					:class="{'is-danger': $v.scaleName.$error}"
+					@input="$v.scaleName.$touch()"
+					type="text"
+					class="input"
+					placeholder="e.g. Excellence, Awfulness, Vertical Leap"
+					v-model="scaleName">
 			</div>
+			<p v-if="scaleName.length > 45" class="help" :class="{'is-danger': $v.scaleName.$error}">{{scaleName.length}}/{{$v.scaleName.$params.maxLen.max}}</p>
 		</div>
 
 		<!-- POWERRANK ITEMS -->
@@ -30,23 +37,32 @@
 			<div class="control">
 				<textarea
 				class="textarea tallertextarea"
-				:class="{'is-danger': !paragraphOk || !paragraphEnoughLines}"
+				:class="{'is-danger': $v.inputParagraph.$error}"
+				@blur="$v.inputParagraph.$touch()"
 				placeholder="Input one item per line"
 				v-model="inputParagraph"></textarea>
 			</div>
-			<p v-if="!paragraphOk || !paragraphEnoughLines" class="help is-danger">This field is required and must have at least 2 lines.</p>
+			<p v-if="$v.inputParagraph.$error && !$v.inputParagraph.atLeastTwoItems" class="help is-danger">At least two items are required.</p>
+			<p v-if="!$v.inputParagraph.notTooMuch" class="help is-danger">You can't have more than 128 items and they can't be longer than 280 characters. Whatever you're trying to do is insane.</p>
 		</div>
 
 		<!-- USER -->
 		<div class="field">
 			<label class="label">Username</label>
 			<div class="control has-icons-left">
-				<input id="username" type="text" class="input" placeholder="Take credit. Who needs user accounts?"
-				v-model="username">
+				<input 
+					id="username"
+					type="text"
+					:class="{'is-danger': $v.username.$error}"
+					@input="$v.username.$touch()"
+					class="input"
+					placeholder="Take credit. Who needs user accounts?"
+					v-model="username">
 				<span class="icon is-small is-left">
 				<i class="fa fa-user"></i>
 				</span>
 			</div>
+			<p v-if="username.length > 20" class="help" :class="{'is-danger': $v.username.$error}">{{username.length}}/{{$v.username.$params.maxLen.max}}</p>
 		</div>
 
 		<!-- VISIBILITY -->
@@ -62,16 +78,17 @@
 		<!-- SUBMIT AND CLEAR BUTTONS -->
 		<div class="field is-grouped is-grouped-right">
 			<p class="control">
-				<a
-					class="button is-primary"
-					:class="{'is-loading': submitted}"
-					@click="submit()">
-					Submit
+				<a class="button is-white" @click="clear()">
+					Clear
 				</a>
 			</p>
 			<p class="control">
-				<a class="button is-light" @click="clear()">
-					Clear
+				<a
+					class="button is-primary"
+					:class="{'is-loading': submitted}"
+					@click="submit()"
+					:disabled="$v.$invalid">
+					Submit
 				</a>
 			</p>
 		</div>
@@ -79,16 +96,13 @@
 </template>
 
 <script>
-	import InputItem from '../../lists/listItems/InputItem.vue'
+	import { required, maxLength } from 'vuelidate/lib/validators'
 
 	export default {
 		name: 'InputParagraph',
 		data() {
 			return {
-				titleOk: true,
-				paragraphOk: true,
 				submitted: false,
-				paragraphEnoughLines: true,
 				scaleNamePlaceholders: [
 					'Excellence',
 					'Vertical Leap',
@@ -100,12 +114,32 @@
 				]
 			}
 		},
-		components: {
-			inputItem: InputItem
+		validations: {
+			inputTitle: {
+				required
+			},
+			scaleName: {
+				maxLen: maxLength(60)
+			},
+			username: {
+				maxLen: maxLength(24)
+			},
+			inputParagraph: {
+				required,
+				atLeastTwoItems: value => {
+					const validLines = value.split('\n').filter(item => item.trim() !== '')
+					return validLines.length >= 2
+				},
+				notTooMuch: value => {
+					const validLines = value.split('\n').filter(item => item.trim() !== '')
+					return validLines.length <= 128 && validLines.every( line => line.length <= 280 )
+				}
+			}
 		},
 		methods: {
 			clear() {
-				this.$store.dispatch('setInputParagraph', '');
+				this.$store.dispatch('createClear');
+				this.$v.$reset()
 			},
 			submit() {
 				if (this.checkInput()) {
@@ -114,28 +148,8 @@
 					// i am bad
 					// #asyncprogramming
 					this.$store.dispatch('sendInputParagraphToDatabase', this.$router)
-					// this.$store.dispatch('sendInputParagraphToAirtable', this.$router)
 					this.submitted = true;
 				}
-			},
-			checkInput() {
-				if (!this.inputTitle) {
-					this.titleOk = false;
-				} else {
-					this.titleOk = true;
-				}
-				if (!this.inputParagraph) {
-					this.paragraphOk = false;
-				} else {
-					this.paragraphOk = true;
-				}
-				if (this.inputParagraph.split('\n').filter(item => item.trim() !== '').length < 2) {
-					this.paragraphEnoughLines = false;
-				} else {
-					this.paragraphEnoughLines = true;
-				}
-
-				return this.titleOk && this.paragraphOk && this.paragraphEnoughLines
 			}
 		},
 		computed: {

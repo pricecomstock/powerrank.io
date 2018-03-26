@@ -97,6 +97,12 @@ const actions = {
         })
         .catch(error => console.log(error))
     },
+    createClear: ({commit}) => {
+      commit('setInputTitle','')
+      commit('setScaleName','')
+      commit('setCreatorUsername','')
+      commit('setInputParagraph','')
+    }
 }
 
 export default {
