@@ -142,11 +142,7 @@
 				this.$v.$reset()
 			},
 			submit() {
-				if (this.checkInput()) {
-					// send router instance so that it can change the page after airtable responds
-					// this is bad
-					// i am bad
-					// #asyncprogramming
+				if (!this.$v.$invalid) {
 					this.$store.dispatch('sendInputParagraphToDatabase', this.$router)
 					this.submitted = true;
 				}
