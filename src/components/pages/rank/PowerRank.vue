@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-small is-white">
+    <section class="hero is-white is-small">
       <div class="hero-body">
         <div class="container has-text-centered">
           <h1 class="subtitle is-3">
@@ -16,35 +16,52 @@
         <draggable-list class="column is-one-third" :ranked="true"></draggable-list>
   
         <div class="column is-one-third">
-          <div class="field">
-            <label class="label">Name</label>
-            <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="who needs user accounts" v-model="username">
+          <div class="field has-addons is-horizontal">
+            <!-- <div class="field-label is-normal">
+              <label class="label">Name</label>
+            </div> -->
+            <div class="control has-icons-left is-expanded">
+              <input class="input is-medium"
+                type="text"
+                :class="{'is-danger': $v.username.$error}"
+					      @input="$v.username.$touch()"
+                @keyup.enter="submit()"
+                placeholder="Name"
+                v-model="username">
               <span class="icon is-small is-left">
                 <i class="fa fa-user"></i>
               </span>
+              <p v-if="username.length > 20" class="help" :class="{'is-danger': $v.username.$error}">{{username.length}}/{{$v.username.$params.maxLen.max}}</p>
             </div>
+            <p class="control">
+              <a class="button is-medium is-primary" :class="submitButtonClasses" @click="submit()" :disabled="!validRanking">
+                <span class="icon">
+                <i class="fas fa-check"></i>
+                </span>
+                <span>Submit</span>
+              </a>
+            </p>
           </div>
-  
-          <div class="column is-one-third">
-            <div class="field is-grouped">
+            
+            <div class="field is-grouped is-grouped-right">
               <p class="control">
-                <a class="button is-primary is-medium" :class="submitButtonClasses" @click="submit()">
-                  Submit
+                <a class="button is-outlined is-danger" @click="reset()">
+                  <span class="icon">
+                  <i class="fas fa-undo"></i>
+                  </span>
+                  <span>Reset</span>
                 </a>
               </p>
               <p class="control">
-                <a class="button is-medium is-outlined is-danger" @click="reset()">
-                  Reset
-                </a>
-              </p>
-              <p class="control">
-                <router-link :to="`/rankresults/${id}`" class="button is-medium">Results</router-link>
+                <router-link :to="`/rankresults/${id}`" class="button">
+                <span class="icon">
+                  <i class="fas fa-trophy"></i>
+                </span>
+                <span>Results</span>
+                </router-link>
               </p>
             </div>
-          </div>
         </div>
-  
       </div>
     </div>
   </div>
@@ -54,6 +71,7 @@
   import draggable from 'vuedraggable';
   import draggableList from '../../lists/DraggableList.vue';
 	import rankListStats from '../pieces/RankListStats.vue'
+	import { maxLength, minLength } from 'vuelidate/lib/validators'
   // import debugPanel from '../Debug.vue';
 
   export default {
@@ -77,6 +95,12 @@
         presets: this.$store.getters.presets
       };
     },
+    validations: {
+      username: {
+        maxLen: maxLength(24)
+      },
+      
+    },
     computed: {
       username: {
         get () {
@@ -94,6 +118,10 @@
       },
       rankList () {
         return this.$store.getters.rankList;
+      },
+      validRanking () {
+        const numRequiredToRank = this.$store.getters.rankedList.numRequiredToRank || 2
+        return this.$store.getters.rankedList.length >= numRequiredToRank
       }
     },
     methods: {
@@ -106,9 +134,9 @@
         this.$store.dispatch('resetRankLists');
       },
       submit() {
-        if (this.$store.getters.rankedList.length > 0)
-        this.$store.dispatch('submitPowerRankToDatabase', this.$router)
-        // this.$store.dispatch('submitPowerRankToAirtable', this.$router)
+        if (this.validRanking) {
+          this.$store.dispatch('submitPowerRankToDatabase', this.$router)
+        }
       }
     },
     watch: {
