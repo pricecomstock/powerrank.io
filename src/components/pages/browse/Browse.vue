@@ -21,6 +21,7 @@
 						<h1 class="title is-3 has-text-centered">
 							{{ rankList.title }}
 						</h1>
+						<!-- <h2 class="subtitle has-text-centered has-text-grey">Excellence</h2> -->
 					</div>
 					<div class="hero-foot">
 						<div class="level is-mobile has-text-grey">
@@ -32,14 +33,14 @@
 							</div>
 							<div class="level-item has-text-centered">
 								<div>
-									<p class="heading">Rankings</p>
-									<p class="is-size-5 stat">{{rankList.rankingCount}}</p>
+									<p class="heading">In Order Of</p>
+									<p class="is-size-5 stat">{{rankList.scaleName}}</p>
 								</div>
 							</div>
 							<div class="level-item has-text-centered">
 								<div>
-									<p class="heading">In Order Of</p>
-									<p class="is-size-5 stat">{{rankList.scaleName}}</p>
+									<p class="heading">Rankings</p>
+									<p class="is-size-5 stat">{{rankList.rankingCount}}</p>
 								</div>
 							</div>
 						</div>
@@ -86,7 +87,7 @@
 
 <style>
 .stat {
-	max-width: 120px;
+	max-width: 150px;
 	color: grey;
 	font-weight: bold;
 }
