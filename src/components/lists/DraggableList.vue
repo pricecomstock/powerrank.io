@@ -18,6 +18,13 @@
         :item="element"
         :rank="ranked ? index + 1 : -1 ">
       </list-item>
+      <!-- <section class="hero" v-if="listContents.length===0">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">Drag Here</h1>
+          </div>
+        </div>
+      </section> -->
       <!-- </transition-group> -->
     </draggable>
   </div>
