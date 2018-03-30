@@ -47,7 +47,7 @@
 				return '/ranking/' + this.rankingId
 			},
 			resultsLink() {
-				return '/ranking/' + this.rankListId
+				return '/rankresults/' + this.rankListId
 			}
 		}
 	};
