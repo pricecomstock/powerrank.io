@@ -68,7 +68,7 @@ export default {
 
 <style>
 .stat {
-	max-width: 150px;
+	max-width: 125px;
 	color: grey;
 	font-weight: bold;
 }
