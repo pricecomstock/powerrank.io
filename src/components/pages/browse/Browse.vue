@@ -2,7 +2,8 @@
 	<div id="browse" class="section">
 		<div class="container columns is-centered is-fluid is-multiline is-narrow">
 			<div class="column is-one-third-widescreen is-half-desktop is-half-tablet">
-				<router-link class="box hero is-white is-small ranklink" :to="'/rank/' + rankList.id" v-for="rankList in rankListsList" :key="rankList.id">
+				<rank-list-card v-for="rankList in rankListsList" :key="rankList.id" :rankList="rankList"></rank-list-card>
+				<!-- <router-link class="box hero is-white is-small ranklink" :to="'/rank/' + rankList.id" v-for="rankList in rankListsList" :key="rankList.id">
 					<div class="hero-head">
 						<div class="level has-text-grey has-text-weight-light is-mobile">
 							<div class="level-left">
@@ -21,7 +22,6 @@
 						<h1 class="title is-3 has-text-centered">
 							{{ rankList.title }}
 						</h1>
-						<!-- <h2 class="subtitle has-text-centered has-text-grey">Excellence</h2> -->
 					</div>
 					<div class="hero-foot">
 						<div class="level is-mobile has-text-grey">
@@ -45,7 +45,7 @@
 							</div>
 						</div>
 					</div>
-				</router-link>
+				</router-link> -->
 			</div>
 		</div>
 	</div>
@@ -54,6 +54,7 @@
 <script>
 	import axios from '../../../axios-powerrank'
 	import moment from 'moment'
+	import rankListCard from './RankListCard.vue'
 
 	export default {
 		name: 'browse',
@@ -61,6 +62,9 @@
 			return {
 				rankListsList: []
 			}
+		},
+		components: {
+			rankListCard: rankListCard
 		},
 		created () {
 			axios.get('/ranklists')
