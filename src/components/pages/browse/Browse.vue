@@ -87,7 +87,7 @@
 
 <style>
 .stat {
-	max-width: 150px;
+	max-width: 250px;
 	color: grey;
 	font-weight: bold;
 }
