@@ -1,5 +1,6 @@
 <template>
   <div class="rankinglist">
+    <div id="mobilecanary"></div>
     <draggable
       class="list-group "
       :class="{'drag-here': listContents.length===0}"
@@ -13,6 +14,7 @@
         v-for="(element, index) in listContents"
         class="list-group-item is-unselectable"
         id="listItem"
+        :is-mobile="isMobile"
         @click.native="sendToOtherList(index)"
         :key="index"
         :item="element"
@@ -58,6 +60,9 @@
         } else {
           this.$store.dispatch('moveFromRankedToUnranked', index);
         }
+      },
+      calculateIsMobile () { // Is this a CPU hog?
+        return getComputedStyle(document.getElementById('mobilecanary'), null).display === "none"
       }
     },
     watch: {
@@ -93,7 +98,8 @@
           animation: 0,
           group: 'description',
           disabled: !this.editable,
-          ghostClass: 'ghost'
+          ghostClass: 'ghost',
+          handle: this.isMobile? ".item-handle" : null
         };
       },
       minListHeight () {
@@ -109,8 +115,12 @@
       return {
         editable: true,
         isDragging: false,
-        delayedDragging: false
+        delayedDragging: false,
+        isMobile: false
       };
+    },
+    mounted () {
+      this.isMobile = this.calculateIsMobile(); // this is needed for drag handles
     }
   };
 </script>
@@ -170,4 +180,10 @@
     min-height: 150px;
     border-radius: 10px;
   }
+
+  #mobilecanary {color: blue;}
+
+@media only screen and (max-width: 760px) {
+  #mobilecanary { display: none; }
+}
 </style>

@@ -1,6 +1,11 @@
 <template>
   <li class="box staging rankitem">
     <div class="level is-mobile">
+      <div v-if="isMobile" class="level-left itemdetail item-handle">
+        <span class="icon">
+          <i class="fas fa-lg fa-bars"></i>
+        </span>
+      </div>
       <div v-if="detail" class="level-left itemdetail">
         <span class="tag is-light is-small">{{ detail }}</span>
       </div>
@@ -50,6 +55,10 @@ export default {
     rank: {
       type: Number,
       required: true
+    },
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   }
 }

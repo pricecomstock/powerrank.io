@@ -1,5 +1,6 @@
 const schemas = require('./schemas.js');
 const idgen = require('./idgenerate.js');
+const validations = require('./validations.js')
 
 var mongoose = require('mongoose');
 const mongooseUri = process.env.MONGODB_URI || 'mongodb://localhost/powerrank'
@@ -126,7 +127,12 @@ module.exports = {
     },
 
     createRankList(rankListToCreate, callback) {
-        // console.log(rankListToCreate)
+
+        if (! validations.validateRankListCreation(rankListToCreate)) {
+            callback({success: false})
+            return
+        }
+
         let newRankList = new RankList({
             title: rankListToCreate.title,
             rankItems: rankListToCreate.rankItems,
@@ -170,44 +176,55 @@ module.exports = {
     },
     
     createRanking(rankingToCreate, callback) {
-        let newRanking = new Ranking({
-            rankListId: rankingToCreate.rankListId,
-            rankOrder: rankingToCreate.rankOrder,
-            user: rankingToCreate.user,
-        })
+        
+        // Find associated rankList for validation
+        RankList.findOne({_id: rankingToCreate.rankListId}, (err, rankList) => {    
+            if (err) return console.error(err);
 
-        function saveRanking(nr, aggregationUpdateFunction) {
-            nr.save((err, savedRanking) => {
-                if (err) {
-                    if (err.code === 11000) {
-                        // Duplicate key error
-                        console.log(`Duplicate key '${nr._id}'`)
-                        nr._id = idgen.generate();
-                        console.log(`Retrying with key '${nr._id}'`)
-                        saveRanking(nr);
-                    } else {
-                        console.error(err);
-                        callback({success: false})
-                    }
-                } else {
-                    // recountRankings(savedRanking.rankListId)
-                    rankingCountIncrement(savedRanking.rankListId)
-                    
-                    // recalculateAggregations(savedRanking.rankListId)
-
-                    aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
-                        console.log("Successfully saved ranking and updated rankList", updatedRankList)
-                    })
-
-                    callback({
-                        success: true,
-                        ranking: savedRanking
-                    })
-                }
+            if (!validations.validateRankingCreation(rankingToCreate, rankList)) {
+                callback({success: false})
+                return
+            }
+            
+            let newRanking = new Ranking({
+                rankListId: rankingToCreate.rankListId,
+                rankOrder: rankingToCreate.rankOrder,
+                user: rankingToCreate.user,
             })
-        }
-
-        saveRanking(newRanking, this.updateAggregationsDowdall);
+            
+            function saveRanking(nr, aggregationUpdateFunction) {
+                nr.save((err, savedRanking) => {
+                    if (err) {
+                        if (err.code === 11000) {
+                            // Duplicate key error
+                            console.log(`Duplicate key '${nr._id}'`)
+                            nr._id = idgen.generate();
+                            console.log(`Retrying with key '${nr._id}'`)
+                            saveRanking(nr);
+                        } else {
+                            console.error(err);
+                            callback({success: false})
+                        }
+                    } else {
+                        // recountRankings(savedRanking.rankListId)
+                        rankingCountIncrement(savedRanking.rankListId)
+                        
+                        // recalculateAggregations(savedRanking.rankListId)
+                        
+                        aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
+                            console.log("Successfully saved ranking and updated rankList", updatedRankList)
+                        })
+                        
+                        callback({
+                            success: true,
+                            ranking: savedRanking
+                        })
+                    }
+                })
+            }
+            
+            saveRanking(newRanking, this.updateAggregationsDowdall);
+        })
     },
 
     updateAggregationsDowdall(rankListToAnalyzeId, addedRankOrder, callback) {
