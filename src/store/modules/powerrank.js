@@ -164,6 +164,7 @@ const actions = {setUnrankedList: (context, newList) => {
         rankOrder: determineOrder(context.getters.rankedList, context.getters.itemOrder),
         user: context.getters.username
       }
+      console.log(payload)
       axios.post('/createranking', payload)
         .then(res => {
         //   console.log(res)

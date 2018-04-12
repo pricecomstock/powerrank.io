@@ -59,7 +59,7 @@ module.exports = {
         scaleName: {
             type: String,
             validator: function(scaleName) {
-                return scaleName.length < 15;
+                return scaleName.length < 60; // this doesn't work anyways
             },
             default: "Excellence"
         },
