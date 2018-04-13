@@ -5,7 +5,12 @@
 				<rank-list-card v-for="rankList in rankListsList" :key="rankList.id" :rankList="rankList"></rank-list-card>
 			</div>
 			<div v-else class="column is-9-widescreen is-12-desktop is-12-tablet">
-				<rank-list-block v-for="rankList in rankListsList" :key="rankList.id" :rankList="rankList"></rank-list-block>
+				<div class="box powerranklinklist">
+					<div class="powerranklink" :key="index" v-for="(rankList, index) in rankListsList">
+						<rank-list-block :rankList="rankList"></rank-list-block>
+						<!-- <hr :key="index"> -->
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -22,7 +27,7 @@
 		data () {
 			return {
 				rankListsList: [],
-				cardMode: true
+				cardMode: false
 			}
 		},
 		components: {
@@ -53,5 +58,23 @@
 </script>
 
 <style>
+.powerranklink {
+  /* margin: 1rem; */
+  /* padding: 1rem 1rem; */
+  /* padding-top: 1rem; */
+  border-bottom: 1px solid #E6EAEE;
+  overflow: hidden;
+}
+.powerranklink:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+  border-radius: 0px 0px 5px 5px;
+}
+.powerranklink:first-child {
+  border-radius: 5px 5px 0px 0px;
+}
 
+.powerranklinklist {
+	padding: 0;
+}
 </style>

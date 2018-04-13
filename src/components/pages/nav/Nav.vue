@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<router-link class="navbar-item" to="/" disabled>powerrank.io v.0.0.10</router-link>
+			<router-link class="navbar-item" to="/" disabled>powerrank.io v.0.0.11</router-link>
 			<div class="navbar-burger" :class="{'is-active':showNav}" @click="showNav = !showNav" data-target="navMenu">
 				<span></span>
 				<span></span>
