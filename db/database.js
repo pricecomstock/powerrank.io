@@ -73,7 +73,13 @@ module.exports = {
             week: {
                 public: true,
                 date: {
-                    "$gte": new Date(new Date().getTime() - (7*msInADay))
+                    "$gte": new Date(new Date().getTime() - (7 * msInADay))
+                }
+            },
+            month: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - (30 * msInADay))
                 }
             },
             all: {

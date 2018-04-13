@@ -44,8 +44,9 @@
 			rankListCard: rankListCard,
 			rankListBlock: rankListBlock
 		},
-		created () {
-			axios.get(`/ranklists/${this.when}/${this.sort}`)
+		methods: {
+			loadPowerRanks () {
+				axios.get(`/ranklists/${this.when}/${this.sort}`)
 				.then(res => {
 					console.log(res)
 					const rankLists = res.data // it's an array of records
@@ -62,6 +63,15 @@
 					})
 				})
 				.catch(error => console.log(error))
+			}
+		},
+		watch: {
+			'$route' (to, from) {
+				this.loadPowerRanks();
+			}
+		},
+		created () {
+			this.loadPowerRanks();
 		}
 	}
 

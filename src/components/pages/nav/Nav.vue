@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<router-link class="navbar-item" to="/" disabled>powerrank.io v.0.0.11</router-link>
+			<router-link class="navbar-item" to="/" disabled>powerrank.io v.0.0.12</router-link>
 			<div class="navbar-burger" :class="{'is-active':showNav}" @click="showNav = !showNav" data-target="navMenu">
 				<span></span>
 				<span></span>
@@ -10,7 +10,21 @@
 		</div>
 		<div class="navbar-menu" :class="{'is-active':showNav}" id="navMenu">
 			<div class="navbar-start">
-				<router-link class="navbar-item" to="/browse">Browse</router-link>
+				<router-link class="navbar-item" to="/browse">Recent</router-link>
+				
+				<div
+					class="navbar-item has-dropdown"
+					@mouseover="showTopDropdown = true"
+					@mouseout="showTopDropdown = false"
+					:class="{'is-active': showTopDropdown}">
+					<router-link class="navbar-link" to="/browse">Top</router-link>
+					<div class="navbar-dropdown">
+						<router-link class="navbar-item" to="/browse/all/top">All Time</router-link>
+						<router-link class="navbar-item" to="/browse/week/top">This Week</router-link>
+						<router-link class="navbar-item" to="/browse/today/top">Today</router-link>
+					</div>
+				</div>
+
 			</div>
 			<div class="navbar-end">
 				<div class="navbar-item" v-if="!showNav">
@@ -36,7 +50,8 @@ export default {
   name: 'NavBar',
   data () {
 		return {
-			showNav: false
+			showNav: false,
+			showTopDropdown: false
 		};
 	},
   methods: {
