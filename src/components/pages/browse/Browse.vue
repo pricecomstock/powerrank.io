@@ -30,12 +30,22 @@
 				cardMode: false
 			}
 		},
+		props: {
+			when: {
+				type: String,
+				default: 'week'
+			},
+			sort: {
+				type: String,
+				default: 'recent'
+			}
+		},
 		components: {
 			rankListCard: rankListCard,
 			rankListBlock: rankListBlock
 		},
 		created () {
-			axios.get('/ranklists')
+			axios.get(`/ranklists/${this.when}/${this.sort}`)
 				.then(res => {
 					console.log(res)
 					const rankLists = res.data // it's an array of records

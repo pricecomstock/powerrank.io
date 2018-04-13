@@ -65,6 +65,7 @@ module.exports = {
         },
         rankingCount: {
             type: Number,
+            index: true,
             default: 0
         },
         public: {

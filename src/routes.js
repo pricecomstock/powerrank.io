@@ -11,7 +11,8 @@ export const routes = [
 	{ path: '', component: Browse },
 	{ path: '/create', component: Create },
 	{ path: '/create/success', component: CreationSuccess },
-	{ path: '/browse', component: Browse },
+	{ path: '/browse/:when/:sort', component: Browse, props: true }, // with params
+	{ path: '/browse', component: Browse }, // without params
 	{ path: '/rank/:id', component: PowerRank, props: true },
 	{ path: '/rank/:rankListId/success', component: RankSuccess, props: true },
 	{ path: '/ranking/:rankingId', component: ViewRanking, props: true },
