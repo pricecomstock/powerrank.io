@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
 
 // get all RankLists
 router.get('/ranklists/:when/:sort', function(req, res) {
-    let filter = req.params.when || 'week';
+    let filter = req.params.when || 'month';
     let sort = req.params.sort || 'recent';
     console.log(`filter:${filter}, sort:${sort}`)
     rankDb.getAllRankLists( filter, sort, (results) => {

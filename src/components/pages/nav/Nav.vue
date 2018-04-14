@@ -10,18 +10,21 @@
 		</div>
 		<div class="navbar-menu" :class="{'is-active':showNav}" id="navMenu">
 			<div class="navbar-start">
-				<router-link class="navbar-item" to="/browse">Recent</router-link>
+				<router-link class="navbar-item" to="/browse" exact-active-class="is-active">Recent</router-link>
 				
 				<div
-					class="navbar-item has-dropdown"
+					class="navbar-item has-dropdown is-hoverable"
 					@mouseover="showTopDropdown = true"
-					@mouseout="showTopDropdown = false"
-					:class="{'is-active': showTopDropdown}">
-					<router-link class="navbar-link" to="/browse">Top</router-link>
+					@mouseout="showTopDropdown = false">
+					<router-link
+						class="navbar-link"
+						to="/browse/month/top"
+						:class="{'is-active': inTop }">Top</router-link>
 					<div class="navbar-dropdown">
-						<router-link class="navbar-item" to="/browse/all/top">All Time</router-link>
-						<router-link class="navbar-item" to="/browse/week/top">This Week</router-link>
 						<router-link class="navbar-item" to="/browse/today/top">Today</router-link>
+						<router-link class="navbar-item" to="/browse/week/top">This Week</router-link>
+						<router-link class="navbar-item" to="/browse/month/top">This Month</router-link>
+						<router-link class="navbar-item" to="/browse/all/top">All Time</router-link>
 					</div>
 				</div>
 
@@ -48,17 +51,21 @@
 <script>
 export default {
   name: 'NavBar',
-  data () {
+	data () {
 		return {
-			showNav: false,
-			showTopDropdown: false
+			showNav: false
 		};
 	},
-  methods: {
-	  toggleHamburgerMenu() {
-		  this.showNav = !this.showNav
-	  }
-  }
+	computed: {
+		inTop () {
+			return this.$route.path.includes('/top')
+		}
+	},
+	methods: {
+		toggleHamburgerMenu() {
+			this.showNav = !this.showNav
+		}
+	}
 };
 </script>
 
