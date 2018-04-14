@@ -1,5 +1,14 @@
 <template>
   <div class="rankinglist">
+    <h2 v-if="!isMobile && ranked && listContents.length === 0" class="subtitle has-text-centered is-6 has-text-grey">
+      Drag an item to the box below or click to rank.
+    </h2>
+    <div v-if="isMobile && !ranked && showInstructions" class="is-size-4 notification is-info has-text-centered">
+      <p class="notification-text">
+        To start ranking, either <strong>drag</strong> an item by it's handle to the box below or <strong>tap</strong> items in order.
+      </p>
+      <button class="button is-centered is-white" @click="ackInstructions()">Got it!</button>
+    </div>
     <div id="mobilecanary"></div>
     <draggable
       class="list-group "
@@ -61,8 +70,12 @@
           this.$store.dispatch('moveFromRankedToUnranked', index);
         }
       },
-      calculateIsMobile () { // Is this a CPU hog?
+      calculateIsMobile () {
         return getComputedStyle(document.getElementById('mobilecanary'), null).display === "none"
+      },
+      ackInstructions() {
+        this.showInstructions = false;
+        localStorage.setItem('ackedInstructions', true)
       }
     },
     watch: {
@@ -116,11 +129,14 @@
         editable: true,
         isDragging: false,
         delayedDragging: false,
-        isMobile: false
+        isMobile: false,
+        showInstructions: false
       };
     },
     mounted () {
       this.isMobile = this.calculateIsMobile(); // this is needed for drag handles
+      const alreadySeen = localStorage.getItem("ackedInstructions")
+      this.showInstructions = this.isMobile && !alreadySeen
     }
   };
 </script>
@@ -179,6 +195,10 @@
     border: 4px dashed #DDD;
     min-height: 150px;
     border-radius: 10px;
+  }
+
+  .notification-text {
+    padding-bottom: 1rem;
   }
 
   #mobilecanary {color: blue;}

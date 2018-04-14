@@ -2,7 +2,18 @@
   <router-link class="hero is-white is-small ranklink" :to="'/rank/' + rankList.id" >
       <div class="hero is-small">
         <div class="hero-head username">
-          <small>@{{rankList.user || "anonymous"}}, {{rankList.date}}</small>
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <small>@{{rankList.user || "anonymous"}}</small>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <small>{{rankList.date}}</small>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="hero-body">
           <h1 class="title">{{ rankList.title }}</h1>
@@ -23,24 +34,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <h1 class="title is-3">{{ rankList.title }}</h1>
-      <div class="media">
-          <div class="media-content">
-              <div class="content">
-                  <p class="order">
-                    in order of <strong>{{rankList.scaleName}}</strong>
-                    <br>
-                    <strong>@{{rankList.user || 'anonymous'}}</strong> asked {{rankList.date}}
-                  </p>
-              </div>
-          </div>
-          <div class="media-right">
-            <span class="is-size-5">
-              <i class="fas fa-chart-line"></i> 1
-            </span>
-          </div>
-      </div> -->
    </router-link>
 </template>
 
@@ -86,7 +79,7 @@ export default {
 
 .hero-head.username {
 	color: hsl(0, 0%, 48%);
-  padding: 1rem 0rem 0rem 1.5rem;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
 }
 
 .stat2 {

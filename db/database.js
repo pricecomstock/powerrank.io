@@ -56,14 +56,50 @@ module.exports = {
     //     })
     // },
     
-    getAllRankLists(callback) {
+    getAllRankLists(filter, sort, callback) {
         // TODO front page won't always have every single powerranking
         // So we should only select most recent public powerrankings
         
         // Sorting is whack
         // https://stackoverflow.com/questions/5825520/in-mongoose-how-do-i-sort-by-date-node-js
+        const msInADay = 24 * 60 * 60 * 1000;
+        const filters = {
+            today: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - msInADay)
+                }
+            },
+            week: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - (7 * msInADay))
+                }
+            },
+            month: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - (30 * msInADay))
+                }
+            },
+            all: {
+                public: true
+            }
+        }
+        
+        const sorts = {
+            recent: [[['date', -1]]],
+            top: [[['rankingCount', -1]]]
+        }
 
-        RankList.find({public: true}, null, {sort: {date: 'descending'}}, (err, rankLists) => {
+        let chosenFilter = filters[filter] || 'week';
+        let chosenSort = sorts[sort] || 'recent';
+
+        console.log('filter', chosenFilter)
+        console.log('sort', chosenSort)
+
+        // RankList.find({public: true}, null, {sort: {date: 'descending'}}, (err, rankLists) => {
+        RankList.find(chosenFilter, null, {sort: chosenSort}, (err, rankLists) => {
             if (err) return console.error(err);
             let rankListsInfo = rankLists.map( rankList => {
                 return {
@@ -79,8 +115,7 @@ module.exports = {
             callback(rankListsInfo);
         })
         .select('title id rankItems user date rankingCount scaleName')
-        // .sort({date: 'descending'})
-        // .limit(10)
+        .limit(20)
     },
 
     getRankList(id, callback) {
