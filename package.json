@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --public",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "postinstall": "npm install express mongoose moment vuelidate",
+    "postinstall": "npm install express mongoose moment vuelidate url-loader",
     "heroku-postbuild": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
@@ -32,6 +32,7 @@
     "webpack": "^2.2.0"
   },
   "devDependencies": {
+    "url-loader": "^1.0.1",
     "webpack-dev-server": "^2.2.0"
   }
 }

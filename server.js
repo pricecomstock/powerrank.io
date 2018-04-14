@@ -16,7 +16,13 @@ app.use(function(req, res, next) {
 app.use('/api', api);
 
 // TODO: make it so incorrect API calls don't fall through to vue-router
- 
+
+// Favicon
+app.get('/favicon.ico', function (req, res) {
+    console.log('favicon GET')
+    res.sendFile(__dirname + '/favicon.ico');
+});
+
 // Everything else should fall through to vue-router
 app.get('/*', function (req, res) {
     res.sendFile(__dirname + '/index.html');

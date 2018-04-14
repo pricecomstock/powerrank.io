@@ -1,7 +1,12 @@
 <template>
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<router-link class="navbar-item" to="/" disabled>powerrank.io v.0.0.12</router-link>
+			<router-link class="navbar-item powerranklogo" to="/" disabled>
+				<span class="icon is-medium">
+            		<i class="fas fa-lg fa-trophy"></i>
+          		</span>
+		  		powerrank.io
+			</router-link>
 			<div class="navbar-burger" :class="{'is-active':showNav}" @click="showNav = !showNav" data-target="navMenu">
 				<span></span>
 				<span></span>
@@ -70,4 +75,12 @@ export default {
 </script>
 
 <style>
+.powerranklogo {
+	font-style: italic;
+	text-transform: uppercase;
+}
+
+.powerranklogo .icon {
+	margin-right: .5rem;
+}
 </style>
