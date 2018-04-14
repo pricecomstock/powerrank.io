@@ -92,8 +92,8 @@ module.exports = {
             top: [[['rankingCount', -1]]]
         }
 
-        let chosenFilter = filters[filter] || 'week';
-        let chosenSort = sorts[sort] || 'recent';
+        let chosenFilter = filters[filter] || filters.month;
+        let chosenSort = sorts[sort] || filters.recent;
 
         console.log('filter', chosenFilter)
         console.log('sort', chosenSort)

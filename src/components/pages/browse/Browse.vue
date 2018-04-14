@@ -1,14 +1,18 @@
 <template>
 	<div id="browse" class="section">
 		<div class="container columns is-centered is-fluid is-multiline is-narrow">
-			<div v-if="cardMode" class="column is-9-widescreen is-9-desktop is-9-tablet">
-				<rank-list-card v-for="rankList in rankListsList" :key="rankList.id" :rankList="rankList"></rank-list-card>
-			</div>
-			<div v-else class="column is-9-widescreen is-12-desktop is-12-tablet">
+			<div class="column is-9-widescreen is-12-desktop is-12-tablet">
+				<!-- <div class="hero-body has-text-centered">
+					<h1 class="title">
+						Hero title
+					</h1>
+					<h2 class="subtitle">
+						Hero subtitle
+					</h2>
+				</div> -->
 				<div class="box powerranklinklist">
 					<div class="powerranklink" :key="index" v-for="(rankList, index) in rankListsList">
 						<rank-list-block :rankList="rankList"></rank-list-block>
-						<!-- <hr :key="index"> -->
 					</div>
 				</div>
 			</div>
@@ -26,14 +30,13 @@
 		name: 'browse',
 		data () {
 			return {
-				rankListsList: [],
-				cardMode: false
+				rankListsList: []
 			}
 		},
 		props: {
 			when: {
 				type: String,
-				default: 'week'
+				default: 'month'
 			},
 			sort: {
 				type: String,
