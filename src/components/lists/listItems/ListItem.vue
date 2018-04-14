@@ -1,23 +1,23 @@
 <template>
   <li class="box staging rankitem">
     <div class="level is-mobile">
-      <div v-if="isMobile" class="level-left itemdetail item-handle">
-        <span class="icon">
-          <i class="fas fa-lg fa-bars"></i>
-        </span>
-      </div>
       <div v-if="detail" class="level-left itemdetail">
         <span class="tag is-light is-small">{{ detail }}</span>
       </div>
       <div class="level-center itemname">
         {{ item }}
       </div>
-      <div class="level-right itemrank">
+      <div class="level-right">
         <span
-        class="tag is-medium is-rounded"
+        class="tag is-medium is-rounded itemrank"
         :class="rankColorClasses(rank)">
           {{ rank === -1 ? '?' : rank }}
         </span>
+        <div v-if="isMobile" class="item-handle">
+          <span class="icon">
+            <i class="fas fa-lg fa-bars"></i>
+          </span>
+        </div>
       </div>
     </div>
   </li>
@@ -71,13 +71,23 @@ export default {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   overflow-wrap: break-word;
+  overflow: hidden;
 }
 
-.rankitem .itemrank {
-  padding-left: 10px;
+.level-center.itemname {
+  overflow-wrap: break-word;
+  overflow: hidden;
 }
 
-.rankitem .itemdetail {
+.itemrank {
+  margin-left: 10px;
+}
+
+.item-handle {
+  margin-left: 10px;
+}
+
+.itemdetail {
   padding-right: 10px;
 }
 </style>
