@@ -4,7 +4,7 @@
             <div class="level">
                 <div class="level-left">
                     <div class="level-item has-text-grey">
-                        powerrank.io v0.1.0
+                        powerrank.io v0.1.1
                     </div>
                 </div>
                 <div class="level-right is-size-7">
@@ -36,8 +36,29 @@ export default {
 </script>
 
 <style>
+body {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 4rem;
+}
+
+@media only screen and (max-width: 760px) {
+    body {
+        padding-bottom: 10rem;
+    }
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 .pcfooter {
     background-color: hsl(0, 0%, 96%);
-    padding: 1rem 0rem;
+    padding: 1.5rem 0rem;
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
 }
 </style>
