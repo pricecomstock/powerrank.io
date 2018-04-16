@@ -76,8 +76,9 @@ export default {
 
 <style>
 .powerranklogo {
-	font-style: italic;
-	text-transform: uppercase;
+	/* font-style: italic; */
+	font-weight: bold;
+	/* text-transform: uppercase; */
 }
 
 .powerranklogo .icon {

@@ -2,8 +2,7 @@
   <div id="app">
     <nav-bar></nav-bar>
     <router-view></router-view>
-    <!-- <power-rank></power-rank> -->
-    <!-- <power-rank-footer></power-rank-footer> -->
+    <power-rank-footer></power-rank-footer>
   </div>
 </template>
 
