@@ -3,13 +3,16 @@
         <div class="container">
             <div class="level">
                 <div class="level-left">
-                    <div class="level-item">
-                        
+                    <div class="level-item has-text-grey">
+                        powerrank.io v0.1.0
                     </div>
                 </div>
-                <div class="level-right">
+                <div class="level-right is-size-7">
+                    <div class="level-item has-text-grey">
+                        by Price Comstock
+                    </div>
                     <div class="level-item">
-                        <a href="https://twitter.com/price_comstock" class="button is-white">
+                        <a href="https://twitter.com/price_comstock" class="button has-text-grey is-small is-light">
                             <span class="icon is-medium">
                                 <i class="fab fa-lg fa-twitter"></i>
                             </span>
@@ -33,7 +36,8 @@ export default {
 </script>
 
 <style>
-/* .pcfooter {
-    position: absolute;
-} */
+.pcfooter {
+    background-color: hsl(0, 0%, 96%);
+    padding: 1rem 0rem;
+}
 </style>
