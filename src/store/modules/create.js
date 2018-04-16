@@ -88,10 +88,8 @@ const actions = {
         public: context.getters.publiclyVisible,
         user: context.getters.creatorUsername
       }
-      console.log('payload', payload)
       axios.post('/createranklist', payload)
         .then(res => {
-          console.log(res)
           context.commit('setCreatedId', res.data.RankList._id)
           router.push('/create/success')
         })

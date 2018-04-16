@@ -51,7 +51,6 @@
 			loadPowerRanks () {
 				axios.get(`/ranklists/${this.when}/${this.sort}`)
 				.then(res => {
-					console.log(res)
 					const rankLists = res.data // it's an array of records
 					this.rankListsList = rankLists.map( record => {
 						return {

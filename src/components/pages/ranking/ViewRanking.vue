@@ -41,8 +41,6 @@
 			loadRanking(id) {
 				axios.get(`/ranking/${this.rankingId}`)
 					.then(res => {
-						console.log('Ranking Response', res)
-
 						// set the data we can get from here
 						this.rankListId = res.data.rankListId;
 						const user = res.data.user;
@@ -51,8 +49,6 @@
 						// load the RankList this ranking was made from
 						axios.get(`/ranklist/${this.rankListId}`)
 							.then(res => {
-								console.log('RankList Response', res)
-
 								this.rankList = res.data
 
 								this.rankListName = this.rankList.title
