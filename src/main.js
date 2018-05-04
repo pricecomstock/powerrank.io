@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import { routes } from './routes';
 import Vuelidate from 'vuelidate';
 
+import './assets/favicon.ico'
 
 import App from './App.vue'
 

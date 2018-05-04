@@ -120,11 +120,9 @@ const actions = {setUnrankedList: (context, newList) => {
     loadPowerRankFromDatabase: (context, id) => {      
         axios.get(`/ranklist/${id}`)
         .then(res => {
-            // console.log('Backend response', res)
             // Split on newlines because it's stored that way
             // Filter any blank items we are left with
             const newList = res.data.rankItems;
-            // console.log("new list", newList)
 
             context.commit('setRankList', res.data);
 
@@ -166,7 +164,6 @@ const actions = {setUnrankedList: (context, newList) => {
       }
       axios.post('/createranking', payload)
         .then(res => {
-        //   console.log(res)
           context.commit('setCreatedRankId', res.data.ranking._id)
           router.push(`/rank/${context.getters.currentPowerRankId}/success`)
         })

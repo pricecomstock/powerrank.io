@@ -73,13 +73,11 @@
 			
 			axios.get(`/recentrankings/${this.rankListId}`)
 				.then(res => {
-					// console.log("recent rankings", res);
 					this.recentRankings = res.data;
 				})
 				.catch(error => console.log(error))
 			axios.get(`/ranklist/${this.rankListId}`)
 				.then(res => {
-					// console.log("ranklist", res);
 					this.originalOrder = res.data.rankItems;
 				})
 				.catch(error => console.log(error))

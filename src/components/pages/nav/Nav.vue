@@ -1,7 +1,12 @@
 <template>
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<router-link class="navbar-item" to="/">powerrank.io v.0.0.8</router-link>
+			<router-link class="navbar-item powerranklogo" to="/" disabled>
+				<span class="icon is-medium">
+            		<i class="fas fa-lg fa-trophy"></i>
+          		</span>
+		  		powerrank.io
+			</router-link>
 			<div class="navbar-burger" :class="{'is-active':showNav}" @click="showNav = !showNav" data-target="navMenu">
 				<span></span>
 				<span></span>
@@ -10,7 +15,24 @@
 		</div>
 		<div class="navbar-menu" :class="{'is-active':showNav}" id="navMenu">
 			<div class="navbar-start">
-				<router-link class="navbar-item" to="/browse">Browse</router-link>
+				<router-link class="navbar-item" to="/browse" exact-active-class="is-active">Recent</router-link>
+				
+				<div
+					class="navbar-item has-dropdown is-hoverable"
+					@mouseover="showTopDropdown = true"
+					@mouseout="showTopDropdown = false">
+					<router-link
+						class="navbar-link"
+						to="/browse/month/top"
+						:class="{'is-active': inTop }">Top</router-link>
+					<div class="navbar-dropdown">
+						<router-link class="navbar-item" to="/browse/today/top">Today</router-link>
+						<router-link class="navbar-item" to="/browse/week/top">This Week</router-link>
+						<router-link class="navbar-item" to="/browse/month/top">This Month</router-link>
+						<router-link class="navbar-item" to="/browse/all/top">All Time</router-link>
+					</div>
+				</div>
+
 			</div>
 			<div class="navbar-end">
 				<div class="navbar-item" v-if="!showNav">
@@ -34,18 +56,32 @@
 <script>
 export default {
   name: 'NavBar',
-  data () {
+	data () {
 		return {
 			showNav: false
 		};
 	},
-  methods: {
-	  toggleHamburgerMenu() {
-		  this.showNav = !this.showNav
-	  }
-  }
+	computed: {
+		inTop () {
+			return this.$route.path.includes('/top')
+		}
+	},
+	methods: {
+		toggleHamburgerMenu() {
+			this.showNav = !this.showNav
+		}
+	}
 };
 </script>
 
 <style>
+.powerranklogo {
+	/* font-style: italic; */
+	font-weight: bold;
+	/* text-transform: uppercase; */
+}
+
+.powerranklogo .icon {
+	margin-right: .5rem;
+}
 </style>

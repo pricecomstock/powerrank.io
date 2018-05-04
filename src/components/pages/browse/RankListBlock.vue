@@ -1,31 +1,40 @@
 <template>
-    <router-link class="box hero is-white is-small ranklink" :to="'/rank/' + rankList.id" >
-    <article class="post">
-        <h1 class="title is-4">{{ rankList.title }}</h1>
-        <div class="media">
-            <!-- <div class="media-left">
-                <p class="image is-32x32">
-                    <img src="http://bulma.io/images/placeholders/128x128.png">
-                </p>
-            </div> -->
-            <div class="media-content">
-                <div class="content">
-                    <p class="order">
-                    in order of <strong>{{rankList.scaleName}}</strong>
-                    <!-- <span class="tag">Question</span> -->
-                    </p>
-                    <p class="">
-                    <strong>@{{rankList.user || 'anonymous'}}</strong> asked {{rankList.date}}
-                    <!-- <span class="tag">Question</span> -->
-                    </p>
-                </div>
+  <router-link class="hero is-white is-small ranklink" :to="'/rank/' + rankList.id" >
+      <div class="hero is-small">
+        <div class="hero-head username">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <small>@{{rankList.user || "anonymous"}}</small>
+              </div>
             </div>
-            <div class="media-right">
-                <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+            <div class="level-right">
+              <div class="level-item">
+                <small>{{rankList.date}}</small>
+              </div>
             </div>
+          </div>
         </div>
-    </article>
-    </router-link>
+        <div class="hero-body">
+          <h1 class="title">{{ rankList.title }}</h1>
+          <p class="has-text-grey">
+            in order of <span class="scalename">{{rankList.scaleName}}</span>
+          </p>
+        </div>
+        <div class="hero-foot">
+          <div class="level stats is-mobile">
+            <div class="level-left">
+              <div class="stat2 level-item has-text-grey">
+                <small>{{rankList.itemCount}} items</small>
+              </div>
+              <div class="stat2 level-item has-text-grey">
+                <small>{{rankList.rankingCount}} rankings</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   </router-link>
 </template>
 
 <script>
@@ -50,24 +59,34 @@ export default {
 </script>
 
 <style>
-
-.media-left img {
-  border-radius: 50%;
-}
-.media-content p {
-  font-size: 14px;
-  line-height: 2.3;
-  /* font-weight: 700; */
-  color: #8F99A3;
-}
-article.post {
-  margin: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #E6EAEE;
-}
-article.post:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
+.scalename {
+  color: hsl(0, 0%, 48%);
+  font-weight: bold;
 }
 
+.stats {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+}
+
+.title:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.hero.is-small .hero-body {
+    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+}
+
+.hero-head.username {
+	color: hsl(0, 0%, 48%);
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
+}
+
+.stat2 {
+	color: hsl(0, 0%, 48%);
+}
+
+.level-item.stat2 {
+  padding: 0rem 0.75rem 0rem 0rem;
+}
 </style>

@@ -1,5 +1,6 @@
 const schemas = require('./schemas.js');
 const idgen = require('./idgenerate.js');
+const validations = require('./validations.js')
 
 var mongoose = require('mongoose');
 const mongooseUri = process.env.MONGODB_URI || 'mongodb://localhost/powerrank'
@@ -55,14 +56,50 @@ module.exports = {
     //     })
     // },
     
-    getAllRankLists(callback) {
+    getAllRankLists(filter, sort, callback) {
         // TODO front page won't always have every single powerranking
         // So we should only select most recent public powerrankings
         
         // Sorting is whack
         // https://stackoverflow.com/questions/5825520/in-mongoose-how-do-i-sort-by-date-node-js
+        const msInADay = 24 * 60 * 60 * 1000;
+        const filters = {
+            today: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - msInADay)
+                }
+            },
+            week: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - (7 * msInADay))
+                }
+            },
+            month: {
+                public: true,
+                date: {
+                    "$gte": new Date(new Date().getTime() - (30 * msInADay))
+                }
+            },
+            all: {
+                public: true
+            }
+        }
+        
+        const sorts = {
+            recent: [[['date', -1]]],
+            top: [[['rankingCount', -1]]]
+        }
 
-        RankList.find({public: true}, null, {sort: {date: 'descending'}}, (err, rankLists) => {
+        let chosenFilter = filters[filter] || filters.month;
+        let chosenSort = sorts[sort] || filters.recent;
+
+        console.log('filter', chosenFilter)
+        console.log('sort', chosenSort)
+
+        // RankList.find({public: true}, null, {sort: {date: 'descending'}}, (err, rankLists) => {
+        RankList.find(chosenFilter, null, {sort: chosenSort}, (err, rankLists) => {
             if (err) return console.error(err);
             let rankListsInfo = rankLists.map( rankList => {
                 return {
@@ -78,8 +115,7 @@ module.exports = {
             callback(rankListsInfo);
         })
         .select('title id rankItems user date rankingCount scaleName')
-        // .sort({date: 'descending'})
-        // .limit(10)
+        .limit(20)
     },
 
     getRankList(id, callback) {
@@ -126,7 +162,12 @@ module.exports = {
     },
 
     createRankList(rankListToCreate, callback) {
-        // console.log(rankListToCreate)
+
+        if (! validations.validateRankListCreation(rankListToCreate)) {
+            callback({success: false})
+            return
+        }
+
         let newRankList = new RankList({
             title: rankListToCreate.title,
             rankItems: rankListToCreate.rankItems,
@@ -170,44 +211,55 @@ module.exports = {
     },
     
     createRanking(rankingToCreate, callback) {
-        let newRanking = new Ranking({
-            rankListId: rankingToCreate.rankListId,
-            rankOrder: rankingToCreate.rankOrder,
-            user: rankingToCreate.user,
-        })
+        
+        // Find associated rankList for validation
+        RankList.findOne({_id: rankingToCreate.rankListId}, (err, rankList) => {    
+            if (err) return console.error(err);
 
-        function saveRanking(nr, aggregationUpdateFunction) {
-            nr.save((err, savedRanking) => {
-                if (err) {
-                    if (err.code === 11000) {
-                        // Duplicate key error
-                        console.log(`Duplicate key '${nr._id}'`)
-                        nr._id = idgen.generate();
-                        console.log(`Retrying with key '${nr._id}'`)
-                        saveRanking(nr);
-                    } else {
-                        console.error(err);
-                        callback({success: false})
-                    }
-                } else {
-                    // recountRankings(savedRanking.rankListId)
-                    rankingCountIncrement(savedRanking.rankListId)
-                    
-                    // recalculateAggregations(savedRanking.rankListId)
-
-                    aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
-                        console.log("Successfully saved ranking and updated rankList", updatedRankList)
-                    })
-
-                    callback({
-                        success: true,
-                        ranking: savedRanking
-                    })
-                }
+            if (!validations.validateRankingCreation(rankingToCreate, rankList)) {
+                callback({success: false})
+                return
+            }
+            
+            let newRanking = new Ranking({
+                rankListId: rankingToCreate.rankListId,
+                rankOrder: rankingToCreate.rankOrder,
+                user: rankingToCreate.user,
             })
-        }
-
-        saveRanking(newRanking, this.updateAggregationsDowdall);
+            
+            function saveRanking(nr, aggregationUpdateFunction) {
+                nr.save((err, savedRanking) => {
+                    if (err) {
+                        if (err.code === 11000) {
+                            // Duplicate key error
+                            console.log(`Duplicate key '${nr._id}'`)
+                            nr._id = idgen.generate();
+                            console.log(`Retrying with key '${nr._id}'`)
+                            saveRanking(nr);
+                        } else {
+                            console.error(err);
+                            callback({success: false})
+                        }
+                    } else {
+                        // recountRankings(savedRanking.rankListId)
+                        rankingCountIncrement(savedRanking.rankListId)
+                        
+                        // recalculateAggregations(savedRanking.rankListId)
+                        
+                        aggregationUpdateFunction(savedRanking.rankListId, savedRanking.rankOrder, (updatedRankList) => {
+                            console.log("Successfully saved ranking and updated rankList", updatedRankList)
+                        })
+                        
+                        callback({
+                            success: true,
+                            ranking: savedRanking
+                        })
+                    }
+                })
+            }
+            
+            saveRanking(newRanking, this.updateAggregationsDowdall);
+        })
     },
 
     updateAggregationsDowdall(rankListToAnalyzeId, addedRankOrder, callback) {

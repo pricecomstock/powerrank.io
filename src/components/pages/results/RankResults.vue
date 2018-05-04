@@ -58,7 +58,6 @@
 		created() {
 			axios.get(`/rankresults/${this.id}`)
 				.then(res => {
-					console.log(res);
 					this.rankList = res.data;
 					let dowdall = this.rankList.aggregations.find((agg => {
 						return agg.type === 'dowdall';

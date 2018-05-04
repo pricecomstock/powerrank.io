@@ -6,10 +6,6 @@
           <h1 class="subtitle is-4">
             Please powerrank <strong>{{rankList.title}}</strong> in order of <strong>{{rankList.scaleName}}</strong>
           </h1>
-          <h2 class="subtitle is-6 has-text-grey">
-            Drag an item to the box below or click to rank.
-            <!-- Either <strong>drag</strong> or <strong>click</strong> on an item to get started -->
-          </h2>
         </div>
       </div>
     </section>
