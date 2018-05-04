@@ -33,13 +33,13 @@
                                 </span>
                             </a>
                         </p> -->
-                        <!-- <p class="control">
-                            <a href="https://github.com/pricecomstock" class="button has-text-grey is-small is-light">
+                        <p class="control">
+                            <a href="https://github.com/pricecomstock/powerrank.io" class="button has-text-grey is-small is-light">
                                 <span class="icon is-medium">
                                     <i class="fab fa-lg fa-github"></i>
                                 </span>
                             </a>
-                        </p> -->
+                        </p>
                     </div>
                 </div>
             </div>
