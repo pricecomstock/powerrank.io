@@ -1,6 +1,6 @@
 # powerrank
 
-> power rank a list of items
+> A website for powerranking lists of items and generating an aggregate powerranking.
 
 ## Build Setup
 
@@ -10,6 +10,9 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
+
+# run backend
+node server.js
 
 # build for production with minification
 npm run build
