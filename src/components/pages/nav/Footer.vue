@@ -10,36 +10,36 @@
                 <div class="level-right is-size-7">
                     <div class="level-item">
                         <a class="button is-small is-light has-text-grey" href="https://blog.pricecomstock.com">by Price Comstock</a>
-                    </div>
-                    <div class="level-item field has-addons">
-                        <p class="control">
-                            <a href="https://twitter.com/price_comstock" class="button has-text-grey is-small is-light">
-                                <span class="icon is-medium">
-                                    <i class="fab fa-lg fa-twitter"></i>
-                                </span>
-                            </a>
-                        </p>
-                        <!-- <p class="control">
-                            <a href="https://pricecomstock.com" class="button has-text-grey is-small is-light">
-                                <span class="icon is-medium">
-                                    <i class="fa fa-lg fa-address-card"></i>
-                                </span>
-                            </a>
-                        </p> -->
-                        <!-- <p class="control">
-                            <a href="https://blog.pricecomstock.com" class="button has-text-grey is-small is-light">
-                                <span class="icon is-medium">
-                                    <i class="fa fa-lg fa-comment-dots"></i>
-                                </span>
-                            </a>
-                        </p> -->
-                        <!-- <p class="control">
-                            <a href="https://github.com/pricecomstock" class="button has-text-grey is-small is-light">
-                                <span class="icon is-medium">
-                                    <i class="fab fa-lg fa-github"></i>
-                                </span>
-                            </a>
-                        </p> -->
+                        <div class="field has-addons">
+                            <p class="control">
+                                <a href="https://twitter.com/price_comstock" class="button has-text-grey is-small is-light">
+                                    <span class="icon is-medium">
+                                        <i class="fab fa-lg fa-twitter"></i>
+                                    </span>
+                                </a>
+                            </p>
+                            <!-- <p class="control">
+                                <a href="https://pricecomstock.com" class="button has-text-grey is-small is-light">
+                                    <span class="icon is-medium">
+                                        <i class="fa fa-lg fa-address-card"></i>
+                                    </span>
+                                </a>
+                            </p> -->
+                            <!-- <p class="control">
+                                <a href="https://blog.pricecomstock.com" class="button has-text-grey is-small is-light">
+                                    <span class="icon is-medium">
+                                        <i class="fa fa-lg fa-comment-dots"></i>
+                                    </span>
+                                </a>
+                            </p> -->
+                            <p class="control">
+                                <a href="https://github.com/pricecomstock/powerrank.io" class="button has-text-grey is-small is-light">
+                                    <span class="icon is-medium">
+                                        <i class="fab fa-lg fa-github"></i>
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
