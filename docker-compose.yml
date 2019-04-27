@@ -2,10 +2,18 @@ version: "3"
 services:
   mongo:
     image: 'mongo:3.4.20-xenial'
+    container_name: mongo
+    restart: always
     ports:
       - '27017:27017'
     volumes:
       - 'mongo:/data/db'
+    command: mongod --noauth
+    # networks:
+    #   - powerranknetwork
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
 
 
   powerrank:
@@ -15,7 +23,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongo:27017/powerrank
       - __API_BASE_URL__="/api"
-      - NODE_ENV="production"
+      # - NODE_ENV="production"
     build:
       context: .
     ports:
@@ -28,11 +36,18 @@ services:
       - "traefik.backend=powerrank"
       - "traefik.frontend.rule=Host:powerrank.io,powerrank.pc.codes"
       - "traefik.docker.network=traefik_reverseproxy"
+    links:
+      - mongo
+    # networks:
+    #   - powerranknetwork
 
 # networks:
 #   reverseproxy:
 #     external:
 #       name: traefik_reverseproxy
+# networks:
+#   powerranknetwork:
+#     driver: bridge
 
 volumes:
   mongo:
