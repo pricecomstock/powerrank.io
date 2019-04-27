@@ -9,11 +9,6 @@ services:
     volumes:
       - 'mongo:/data/db'
     command: mongod --noauth
-    # networks:
-    #   - powerranknetwork
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: example
 
 
   powerrank:
@@ -38,16 +33,7 @@ services:
       - "traefik.docker.network=traefik_reverseproxy"
     links:
       - mongo
-    # networks:
-    #   - powerranknetwork
 
-# networks:
-#   reverseproxy:
-#     external:
-#       name: traefik_reverseproxy
-# networks:
-#   powerranknetwork:
-#     driver: bridge
 
 volumes:
   mongo:
